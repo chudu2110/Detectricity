@@ -472,20 +472,27 @@ async def _device_use(ctx: Ctx, device_id: str, days: int = 30) -> tuple[float, 
     return float(row.wh) / float(row.hours), float(row.hours) / days
 
 
-async def _saving(ctx: Ctx, task: dict[str, Any], standby_w: float | None) -> tuple[float, str]:
-    """(kWh per month, how it was measured) the task saves, from this home's own readings. The
-    model only chooses the action and its size; a size beyond what was measured is capped."""
+async def _saving(
+    ctx: Ctx, task: dict[str, Any], standby_w: float | None
+) -> tuple[float, dict[str, Any]]:
+    """(kWh per month, the measured figures behind it) the task saves, from this home's own
+    readings. The model only chooses the action and its size; a size beyond what was measured is
+    capped. The figures are numbers, not prose, so that an answer quoting them can be checked."""
     kind = task.get("kind")
     if kind == "standby" and standby_w:
         watts = min(max(0.0, float(task.get("watts") or 0)), standby_w)
-        return watts * 24 * 30 / 1000, f"{round(watts)} W of {round(standby_w)} W measured standby"
+        basis = {"standby_watts_cut": round(watts), "standby_watts_measured": round(standby_w)}
+        return watts * 24 * 30 / 1000, basis
     if kind == "device_hours" and (use := await _device_use(ctx, task.get("device_id", ""))):
         avg_w, hours_day = use
         hours = min(max(0.0, float(task.get("hours_per_day") or 0)), hours_day)
-        return avg_w * hours * 30 / 1000, (
-            f"{hours:.1f} h/day less of {hours_day:.1f} h/day measured at {round(avg_w)} W"
-        )
-    return 0.0, "not measurable from the readings"
+        basis = {
+            "hours_per_day_cut": round(hours, 1),
+            "hours_per_day_measured": round(hours_day, 1),
+            "watts_when_on": round(avg_w),
+        }
+        return avg_w * hours * 30 / 1000, basis
+    return 0.0, {"measurable": False}
 
 
 def _tiered(tiers: list[Any], kwh: float) -> float:

@@ -32,7 +32,7 @@ def test_backed_figures_pass_within_rounding():
 
 def test_a_figure_no_tool_gave_is_flagged():
     v = g.check("Bạn sẽ tiết kiệm 120.000 đ mỗi tháng.", [BILL])
-    assert v.problems == ["120.000 đ"]
+    assert v.problems == ["120.000 đ mỗi tháng"]
 
 
 def test_a_figure_of_the_wrong_unit_is_flagged():
@@ -52,3 +52,24 @@ def test_a_comparison_over_the_wrong_period_is_flagged():
 def test_unbacked_sentences_are_dropped():
     text = "Kỳ này 262 kWh [1]. Bạn tiết kiệm 120.000 đ. Hãy tắt máy lạnh."
     assert g.drop_sentences(text, ["120.000 đ"]) == "Kỳ này 262 kWh [1]. Hãy tắt máy lạnh."
+
+
+def test_a_monthly_figure_quoted_per_day_is_flagged():
+    standby = {"typical_watts": 126, "kwh_per_month": 90.4}
+    assert g.check("Điện nền tốn 90 kWh mỗi tháng [1].", [standby]).ok
+    assert g.check("Điện nền tốn 90 kWh mỗi ngày [1].", [standby]).problems == ["90 kWh mỗi ngày"]
+
+
+def test_hours_are_checked_but_times_of_day_are_not():
+    basis = {"hours_per_day_cut": 1.5, "hours_per_day_measured": 3.1, "watts_when_on": 256}
+    assert g.check("Bớt 1,5 giờ mỗi ngày trên 3,1 giờ đang chạy, ở 256 W.", [basis]).ok
+    assert g.check("Bớt 5 giờ mỗi ngày.", [basis]).problems == ["5 giờ mỗi ngày"]
+    assert g.figures("Từ 0h đến 5h sáng, lúc 7 giờ tối") == []
+
+
+def test_the_gate_shows_checked_sentences_and_holds_from_the_first_bad_one():
+    gate = g.Gate(lambda s: g.check(s, [BILL]))
+    shown = gate.feed("Kỳ này 262 kWh [1]. Bạn tiết")
+    shown += gate.feed(" kiệm 120.000 đ. Hãy tắt máy lạnh. ")
+    assert shown == "Kỳ này 262 kWh [1]. "
+    assert gate.held and gate.close() == ""

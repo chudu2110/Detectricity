@@ -75,7 +75,7 @@ async def test_chat_streams_tools_and_stores_the_reply(client, make_member, scri
     r, events = await ask(client, me)
     assert r.status_code == 200
     names = [n for n, _ in events]
-    assert names == ["meta", "step", "token", "token", "done"]
+    assert names == ["meta", "step", "token", "done"]  # whole checked sentences, not pieces
     assert events[1][1]["tool"] == "compare_periods"
     meta, done = events[0][1], events[-1][1]
     reply = done["reply"]
@@ -425,10 +425,13 @@ async def test_plan_savings_are_measured_not_claimed(client, make_member, script
         "hours_per_day": 5,  # more than it runs: capped
         "kwh_month": 999,  # a saving the model claims is ignored
     }
-    turns += [("propose_plan", {"title": "P", "tasks": [task]}), ["Đã lưu kế hoạch."]]
+    answer = "Bớt 0,7 giờ mỗi ngày ở 1000 W tiết kiệm 20 kWh mỗi tháng."  # the tool's figures
+    turns += [("propose_plan", {"title": "P", "tasks": [task]}), [answer]]
     _, events = await ask(client, me, "Lập kế hoạch")
-    plan = next(w for w in events[-1][1]["reply"]["widgets"] if w["kind"] == "plan")
+    reply = events[-1][1]["reply"]
+    plan = next(w for w in reply["widgets"] if w["kind"] == "plan")
     assert plan["kwh"] == 20.0
+    assert reply["text"] == answer
 
 
 async def test_an_unbacked_figure_is_rewritten(client, make_member, script):
@@ -475,3 +478,14 @@ async def test_a_comparison_of_the_wrong_period_is_not_shown(client, make_member
     turns += [("compare_periods", {"period": "week"}), [wrong], [wrong]]
     _, events = await ask(client, me)
     assert events[-1][1]["reply"]["text"] == chat.NO_FIGURES["vi"]
+
+
+async def test_an_unbacked_figure_is_never_streamed(client, make_member, script):
+    turns, _ = script
+    me = await make_member("owner")
+    pieces = ["Tuần này dùng 0 kWh [1]. ", "Bạn tiết kiệm 50.000 đ. ", "Hãy tắt đèn."]
+    turns += [("compare_periods", {"period": "week"}), pieces, ["".join(pieces)]]
+    _, events = await ask(client, me)
+    shown = "".join(d["text"] for n, d in events if n == "token")
+    assert shown == "Tuần này dùng 0 kWh [1]. "
+    assert events[-1][1]["reply"]["text"] == "Tuần này dùng 0 kWh [1]. Hãy tắt đèn."

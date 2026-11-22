@@ -235,11 +235,9 @@ class Answer:
         }
 
 
-async def grounded(text: str, messages: list[dict], state: Answer) -> str:
-    """The answer with every figure backed by a tool result: one rewrite by the model, then the
-    sentences still quoting an unbacked figure are dropped. The check goes in the usage."""
+def verdict(text: str, state: Answer) -> grounding.Verdict:
+    """`text` checked against the results of the tools that ran so far."""
     calls = [(name, args, o) for name, args, o, ok, _ in state.calls if ok]
-    results = [o.data for *_, o in calls]
     compared = {
         "cycle" if args.get("period") == "cycle" else "week"
         for name, args, _ in calls
@@ -248,13 +246,19 @@ async def grounded(text: str, messages: list[dict], state: Answer) -> str:
     periods = (
         compared | {"cycle" for name, *_ in calls if name in CYCLE_TOOLS} if compared else None
     )
-    verdict = grounding.check(text, results, periods)
-    if verdict.ok:
+    return grounding.check(text, [o.data for *_, o in calls], periods)
+
+
+async def grounded(text: str, messages: list[dict], state: Answer) -> str:
+    """The answer with every figure backed by a tool result: one rewrite by the model, then the
+    sentences still quoting an unbacked figure are dropped. The check goes in the usage."""
+    checked = verdict(text, state)
+    if checked.ok:
         return text
-    log.warning("copilot answer quoted unbacked figures: %s", verdict.problems)
-    record: dict[str, Any] = {"unbacked": verdict.problems}
+    log.warning("copilot answer quoted unbacked figures: %s", checked.problems)
+    record: dict[str, Any] = {"unbacked": checked.problems}
     turn = llm.Turn()
-    note = REWRITE.format(bad="; ".join(verdict.problems), follow=FOLLOW)
+    note = REWRITE.format(bad="; ".join(checked.problems), follow=FOLLOW)
     try:
         rewrite = [{"role": "assistant", "content": text}, {"role": "user", "content": note}]
         async with aclosing(llm.stream([*messages, *rewrite], None, turn)) as deltas:
@@ -264,15 +268,15 @@ async def grounded(text: str, messages: list[dict], state: Answer) -> str:
         retry = FollowUps()
         retry.feed(turn.text)
         text = retry.close()[0]
-        verdict = grounding.check(text, results, periods)
+        checked = verdict(text, state)
         record["rewritten"] = True
     except CopilotUnavailableError as e:
         log.warning("copilot rewrite failed: %s", e.message)
-    if not verdict.ok:
-        bad = [p for p in verdict.problems if p in text]
+    if not checked.ok:
+        bad = [p for p in checked.problems if p in text]
         text = grounding.drop_sentences(text, bad) if bad else text
-        record["dropped"] = verdict.problems
-        if not text or len(bad) < len(verdict.problems):  # a wrong period cannot be cut out
+        record["dropped"] = checked.problems
+        if not text or len(bad) < len(checked.problems):  # a wrong period cannot be cut out
             text = NO_FIGURES[state.lang]
     state.usage["grounding"] = record
     return text
@@ -291,6 +295,9 @@ async def answer(
     yield event("meta", {"conversation_id": conversation_id, "message_id": reply_id})
     state = Answer(lang)
     follow = FollowUps()
+    # Whole sentences, each checked against the tool results first: an unbacked figure is never
+    # shown, even for the moment before the answer is fixed.
+    gate = grounding.Gate(lambda sentence: verdict(sentence, state))
     async with SessionLocal() as s:
         question = await s.scalar(select(Message.content).where(Message.id == question_id))
         messages = [
@@ -320,7 +327,7 @@ async def answer(
                     async for delta in deltas:
                         if why := await declined():
                             raise DeclinedError(why)
-                        if out := follow.feed(delta):
+                        if (out := follow.feed(delta)) and (out := gate.feed(out)):
                             yield event("token", {"text": out})
                 state.count(turn.usage)
                 if not turn.calls:
@@ -328,7 +335,9 @@ async def answer(
                 if why := await declined():
                     raise DeclinedError(why)
                 if turn.text and not follow.answer.endswith("\n"):
-                    follow.feed("\n\n")  # words before a tool call stay; the answer goes on below
+                    # words before a tool call stay; the answer goes on below
+                    if out := gate.feed(follow.feed("\n\n")):
+                        yield event("token", {"text": out})
                 messages.append(
                     {
                         "role": "assistant",
@@ -380,6 +389,8 @@ async def answer(
                 screen.cancel()
         text, follow_ups = follow.close()
         if text != DECLINE[lang]:
+            if tail := gate.close():
+                yield event("token", {"text": tail})
             text = await grounded(text, messages, state)
         reply = state.reply(text, follow_ups)
         s.add(
