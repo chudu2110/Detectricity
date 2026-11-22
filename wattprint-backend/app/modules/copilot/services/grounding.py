@@ -178,11 +178,15 @@ def _backed(f: Figure, candidates: list[Number]) -> bool:
     return any(_close(f, n.value) and (wrong is None or n.per != wrong) for n in candidates)
 
 
-def check(text: str, results: list[Any], periods: set[str] | None = None) -> Verdict:
+def check(
+    text: str, results: list[Any], periods: set[str] | None = None, earlier: list[str] = ()
+) -> Verdict:
     """The figures of `text` that no tool result in `results` backs. `periods`: the `period`
     arguments compare_periods was called with (an answer about last week from a comparison of
-    billing cycles quotes the wrong period)."""
+    billing cycles quotes the wrong period). `earlier`: the conversation's earlier answers, whose
+    figures were checked when given, so a follow-up may quote them again."""
     numbers = [n for r in results for n in tool_numbers(r)]
+    numbers += [Number(f.value, f.kind, f.per) for t in earlier for f in figures(t)]
     found = figures(text)
     verdict = Verdict(figures=len(found))
     for f in found:

@@ -26,6 +26,11 @@ log = logging.getLogger("copilot.tools")
 ICT = timezone(timedelta(hours=7))
 TIERS = ("measured", "estimated", "inferred")  # most to least certain
 MAX_ROWS_TO_LLM = 30
+# What the user can do about missing data; the model says it in the user's language.
+SET_PROVINCE = "set the province or city in Account > Home settings"
+NO_TARIFF = "the tariff is set by the system, not in the app: contact support"
+WAIT_DAYS = "it appears after 7 full days of meter readings"
+WAIT_NIGHT = "it appears after one full night (00:00-05:00) of meter readings"
 
 
 @dataclass
@@ -120,7 +125,7 @@ async def bill_now(ctx: Ctx) -> Outcome:
     try:
         b = await current_bill(ctx.session, ctx.home_id, ctx.now)
     except LookupError:
-        return Outcome({"error": "the home has no tariff plan"}, "tb_bill")
+        return Outcome({"error": "the home has no tariff plan", "fix": NO_TARIFF}, "tb_bill")
     return Outcome(
         data={
             "period": [str(b.period_start), str(b.period_end)],
@@ -152,9 +157,11 @@ async def bill_forecast(ctx: Ctx) -> Outcome:
         b = await current_bill(ctx.session, ctx.home_id, ctx.now)
         f = await forecast_bill(ctx.session, ctx.home_id, ctx.now)
     except LookupError:
-        return Outcome({"error": "the home has no tariff plan"}, "forecast")
+        return Outcome({"error": "the home has no tariff plan", "fix": NO_TARIFF}, "forecast")
     if f is None:
-        return Outcome({"error": "fewer than 7 full days of readings: no forecast yet"}, "forecast")
+        return Outcome(
+            {"error": "fewer than 7 full days of readings", "fix": WAIT_DAYS}, "forecast"
+        )
     current = next(t for t in b.tiers if t.tier_no == b.tier_no)
     limit = f.next.from_kwh if f.next else current.to_kwh
     return Outcome(
@@ -222,28 +229,46 @@ async def compare_periods(ctx: Ctx, period: str = "week") -> Outcome:
         start, prev = today - timedelta(days=7), today - timedelta(days=14)
     cur = await _daily_kwh(ctx, start, start + timedelta(days=n))
     old = await _daily_kwh(ctx, prev, prev + timedelta(days=n))
+    # A day without readings is null, not 0 kWh: "used nothing" and "no data" read differently.
     data = [
         {
             "key": str(start + timedelta(days=i)),
-            "current": _f(cur.get(start + timedelta(days=i), 0.0), 1),
-            "previous": _f(old.get(prev + timedelta(days=i), 0.0), 1),
+            "current": _f(cur.get(start + timedelta(days=i))),
+            "previous": _f(old.get(prev + timedelta(days=i))),
         }
         for i in range(n)
     ]
-    total = (sum(d["current"] for d in data), sum(d["previous"] for d in data))
+
+    def total(side: str) -> float | None:
+        days = [d[side] for d in data if d[side] is not None]
+        return round(sum(days), 1) if days else None
+
     return Outcome(
         data={
             "period": period,
             "days": n,
             "current_from": str(start),
             "previous_from": str(prev),
-            "kwh_current": round(total[0], 1),
-            "kwh_previous": round(total[1], 1),
+            "kwh_current": total("current"),
+            "kwh_previous": total("previous"),
+            "days_with_data_current": sum(d["current"] is not None for d in data),
+            "days_with_data_previous": sum(d["previous"] is not None for d in data),
             "by_day": data,
         },
         detail=_vi(ctx, f"Công tơ tổng · {n} ngày", f"Main meter · {n} days"),
         sources=["meter"],
-        widgets=[{"kind": "compare", "period": period, "data": data}] if n else [],
+        widgets=[
+            {
+                "kind": "compare",
+                "period": period,
+                "data": [
+                    {**d, "current": d["current"] or 0.0, "previous": d["previous"] or 0.0}
+                    for d in data
+                ],
+            }
+        ]
+        if n
+        else [],
         links=["statistics"],
     )
 
@@ -252,7 +277,7 @@ async def weather(ctx: Ctx) -> Outcome:
     home = await ctx.session.get(Home, ctx.home_id)
     province = await ctx.session.get(Province, home.province_code) if home.province_code else None
     if province is None:
-        return Outcome({"error": "the home has no province set (Settings)"}, "OpenWeather")
+        return Outcome({"error": "the home has no province", "fix": SET_PROVINCE}, "OpenWeather")
     try:
         w = await weather_at(province.lat, province.lon, ctx.lang)
     except Exception:  # WeatherUnavailableError, or no key
@@ -366,7 +391,7 @@ async def standby(ctx: Ctx, nights: int = 14) -> Outcome:
     )
     watts = [(r.night, float(r.p5)) for r in rows if r.n >= 0.8 * 300]
     if not watts:
-        return Outcome({"error": "no full night of readings yet"}, "reading_1m")
+        return Outcome({"error": "no full night of readings yet", "fix": WAIT_NIGHT}, "reading_1m")
     base = statistics.median(w for _, w in watts)
     kwh_month = base * 24 * 30 / 1000
     vnd = await _saving_vnd(ctx, kwh_month)
