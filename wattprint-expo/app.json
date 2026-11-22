@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "Detectricity",
+    "slug": "wattprint-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "wattprint",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.dafoggo.wattprint"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E0EBCF",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.dafoggo.wattprint"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#E0EBCF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ],
+      "./plugins/with-android-cmake-dir",
+      "expo-secure-store",
+      "expo-web-browser",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": ["en", "vi"]
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Cho phép Detectricity dùng micro khi bạn hỏi trợ lý bằng giọng nói."
+        }
+      ],
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b6012f6d-0fc1-4b6d-ad59-5451b11a3f70"
+      }
+    },
+    "owner": "dafoggo"
+  }
+}

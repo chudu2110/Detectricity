@@ -1,0 +1,317 @@
+{
+  "tabs": {
+    "home": "Trang chủ",
+    "settings": "Cá nhân",
+    "devices": "Thiết bị",
+    "energy": "Năng lượng",
+    "assistant": "Trợ lý"
+  },
+  "common": {
+    "close": "Đóng"
+  },
+  "home": {
+    "greeting": {
+      "morning": "Chào buổi sáng",
+      "afternoon": "Chào buổi chiều",
+      "evening": "Chào buổi tối"
+    },
+    "currentDraw": "Công suất hiện tại",
+    "today": "Hôm nay",
+    "cost": "Chi phí ước tính",
+    "rooms": "Phòng",
+    "scenesTitle": "Kịch bản nhanh",
+    "scenes": {
+      "home": "Ở nhà",
+      "away": "Vắng nhà",
+      "night": "Ban đêm"
+    }
+  },
+  "profile": {
+    "roles": "Vai trò: {{roles}}",
+    "reload": "Tải lại từ API"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "theme": "Giao diện: {{theme}}",
+    "themes": {
+      "system": "Hệ thống",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "secureStore": "Kiểm tra secure store",
+    "secureStoreOk": "secure-store: {{value}}",
+    "secureStoreError": "secure-store: lỗi {{message}}",
+    "openModal": "Mở hộp thoại",
+    "modalTitle": "Kiểm tra nền tảng",
+    "modalBody": "gluestack-ui v5 với Uniwind hoạt động.",
+    "signOut": "Đăng xuất"
+  },
+  "form": {
+    "email": "Email",
+    "emailInvalid": "Nhập địa chỉ email hợp lệ",
+    "submit": "Gửi",
+    "submitted": "Đã gửi: {{email}}"
+  },
+  "errors": {
+    "title": "Đã xảy ra lỗi",
+    "retry": "Thử lại",
+    "network": "Không có kết nối. Kiểm tra mạng và thử lại."
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "message": "Màn hình này không tồn tại.",
+    "goHome": "Về trang chủ"
+  },
+  "states": {
+    "loading": "Đang tải",
+    "emptyTitle": "Chưa có gì ở đây",
+    "pausedTitle": "Bạn đang ngoại tuyến",
+    "pausedDescription": "Nội dung sẽ tải khi có kết nối trở lại."
+  },
+  "devices": {
+    "types": {
+      "light": "Đèn",
+      "ac": "Điều hòa",
+      "fridge": "Tủ lạnh",
+      "tv": "TV",
+      "washer": "Máy giặt",
+      "water_heater": "Bình nóng lạnh",
+      "plug": "Ổ cắm thông minh"
+    },
+    "status": {
+      "online": "Trực tuyến",
+      "offline": "Ngoại tuyến"
+    },
+    "watts": "{{value}} W",
+    "onCount": "Bật {{on}}/{{total}}",
+    "rowLabel": "{{name}}, {{type}}, {{status}}, {{watts}}"
+  },
+  "energy": {
+    "ranges": {
+      "day": "Ngày",
+      "week": "Tuần",
+      "month": "Tháng"
+    },
+    "total": "Tổng điện năng",
+    "cost": "Chi phí ước tính",
+    "topDevices": "Thiết bị dùng nhiều nhất",
+    "kwh": "{{value}} kWh",
+    "noUsageTitle": "Không có mức dùng trong khoảng này",
+    "topShare": "{{name}}: {{share}}% tổng",
+    "chartSummaryEmpty": "{{range}}: không có mức dùng",
+    "chartSummary": "{{range}}: {{total}} kWh, cao nhất {{peak}}"
+  },
+  "auth": {
+    "errors": {
+      "emailTaken": "Email này thuộc về một tài khoản khác",
+      "inactiveUser": "Tài khoản này đã bị vô hiệu hóa"
+    },
+    "signIn": {
+      "title": "Detectricity",
+      "subtitle": "Hiểu ngôi nhà. Chủ động điện năng.",
+      "submit": "Bắt đầu",
+      "intro": "Theo dõi điện năng, hiểu hóa đơn và tìm cách tiết kiệm phù hợp với ngôi nhà bạn.",
+      "tagline": "HIỂU ĐIỆN NĂNG. SỐNG XANH HƠN."
+    }
+  },
+  "dashboard": {
+    "noReading": "Chưa có dữ liệu công tơ",
+    "weather": "Thời tiết",
+    "humidity": "Độ ẩm: {{value}}%",
+    "deviceReadOnly": "Thiết bị được ước tính từ công tơ. Chưa hỗ trợ bật/tắt từ xa.",
+    "deviceToday": "Hôm nay: {{value}} kWh",
+    "lastDay": "24 giờ qua: {{value}} kWh",
+    "demoAccount": "Tài khoản demo: {{name}}"
+  },
+  "account": {
+    "title": "Tài khoản",
+    "back": "Quay lại",
+    "household": "Hộ gia đình",
+    "homeSettings": "Cài đặt nhà",
+    "manageHousehold": "Thông tin nhà và chu kỳ tiền điện",
+    "alerts": "Cảnh báo",
+    "reviewAlerts": "Điện năng bất thường và thay đổi bậc giá",
+    "emailPreferences": "Thông báo qua email",
+    "notify_anomaly": "Điện năng tiêu thụ bất thường",
+    "notify_tier": "Bậc giá điện",
+    "weekly_summary": "Tổng kết điện năng hằng tuần",
+    "appearance": "Giao diện",
+    "theme": {
+      "system": "Hệ thống",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "language": "Ngôn ngữ",
+    "english": "English",
+    "vietnamese": "Tiếng Việt",
+    "signOut": "Đăng xuất",
+    "signingOut": "Đang đăng xuất…",
+    "membership": {
+      "owner": "Chủ nhà",
+      "member": "Thành viên hộ gia đình"
+    },
+    "homeDetails": "Thông tin nhà",
+    "billing": "Tiền điện",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu…",
+    "saved": "Đã lưu cài đặt nhà",
+    "cancel": "Hủy",
+    "notSet": "Chưa thiết lập",
+    "homeName": "Tên nhà",
+    "homeType": "Loại nhà",
+    "types": {
+      "apartment": "Căn hộ",
+      "house": "Nhà riêng",
+      "other": "Khác"
+    },
+    "floorArea": "Diện tích (m²)",
+    "occupants": "Số người trong nhà",
+    "billingDay": "Ngày bắt đầu kỳ tính tiền điện",
+    "dayOfMonth": "Ngày {{day}} hằng tháng",
+    "billingHelp": "Chọn ngày bắt đầu kỳ tính tiền điện, từ ngày 1 đến ngày 28.",
+    "province": "Tỉnh hoặc thành phố",
+    "selectProvince": "Chọn tỉnh hoặc thành phố",
+    "searchProvince": "Tìm tỉnh hoặc thành phố",
+    "provincesEmpty": "Không tìm thấy tỉnh hoặc thành phố phù hợp",
+    "readOnly": "Chỉ chủ nhà có thể chỉnh sửa các thông tin này.",
+    "invalidName": "Nhập tên nhà tối đa 255 ký tự.",
+    "invalidArea": "Nhập diện tích từ 0,01 đến 10.000 m² với tối đa hai chữ số thập phân.",
+    "invalidOccupants": "Nhập số nguyên từ 1 đến 30.",
+    "invalidBillingDay": "Nhập số nguyên từ 1 đến 28.",
+    "areaValue": "{{area}} m²"
+  },
+  "notifications": {
+    "title": "Cảnh báo",
+    "empty": "Chưa có cảnh báo",
+    "emptyDescription": "Mức sử dụng điện bất thường và thay đổi quan trọng về bậc giá điện sẽ hiển thị ở đây.",
+    "acknowledge": "Đánh dấu đã xem",
+    "acknowledging": "Đang đánh dấu…",
+    "acknowledged": "Đã xem",
+    "resolved": "Đã xử lý",
+    "device": "Một thiết bị",
+    "fallback": "Cảnh báo điện năng",
+    "fallbackBody": "Detectricity phát hiện thay đổi trong mức sử dụng điện của gia đình bạn.",
+    "longer": {
+      "title": "Hoạt động lâu hơn thường lệ",
+      "body": "Trong {{days}} ngày qua, thời gian chạy điển hình của {{device}} tăng từ {{usual}} lên {{recent}} phút."
+    },
+    "standby": {
+      "title": "Công suất chờ tăng",
+      "body": "Trong {{nights}} đêm qua, công suất chờ của nhà bạn tăng từ {{usual}} W lên {{recent}} W."
+    },
+    "unexplained": {
+      "title": "Mức tiêu thụ điện bất thường",
+      "body": "Nhà bạn sử dụng {{watts}} W trong {{minutes}} phút, so với mức thường lệ {{usual}} W."
+    },
+    "tier": {
+      "near": "Sắp đến bậc giá điện {{tier}}",
+      "reached": "Đã đến bậc giá điện {{tier}}",
+      "nearBody": "Với mức sử dụng hiện tại, bạn có thể đạt {{threshold}} kWh sau khoảng {{days}} ngày. Đơn giá bậc này là {{price}}/kWh.",
+      "reachedBody": "Bậc này bắt đầu từ {{threshold}} kWh. Phần điện ở bậc này có đơn giá {{price}}/kWh."
+    }
+  },
+  "assistant": {
+    "title": "Trợ lý",
+    "welcome": "Hiểu từng kWh",
+    "intro": "Hỏi về hóa đơn, thiết bị và cách tiết kiệm điện trong nhà bạn.",
+    "try": "Câu hỏi gợi ý",
+    "draftHint": "Điền câu hỏi để bạn có thể chỉnh sửa trước khi gửi.",
+    "prompts": {
+      "bill": "Tiền điện tháng này được tính như thế nào?",
+      "devices": "Thiết bị nào đang tiêu thụ nhiều điện nhất?",
+      "save": "Tôi có thể tiết kiệm điện từ đâu?"
+    },
+    "note": "Mức tiêu thụ của từng thiết bị là số ước tính từ công tơ tổng.",
+    "history": "Hội thoại",
+    "new": "Cuộc trò chuyện mới",
+    "thinking": "Đang xem dữ liệu của bạn…",
+    "stop": "Dừng trả lời",
+    "recording": "Đang nghe bạn…",
+    "cancel": "Hủy",
+    "finishRecording": "Dừng ghi và chuyển thành chữ",
+    "record": "Hỏi bằng giọng nói",
+    "input": "Câu hỏi cho trợ lý",
+    "placeholder": "Hỏi Detectricity…",
+    "send": "Gửi câu hỏi",
+    "helpful": "Hữu ích",
+    "unhelpful": "Chưa hữu ích",
+    "listen": "Nghe câu trả lời",
+    "sources": "Dữ liệu tham khảo",
+    "measured": "Đo đạc",
+    "estimated": "Ước tính",
+    "error": "Chưa thể hoàn tất thao tác. Bạn hãy thử lại sau.",
+    "voiceError": "Chưa thể dùng giọng nói. Hãy kiểm tra quyền micro hoặc nhập câu hỏi để tiếp tục.",
+    "close": "Đóng",
+    "untitled": "Cuộc trò chuyện",
+    "pin": "Ghim",
+    "unpin": "Bỏ ghim",
+    "delete": "Xóa",
+    "deleteConfirm": "Xóa vĩnh viễn cuộc trò chuyện này?",
+    "inferred": "Diễn giải",
+    "plan": "Kế hoạch tiết kiệm",
+    "planEstimate": "Tiềm năng ước tính: {{kwh}} kWh/tháng. Cần theo dõi để xác nhận hiệu quả.",
+    "planAccept": "Tôi muốn thử kế hoạch này",
+    "planAccepted": "Đã bắt đầu theo dõi"
+  },
+  "energyNew": {
+    "consumption": "Điện năng tiêu thụ",
+    "available": "Chạm biểu đồ để xem từng khoảng. Khoảng trống chưa có số liệu.",
+    "missingReading": "Chưa ghi nhận",
+    "bill": "Hóa đơn tạm tính",
+    "coverage": "Độ phủ dữ liệu",
+    "billNote": "Ước tính theo dữ liệu đã ghi nhận và biểu giá, không thay thế hóa đơn điện lực.",
+    "tier": "Bậc {{n}}",
+    "forecast": "Dự báo cuối kỳ",
+    "forecastNote": "Ước tính từ {{days}} ngày dữ liệu",
+    "notEnough": "Chưa đủ dữ liệu để dự báo",
+    "notEnoughDetail": "Dự báo sẽ xuất hiện khi có đủ ngày ghi nhận đầy đủ."
+  },
+  "dashboardNew": {
+    "back": "Quay lại",
+    "estimated": "Ước tính",
+    "status": {
+      "on": "Đang hoạt động",
+      "off": "Đang nghỉ"
+    },
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "device": "Thiết bị",
+    "averageOn": "Công suất khi chạy",
+    "peak": "Công suất đỉnh",
+    "homeShare": "Tỷ trọng trong nhà",
+    "typicalPower": "Công suất thường thấy",
+    "thisMonth": "Tháng này",
+    "monthChart": "Điện năng tháng: {{value}}",
+    "deviceTip": "Gợi ý cho thiết bị",
+    "recentRuns": "Các lần hoạt động",
+    "noRecentRuns": "Chưa ghi nhận lần hoạt động nào.",
+    "sinceTime": "Từ {{time}}",
+    "estimatedDevice": "Số liệu thiết bị được mô hình ước tính từ điện năng toàn nhà.",
+    "searchDevices": "Tìm thiết bị hoặc phòng",
+    "clearSearch": "Xóa từ khóa tìm kiếm",
+    "resetFilters": "Xem tất cả thiết bị",
+    "filterAll": "Tất cả",
+    "filterOn": "Đang chạy",
+    "noDeviceMatch": "Không tìm thấy thiết bị",
+    "adjustDeviceFilters": "Thử đổi từ khóa hoặc bộ lọc.",
+    "estimatedToday": "Điện năng hôm nay · ước tính theo thiết bị",
+    "alerts": "Thông báo",
+    "allDevices": "Xem tất cả",
+    "askTitle": "Hiểu ngôi nhà cùng AI",
+    "askQuestion": "Thiết bị nào dùng nhiều điện nhất hôm nay?",
+    "askAction": "Hỏi trợ lý",
+    "lastReading": "Lần ghi nhận: {{value}}",
+    "todayCost": "Tạm tính hôm nay",
+    "topDevices": "Thiết bị nổi bật",
+    "typical": "Mức thường thấy: {{value}}"
+  },
+  "material": {
+    "pauseScene": "Tạm dừng chuyển động phong cảnh",
+    "resumeScene": "Tiếp tục chuyển động phong cảnh",
+    "demoHousehold": "Detectricity · Nhà mẫu",
+    "todayEnergy": "Điện năng hôm nay",
+    "recorded": "Đã ghi nhận"
+  }
+}

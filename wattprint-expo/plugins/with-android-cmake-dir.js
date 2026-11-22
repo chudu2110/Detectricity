@@ -1,0 +1,67 @@
+// Windows only (or WATTPRINT_FORCE_CMAKE_DIR=1): points AGP at an SDK CMake >= 4.0 (long-path capable
+// ninja) via android/local.properties, so native builds do not hit the Windows 260-character path limit.
+// On other platforms (and EAS Build) it does nothing: forcing CMake 4 can break old CMakeLists.
+// See README.md (Windows long-path workaround).
+const { withDangerousMod, withAppBuildGradle } = require('expo/config-plugins');
+const fs = require('fs');
+const path = require('path');
+
+function findCmakeDir() {
+  const sdk = process.env.ANDROID_HOME || process.env.ANDROID_SDK_ROOT;
+  if (!sdk) return null;
+  const root = path.join(sdk, 'cmake');
+  if (!fs.existsSync(root)) return null;
+  const parse = (v) => v.split('.').map((n) => parseInt(n, 10) || 0);
+  const cmp = (a, b) => {
+    for (let i = 0; i < 3; i++) {
+      const d = (a[i] || 0) - (b[i] || 0);
+      if (d) return d;
+    }
+    return 0;
+  };
+  const versions = fs
+    .readdirSync(root)
+    .filter((v) => /^\d+\.\d+(\.\d+)?/.test(v) && parseInt(v, 10) >= 4)
+    .sort((a, b) => cmp(parse(a), parse(b)));
+  if (!versions.length) return null;
+  return path
+    .join(root, versions[versions.length - 1])
+    .split(path.sep)
+    .join('/');
+}
+
+module.exports = function withAndroidCmakeDir(config) {
+  config = withAppBuildGradle(config, (cfg) => {
+    if (process.platform !== 'win32' && process.env.WATTPRINT_FORCE_CMAKE_DIR !== '1') return cfg;
+    const marker = '// Detectricity: hash native object paths for Windows Ninja.';
+    if (!cfg.modResults.contents.includes(marker)) {
+      cfg.modResults.contents = cfg.modResults.contents.replace(
+        'defaultConfig {',
+        `defaultConfig {
+        ${marker}
+        externalNativeBuild { cmake { arguments "-DCMAKE_OBJECT_PATH_MAX=250" } }
+`,
+      );
+    }
+    return cfg;
+  });
+  return withDangerousMod(config, [
+    'android',
+    (cfg) => {
+      if (process.platform !== 'win32' && process.env.WATTPRINT_FORCE_CMAKE_DIR !== '1') return cfg;
+      const cmakeDir = findCmakeDir();
+      if (!cmakeDir) {
+        console.warn(
+          '[with-android-cmake-dir] No SDK CMake >= 4.0 found (or ANDROID_HOME unset); skipping cmake.dir.',
+        );
+        return cfg;
+      }
+      const file = path.join(cfg.modRequest.platformProjectRoot, 'local.properties');
+      const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+      const lines = existing.split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('cmake.dir='));
+      lines.push(`cmake.dir=${cmakeDir}`);
+      fs.writeFileSync(file, lines.join('\n') + '\n');
+      return cfg;
+    },
+  ]);
+};

@@ -1,0 +1,182 @@
+{
+  "en": {
+    "account": {
+      "title": "Account",
+      "back": "Go back",
+      "household": "Household",
+      "homeSettings": "Home settings",
+      "manageHousehold": "Home details and electricity billing",
+      "alerts": "Alerts",
+      "reviewAlerts": "Unusual usage and tariff changes",
+      "emailPreferences": "Email preferences",
+      "notify_anomaly": "Unusual energy use",
+      "notify_tier": "Electricity tariff tiers",
+      "weekly_summary": "Weekly energy summary",
+      "appearance": "Appearance",
+      "theme": {
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "language": "Language",
+      "english": "English",
+      "vietnamese": "Tiếng Việt",
+      "signOut": "Sign out",
+      "signingOut": "Signing out…",
+      "membership": {
+        "owner": "Home owner",
+        "member": "Household member"
+      },
+      "homeDetails": "Home details",
+      "billing": "Electricity billing",
+      "edit": "Edit",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Home settings saved",
+      "cancel": "Cancel",
+      "notSet": "Not set",
+      "homeName": "Home name",
+      "homeType": "Home type",
+      "types": {
+        "apartment": "Apartment",
+        "house": "House",
+        "other": "Other"
+      },
+      "floorArea": "Floor area (m²)",
+      "occupants": "People in your home",
+      "billingDay": "Billing cycle start day",
+      "dayOfMonth": "Day {{day}} of each month",
+      "billingHelp": "Choose the day your electricity billing cycle starts, from 1 to 28.",
+      "province": "Province or city",
+      "selectProvince": "Choose a province or city",
+      "searchProvince": "Search provinces or cities",
+      "provincesEmpty": "No matching provinces or cities",
+      "readOnly": "Only the home owner can edit these details.",
+      "invalidName": "Enter a home name up to 255 characters.",
+      "invalidArea": "Enter an area from 0.01 to 10,000 m² with up to two decimal places.",
+      "invalidOccupants": "Enter a whole number from 1 to 30.",
+      "invalidBillingDay": "Enter a whole number from 1 to 28.",
+      "areaValue": "{{area}} m²"
+    },
+    "notifications": {
+      "title": "Alerts",
+      "empty": "No alerts yet",
+      "emptyDescription": "Unusual usage and important changes in your electricity tariff will appear here.",
+      "acknowledge": "Mark as seen",
+      "acknowledging": "Marking…",
+      "acknowledged": "Seen",
+      "resolved": "Resolved",
+      "device": "An appliance",
+      "fallback": "Energy alert",
+      "fallbackBody": "Detectricity flagged a change in your household energy use.",
+      "longer": {
+        "title": "Running longer than usual",
+        "body": "Over {{days}} days, a typical run of {{device}} lasted {{recent}} minutes, up from {{usual}} minutes."
+      },
+      "standby": {
+        "title": "Higher standby power",
+        "body": "Over {{nights}} nights, standby draw in your home rose from {{usual}} W to {{recent}} W."
+      },
+      "unexplained": {
+        "title": "Unexpected energy use",
+        "body": "Your home drew {{watts}} W for {{minutes}} minutes when the usual draw was {{usual}} W."
+      },
+      "tier": {
+        "near": "Approaching tariff tier {{tier}}",
+        "reached": "Reached tariff tier {{tier}}",
+        "nearBody": "At your current pace, you could reach {{threshold}} kWh in about {{days}} days. Usage in that tier costs {{price}}/kWh.",
+        "reachedBody": "This tier starts at {{threshold}} kWh. Usage in this tier costs {{price}}/kWh."
+      }
+    }
+  },
+  "vi": {
+    "account": {
+      "title": "Tài khoản",
+      "back": "Quay lại",
+      "household": "Hộ gia đình",
+      "homeSettings": "Cài đặt nhà",
+      "manageHousehold": "Thông tin nhà và chu kỳ tiền điện",
+      "alerts": "Cảnh báo",
+      "reviewAlerts": "Điện năng bất thường và thay đổi bậc giá",
+      "emailPreferences": "Thông báo qua email",
+      "notify_anomaly": "Điện năng tiêu thụ bất thường",
+      "notify_tier": "Bậc giá điện",
+      "weekly_summary": "Tổng kết điện năng hằng tuần",
+      "appearance": "Giao diện",
+      "theme": {
+        "system": "Hệ thống",
+        "light": "Sáng",
+        "dark": "Tối"
+      },
+      "language": "Ngôn ngữ",
+      "english": "English",
+      "vietnamese": "Tiếng Việt",
+      "signOut": "Đăng xuất",
+      "signingOut": "Đang đăng xuất…",
+      "membership": {
+        "owner": "Chủ nhà",
+        "member": "Thành viên hộ gia đình"
+      },
+      "homeDetails": "Thông tin nhà",
+      "billing": "Tiền điện",
+      "edit": "Chỉnh sửa",
+      "save": "Lưu thay đổi",
+      "saving": "Đang lưu…",
+      "saved": "Đã lưu cài đặt nhà",
+      "cancel": "Hủy",
+      "notSet": "Chưa thiết lập",
+      "homeName": "Tên nhà",
+      "homeType": "Loại nhà",
+      "types": {
+        "apartment": "Căn hộ",
+        "house": "Nhà riêng",
+        "other": "Khác"
+      },
+      "floorArea": "Diện tích (m²)",
+      "occupants": "Số người trong nhà",
+      "billingDay": "Ngày bắt đầu kỳ tính tiền điện",
+      "dayOfMonth": "Ngày {{day}} hằng tháng",
+      "billingHelp": "Chọn ngày bắt đầu kỳ tính tiền điện, từ ngày 1 đến ngày 28.",
+      "province": "Tỉnh hoặc thành phố",
+      "selectProvince": "Chọn tỉnh hoặc thành phố",
+      "searchProvince": "Tìm tỉnh hoặc thành phố",
+      "provincesEmpty": "Không tìm thấy tỉnh hoặc thành phố phù hợp",
+      "readOnly": "Chỉ chủ nhà có thể chỉnh sửa các thông tin này.",
+      "invalidName": "Nhập tên nhà tối đa 255 ký tự.",
+      "invalidArea": "Nhập diện tích từ 0,01 đến 10.000 m² với tối đa hai chữ số thập phân.",
+      "invalidOccupants": "Nhập số nguyên từ 1 đến 30.",
+      "invalidBillingDay": "Nhập số nguyên từ 1 đến 28.",
+      "areaValue": "{{area}} m²"
+    },
+    "notifications": {
+      "title": "Cảnh báo",
+      "empty": "Chưa có cảnh báo",
+      "emptyDescription": "Mức sử dụng điện bất thường và thay đổi quan trọng về bậc giá điện sẽ hiển thị ở đây.",
+      "acknowledge": "Đánh dấu đã xem",
+      "acknowledging": "Đang đánh dấu…",
+      "acknowledged": "Đã xem",
+      "resolved": "Đã xử lý",
+      "device": "Một thiết bị",
+      "fallback": "Cảnh báo điện năng",
+      "fallbackBody": "Detectricity phát hiện thay đổi trong mức sử dụng điện của gia đình bạn.",
+      "longer": {
+        "title": "Hoạt động lâu hơn thường lệ",
+        "body": "Trong {{days}} ngày qua, thời gian chạy điển hình của {{device}} tăng từ {{usual}} lên {{recent}} phút."
+      },
+      "standby": {
+        "title": "Công suất chờ tăng",
+        "body": "Trong {{nights}} đêm qua, công suất chờ của nhà bạn tăng từ {{usual}} W lên {{recent}} W."
+      },
+      "unexplained": {
+        "title": "Mức tiêu thụ điện bất thường",
+        "body": "Nhà bạn sử dụng {{watts}} W trong {{minutes}} phút, so với mức thường lệ {{usual}} W."
+      },
+      "tier": {
+        "near": "Sắp đến bậc giá điện {{tier}}",
+        "reached": "Đã đến bậc giá điện {{tier}}",
+        "nearBody": "Với mức sử dụng hiện tại, bạn có thể đạt {{threshold}} kWh sau khoảng {{days}} ngày. Đơn giá bậc này là {{price}}/kWh.",
+        "reachedBody": "Bậc này bắt đầu từ {{threshold}} kWh. Phần điện ở bậc này có đơn giá {{price}}/kWh."
+      }
+    }
+  }
+}

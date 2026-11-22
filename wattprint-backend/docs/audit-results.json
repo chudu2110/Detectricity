@@ -1,0 +1,3354 @@
+{
+  "backfill": {
+    "aggregate_rows": {
+      "energy.device_estimate_1d": 14706,
+      "energy.device_estimate_1h": 342054,
+      "energy.device_estimate_1m": 20325051,
+      "energy.reading_1d": 16340,
+      "energy.reading_1h": 378670,
+      "energy.reading_1m": 22185510
+    },
+    "note": "per-view seconds were summed BY HAND (a one-off script) after the run from the per-window timings the first harness version stored under the full parameter tuple; they add up to total_seconds. The harness is fixed for future runs, not re-run.",
+    "range": [
+      "2025-01-30T00:00:00+00:00",
+      "2026-11-01T00:00:00+00:00"
+    ],
+    "refresh_seconds_per_view": {
+      "energy.device_estimate_1d": 1478.1,
+      "energy.device_estimate_1h": 21.4,
+      "energy.device_estimate_1m": 675.9,
+      "energy.reading_1d": 1621.3,
+      "energy.reading_1h": 21.3,
+      "energy.reading_1m": 697.3
+    },
+    "total_seconds": 4516.6,
+    "windows": [
+      {
+        "from": "2025-01-30T00:00:00+00:00",
+        "seconds": 169.5,
+        "to": "2025-03-01T00:00:00+00:00"
+      },
+      {
+        "from": "2025-03-01T00:00:00+00:00",
+        "seconds": 243.1,
+        "to": "2025-03-31T00:00:00+00:00"
+      },
+      {
+        "from": "2025-03-31T00:00:00+00:00",
+        "seconds": 177.6,
+        "to": "2025-04-30T00:00:00+00:00"
+      },
+      {
+        "from": "2025-04-30T00:00:00+00:00",
+        "seconds": 121.0,
+        "to": "2025-05-30T00:00:00+00:00"
+      },
+      {
+        "from": "2025-05-30T00:00:00+00:00",
+        "seconds": 111.4,
+        "to": "2025-06-29T00:00:00+00:00"
+      },
+      {
+        "from": "2025-06-29T00:00:00+00:00",
+        "seconds": 112.1,
+        "to": "2025-07-29T00:00:00+00:00"
+      },
+      {
+        "from": "2025-07-29T00:00:00+00:00",
+        "seconds": 256.3,
+        "to": "2025-08-28T00:00:00+00:00"
+      },
+      {
+        "from": "2025-08-28T00:00:00+00:00",
+        "seconds": 246.5,
+        "to": "2025-09-27T00:00:00+00:00"
+      },
+      {
+        "from": "2025-09-27T00:00:00+00:00",
+        "seconds": 214.1,
+        "to": "2025-10-27T00:00:00+00:00"
+      },
+      {
+        "from": "2025-10-27T00:00:00+00:00",
+        "seconds": 232.5,
+        "to": "2025-11-26T00:00:00+00:00"
+      },
+      {
+        "from": "2025-11-26T00:00:00+00:00",
+        "seconds": 228.5,
+        "to": "2025-12-26T00:00:00+00:00"
+      },
+      {
+        "from": "2025-12-26T00:00:00+00:00",
+        "seconds": 228.2,
+        "to": "2026-01-25T00:00:00+00:00"
+      },
+      {
+        "from": "2026-01-25T00:00:00+00:00",
+        "seconds": 226.4,
+        "to": "2026-02-24T00:00:00+00:00"
+      },
+      {
+        "from": "2026-02-24T00:00:00+00:00",
+        "seconds": 245.5,
+        "to": "2026-03-26T00:00:00+00:00"
+      },
+      {
+        "from": "2026-03-26T00:00:00+00:00",
+        "seconds": 248.1,
+        "to": "2026-04-25T00:00:00+00:00"
+      },
+      {
+        "from": "2026-04-25T00:00:00+00:00",
+        "seconds": 247.8,
+        "to": "2026-05-25T00:00:00+00:00"
+      },
+      {
+        "from": "2026-05-25T00:00:00+00:00",
+        "seconds": 250.6,
+        "to": "2026-06-24T00:00:00+00:00"
+      },
+      {
+        "from": "2026-06-24T00:00:00+00:00",
+        "seconds": 225.6,
+        "to": "2026-07-24T00:00:00+00:00"
+      },
+      {
+        "from": "2026-07-24T00:00:00+00:00",
+        "seconds": 253.4,
+        "to": "2026-08-23T00:00:00+00:00"
+      },
+      {
+        "from": "2026-08-23T00:00:00+00:00",
+        "seconds": 246.7,
+        "to": "2026-09-22T00:00:00+00:00"
+      },
+      {
+        "from": "2026-09-22T00:00:00+00:00",
+        "seconds": 209.7,
+        "to": "2026-10-22T00:00:00+00:00"
+      },
+      {
+        "from": "2026-10-22T00:00:00+00:00",
+        "seconds": 20.7,
+        "to": "2026-11-01T00:00:00+00:00"
+      }
+    ]
+  },
+  "cagg_compression": {
+    "backfill_seconds": 30.8,
+    "backfill_seconds_per_view": {
+      "energy.device_estimate_1d": 0.05,
+      "energy.device_estimate_1h": 0.51,
+      "energy.device_estimate_1m": 14.49,
+      "energy.reading_1d": 0.05,
+      "energy.reading_1h": 0.51,
+      "energy.reading_1m": 15.15
+    },
+    "copied_rows": {
+      "device_estimate": 2231649,
+      "reading": 2479610
+    },
+    "device_estimate_1m": {
+      "bytes_after": 1589248,
+      "bytes_before": 36691968,
+      "bytes_per_row_after": 6.4,
+      "bytes_per_row_before": 147.2,
+      "chunks_compressed": 3,
+      "compress_seconds": 0.2,
+      "ratio": 23.09,
+      "row_count_unchanged": true,
+      "rows": 249255
+    },
+    "latency_on_compressed_1m_ms": {
+      "5m_over_1d": {
+        "max_ms": 2.05,
+        "n": 30,
+        "p50_ms": 1.35,
+        "p95_ms": 1.99
+      },
+      "latest_minute": {
+        "max_ms": 1.64,
+        "n": 30,
+        "p50_ms": 0.49,
+        "p95_ms": 1.43
+      }
+    },
+    "reading_1m": {
+      "bytes_after": 2138112,
+      "bytes_before": 40927232,
+      "bytes_per_row_after": 7.7,
+      "bytes_per_row_before": 147.8,
+      "chunks_compressed": 3,
+      "compress_seconds": 0.3,
+      "ratio": 19.14,
+      "row_count_unchanged": true,
+      "rows": 276940
+    },
+    "slice": "House 1, 2026-09 (all series incl. plugs)"
+  },
+  "compress": {
+    "chunks_compressed_this_run": 1272,
+    "duration_seconds": 47.7,
+    "hypertable_size_after_bytes": {
+      "device_estimate": 995926016,
+      "reading": 1105944576
+    },
+    "hypertable_size_before_bytes": {
+      "device_estimate": 17002078208,
+      "reading": 18789769216
+    },
+    "note": "BY HAND: stats.*.compressed_chunks set to 636 (the first harness version stored 1, the row count of hypertable_compression_stats; real value is number_compressed_chunks, 636 of 638 per table, newest 2 days stay uncompressed) and stats.*.ratio_compressed_chunks converted from a Decimal string to a number. The harness is fixed for future runs, not re-run.",
+    "ratio_hypertable_size": {
+      "device_estimate": 17.07,
+      "reading": 16.99
+    },
+    "stats": {
+      "device_estimate": {
+        "compressed_after_bytes": 938262528,
+        "compressed_before_bytes": 16954834944,
+        "compressed_chunks": 636,
+        "ratio_compressed_chunks": 18.07,
+        "total_chunks": 638
+      },
+      "reading": {
+        "compressed_after_bytes": 1043496960,
+        "compressed_before_bytes": 18737741824,
+        "compressed_chunks": 636,
+        "ratio_compressed_chunks": 17.96,
+        "total_chunks": 638
+      }
+    },
+    "workers": 4
+  },
+  "drills": {
+    "duplicate_batch": {
+      "covered_minutes": 60,
+      "first_new": 360,
+      "hour_n": 360,
+      "hour_wh": 600.0,
+      "second_dup": 360,
+      "second_new": 0
+    },
+    "gap_over_1h": {
+      "day_covered_minutes": 60,
+      "day_energy_wh": 600.0,
+      "hour_in_gap_has_row": false,
+      "points": [
+        "2026-03-12T03:00:00+00:00",
+        "2026-03-12T05:00:00+00:00"
+      ]
+    },
+    "issues_flagged": {
+      "covered_minutes": 30,
+      "raw_flagged": 180,
+      "raw_rows": 360,
+      "view_n": 180,
+      "view_wh": 300.0
+    },
+    "out_of_order": {
+      "checkpoint_not_moved_back": true,
+      "first_hour_wh": 600.0,
+      "late_hour_wh": 600.0,
+      "late_rows_new": 360
+    },
+    "stopped_refresh_job": {
+      "day_wh": 600.0,
+      "hour_wh": 600.0,
+      "materialized_rows_for_new_hour": 0,
+      "points_5m": 12,
+      "refresh_jobs_paused": 6
+    },
+    "stopped_refresh_job_late_data": {
+      "energy_after_refresh_wh": 300.0,
+      "late_rows_new": 180,
+      "note": "late rows inside a materialized range are NOT visible until a refresh runs",
+      "points_after_manual_refresh": 1,
+      "points_while_job_stopped": 0,
+      "raw_rows_in_hole_hour": 180
+    }
+  },
+  "energy_examples": {
+    "house1_days": [
+      {
+        "cause": "irregular cadence: about 62 s logging vs the 35 s cap (reference) while the view counts a full minute per minute with a sample",
+        "cause_source": "manual",
+        "covered_minutes": 1397.0,
+        "day_start_utc": "2025-11-22T17:00:00+00:00",
+        "err_pct": 53.80991201642898,
+        "flagged_samples": 2.0,
+        "hold_across_flagged_cap_120s_wh": 5346.428611111111,
+        "hold_across_flagged_wh": 3372.947222222222,
+        "intervals_over_120s": 0.0,
+        "intervals_over_35s": 1152.0,
+        "label": "worst day",
+        "max_gap_s": 117.0,
+        "reference_wh": 3372.1116666666667,
+        "samples": 3159.0,
+        "view_wh": 5186.641987595737
+      },
+      {
+        "cause": "Issues-flagged samples are missing time in the reference, covered in the view",
+        "cause_source": "manual",
+        "covered_minutes": 1440.0,
+        "day_start_utc": "2025-08-24T17:00:00+00:00",
+        "err_pct": 4.21775295919891,
+        "flagged_samples": 106.0,
+        "hold_across_flagged_cap_120s_wh": 10223.868888888888,
+        "hold_across_flagged_wh": 10184.751944444444,
+        "intervals_over_120s": 0.0,
+        "intervals_over_35s": 0.0,
+        "label": "flagged samples only",
+        "max_gap_s": 33.0,
+        "reference_wh": 9879.823333333334,
+        "samples": 10053.0,
+        "view_wh": 10296.529874338625
+      },
+      {
+        "cause": "flagged samples plus one 194 s gap",
+        "cause_source": "manual",
+        "covered_minutes": 1418.0,
+        "day_start_utc": "2025-04-17T17:00:00+00:00",
+        "err_pct": 4.067322937616015,
+        "flagged_samples": 427.0,
+        "hold_across_flagged_cap_120s_wh": 31433.7175,
+        "hold_across_flagged_wh": 30778.998055555556,
+        "intervals_over_120s": 1.0,
+        "intervals_over_35s": 1.0,
+        "label": "flagged plus one gap",
+        "max_gap_s": 194.0,
+        "reference_wh": 30189.952777777777,
+        "samples": 10006.0,
+        "view_wh": 31417.875651963775
+      },
+      {
+        "cause": "gaps agree between reference and view",
+        "cause_source": "manual",
+        "covered_minutes": 1408.0,
+        "day_start_utc": "2025-08-25T17:00:00+00:00",
+        "err_pct": 0.1782626821927267,
+        "flagged_samples": 7.0,
+        "hold_across_flagged_cap_120s_wh": 7639.845833333334,
+        "hold_across_flagged_wh": 7345.478888888889,
+        "intervals_over_120s": 4.0,
+        "intervals_over_35s": 9.0,
+        "label": "control (passes)",
+        "max_gap_s": 787.0,
+        "reference_wh": 7340.955277777778,
+        "samples": 11184.0,
+        "view_wh": 7354.041461554513
+      }
+    ]
+  },
+  "energy_gate_baseline": {
+    "house1": {
+      "days_over_gate": 19,
+      "err_pct_max": 3.7409704071753693,
+      "err_pct_p95": 0.7951118539373547,
+      "reference": "hold_across_flagged_cap_120s",
+      "source": "first measurement, pre-compression"
+    },
+    "house2": {
+      "days_over_gate": 16,
+      "err_pct_max": 2.355293941124697,
+      "err_pct_p95": 0.9205137999870517,
+      "reference": "hold_across_flagged_cap_120s",
+      "source": "first measurement, pre-compression"
+    },
+    "house3": {
+      "days_over_gate": 30,
+      "err_pct_max": 4.379069513196201,
+      "err_pct_p95": 1.2228340036752423,
+      "reference": "hold_across_flagged_cap_120s",
+      "source": "first measurement, pre-compression"
+    }
+  },
+  "energy_gate_baseline_original_reference": {
+    "house1": {
+      "days_over_gate": 129,
+      "err_pct_max": 53.80991201642898,
+      "source": "first measurement, pre-compression"
+    },
+    "house2": {
+      "days_over_gate": 152,
+      "err_pct_max": 45.463300822628206,
+      "source": "first measurement, pre-compression"
+    },
+    "house3": {
+      "days_over_gate": 226,
+      "err_pct_max": 54.19570770217057,
+      "source": "first measurement, pre-compression"
+    }
+  },
+  "energy_sample": {
+    "days": {
+      "house1": {
+        "2025-01-31T17:00:00+00:00": [
+          8283.418333333333,
+          8322.423315617414
+        ],
+        "2025-02-18T17:00:00+00:00": [
+          15494.749444444444,
+          15759.749180332921
+        ],
+        "2025-03-13T17:00:00+00:00": [
+          16605.069444444445,
+          16831.878737646828
+        ],
+        "2025-04-05T17:00:00+00:00": [
+          11543.538333333334,
+          11608.896578600956
+        ],
+        "2025-04-30T17:00:00+00:00": [
+          17155.83916666667,
+          17365.42213730003
+        ],
+        "2025-07-05T17:00:00+00:00": [
+          10273.693055555555,
+          10258.286824795574
+        ],
+        "2025-07-22T17:00:00+00:00": [
+          13094.324722222222,
+          13414.164002895253
+        ],
+        "2025-08-08T17:00:00+00:00": [
+          4390.1288888888885,
+          4398.304490139491
+        ],
+        "2025-08-25T17:00:00+00:00": [
+          7340.955277777778,
+          7354.041461554513
+        ],
+        "2025-09-11T17:00:00+00:00": [
+          8066.084722222222,
+          8104.8749680412175
+        ],
+        "2025-09-28T17:00:00+00:00": [
+          12219.388888888889,
+          12272.178400673401
+        ],
+        "2025-10-15T17:00:00+00:00": [
+          7401.7325,
+          7534.131686609958
+        ],
+        "2025-11-05T17:00:00+00:00": [
+          8230.211944444445,
+          8647.58838258963
+        ],
+        "2025-11-24T17:00:00+00:00": [
+          7588.1725,
+          7758.840768907019
+        ],
+        "2025-12-11T17:00:00+00:00": [
+          8054.7,
+          8078.666580618457
+        ],
+        "2026-01-02T17:00:00+00:00": [
+          9532.709722222222,
+          9809.459095534095
+        ],
+        "2026-01-19T17:00:00+00:00": [
+          4544.450555555555,
+          4566.870921695408
+        ],
+        "2026-02-06T17:00:00+00:00": [
+          9546.25888888889,
+          9614.608849206348
+        ],
+        "2026-02-25T17:00:00+00:00": [
+          9213.766666666666,
+          9243.527924199981
+        ],
+        "2026-03-15T17:00:00+00:00": [
+          9273.825833333334,
+          9371.101474266472
+        ],
+        "2026-04-01T17:00:00+00:00": [
+          4793.795833333334,
+          4798.5491600529085
+        ],
+        "2026-04-20T17:00:00+00:00": [
+          16808.790277777778,
+          16894.046684704186
+        ],
+        "2026-05-07T17:00:00+00:00": [
+          14215.467777777778,
+          14274.000965608468
+        ],
+        "2026-05-25T17:00:00+00:00": [
+          12116.445555555556,
+          12156.011228354977
+        ],
+        "2026-06-11T17:00:00+00:00": [
+          10490.65111111111,
+          10498.633190235692
+        ],
+        "2026-07-01T17:00:00+00:00": [
+          9234.048611111111,
+          9247.918231120731
+        ],
+        "2026-07-30T17:00:00+00:00": [
+          13593.674722222222,
+          13736.529459521958
+        ],
+        "2026-08-16T17:00:00+00:00": [
+          7944.155277777778,
+          7947.115767195767
+        ],
+        "2026-09-11T17:00:00+00:00": [
+          7868.37,
+          7918.32702922078
+        ],
+        "2026-10-10T17:00:00+00:00": [
+          4802.906111111111,
+          4810.716917989419
+        ]
+      },
+      "house2": {
+        "2025-02-21T17:00:00+00:00": [
+          7694.515277777778,
+          7747.19090500358
+        ],
+        "2025-03-10T17:00:00+00:00": [
+          11790.068611111112,
+          11977.774510474943
+        ],
+        "2025-03-24T17:00:00+00:00": [
+          4395.608611111111,
+          4482.134128295398
+        ],
+        "2025-08-17T17:00:00+00:00": [
+          10303.279722222222,
+          10422.236283693157
+        ],
+        "2025-09-03T17:00:00+00:00": [
+          8936.610555555555,
+          9044.05896503279
+        ],
+        "2025-09-19T17:00:00+00:00": [
+          9523.0275,
+          9577.74092953343
+        ],
+        "2025-10-05T17:00:00+00:00": [
+          9190.971111111112,
+          9306.71632395382
+        ],
+        "2025-10-20T17:00:00+00:00": [
+          12561.859166666667,
+          12711.710958994707
+        ],
+        "2025-11-03T17:00:00+00:00": [
+          8919.444444444445,
+          8956.565740740742
+        ],
+        "2025-11-17T17:00:00+00:00": [
+          12939.508055555556,
+          13060.022114598363
+        ],
+        "2025-12-01T17:00:00+00:00": [
+          7629.766388888889,
+          7709.740487614239
+        ],
+        "2025-12-16T17:00:00+00:00": [
+          9751.565833333334,
+          9885.862377946127
+        ],
+        "2025-12-30T17:00:00+00:00": [
+          2949.6280555555554,
+          2955.454671717172
+        ],
+        "2026-01-13T17:00:00+00:00": [
+          10563.094444444445,
+          10740.649238446738
+        ],
+        "2026-01-27T17:00:00+00:00": [
+          2615.200277777778,
+          2618.361479677729
+        ],
+        "2026-02-10T17:00:00+00:00": [
+          11341.878611111111,
+          11488.218603294856
+        ],
+        "2026-02-24T17:00:00+00:00": [
+          8382.193611111112,
+          8482.251783309282
+        ],
+        "2026-03-10T17:00:00+00:00": [
+          11108.164444444445,
+          11174.6842989418
+        ],
+        "2026-03-24T17:00:00+00:00": [
+          9267.284722222223,
+          9333.967720057719
+        ],
+        "2026-04-13T17:00:00+00:00": [
+          2898.0447222222224,
+          2900.6918187830684
+        ],
+        "2026-04-28T17:00:00+00:00": [
+          11669.391666666666,
+          11697.133842592593
+        ],
+        "2026-05-16T17:00:00+00:00": [
+          15618.083055555555,
+          15654.56125
+        ],
+        "2026-06-02T17:00:00+00:00": [
+          19019.72888888889,
+          19056.492070105818
+        ],
+        "2026-06-17T17:00:00+00:00": [
+          17499.790833333333,
+          17629.18157407407
+        ],
+        "2026-07-01T17:00:00+00:00": [
+          14693.373055555556,
+          14747.703468492053
+        ],
+        "2026-07-16T17:00:00+00:00": [
+          19618.480277777777,
+          19695.347222222223
+        ],
+        "2026-07-30T17:00:00+00:00": [
+          15568.716944444444,
+          15663.338464405962
+        ],
+        "2026-08-14T17:00:00+00:00": [
+          10593.465555555556,
+          10614.178022486773
+        ],
+        "2026-08-31T17:00:00+00:00": [
+          2435.6569444444444,
+          2436.945087181337
+        ],
+        "2026-09-22T17:00:00+00:00": [
+          9898.810277777779,
+          9970.229209355459
+        ]
+      },
+      "house3": {
+        "2025-03-03T17:00:00+00:00": [
+          8281.116666666667,
+          8355.120803872054
+        ],
+        "2025-04-11T17:00:00+00:00": [
+          17310.976666666666,
+          17648.9075981426
+        ],
+        "2025-04-25T17:00:00+00:00": [
+          12557.652222222223,
+          12892.78508773634
+        ],
+        "2025-05-08T17:00:00+00:00": [
+          17653.550277777777,
+          18048.456256006426
+        ],
+        "2025-05-22T17:00:00+00:00": [
+          24310.05861111111,
+          24475.94359494672
+        ],
+        "2025-06-07T17:00:00+00:00": [
+          16264.701388888889,
+          17140.744848438597
+        ],
+        "2025-08-27T17:00:00+00:00": [
+          38825.517222222225,
+          38973.09651515152
+        ],
+        "2025-10-15T17:00:00+00:00": [
+          23660.58361111111,
+          23645.123280423275
+        ],
+        "2025-11-10T17:00:00+00:00": [
+          11034.924444444445,
+          11058.74019360269
+        ],
+        "2025-11-23T17:00:00+00:00": [
+          18420.092777777776,
+          18912.93424020424
+        ],
+        "2025-12-07T17:00:00+00:00": [
+          14259.611388888889,
+          14799.774083664157
+        ],
+        "2025-12-22T17:00:00+00:00": [
+          13424.136388888888,
+          13486.572791005286
+        ],
+        "2026-01-04T17:00:00+00:00": [
+          6707.069166666667,
+          6714.619013301514
+        ],
+        "2026-01-18T17:00:00+00:00": [
+          18281.361666666668,
+          18897.385244685865
+        ],
+        "2026-02-03T17:00:00+00:00": [
+          12197.354444444445,
+          12381.88852929478
+        ],
+        "2026-02-18T17:00:00+00:00": [
+          11155.67888888889,
+          11206.959615199616
+        ],
+        "2026-03-05T17:00:00+00:00": [
+          19043.315555555557,
+          19705.10714285714
+        ],
+        "2026-03-18T17:00:00+00:00": [
+          15663.798055555555,
+          15690.25355820106
+        ],
+        "2026-04-02T17:00:00+00:00": [
+          11885.486388888889,
+          12068.927456709955
+        ],
+        "2026-04-18T17:00:00+00:00": [
+          13612.846944444444,
+          13693.988300264546
+        ],
+        "2026-05-01T17:00:00+00:00": [
+          20232.316944444443,
+          20314.474107142854
+        ],
+        "2026-05-14T17:00:00+00:00": [
+          19153.75361111111,
+          19422.827862554113
+        ],
+        "2026-05-30T17:00:00+00:00": [
+          15444.839444444444,
+          15508.838458994707
+        ],
+        "2026-06-12T17:00:00+00:00": [
+          17361.090555555555,
+          17589.61383597883
+        ],
+        "2026-06-29T17:00:00+00:00": [
+          19239.28722222222,
+          19489.268179413182
+        ],
+        "2026-07-12T17:00:00+00:00": [
+          19842.21722222222,
+          20110.493124699373
+        ],
+        "2026-07-25T17:00:00+00:00": [
+          18503.348055555554,
+          18768.18794973545
+        ],
+        "2026-08-07T17:00:00+00:00": [
+          22329.63472222222,
+          23464.457297979803
+        ],
+        "2026-08-23T17:00:00+00:00": [
+          19767.3925,
+          20019.487898027903
+        ],
+        "2026-09-12T17:00:00+00:00": [
+          14160.939722222221,
+          14277.183148148146
+        ]
+      }
+    },
+    "days_checked_after_compression": 90,
+    "identical_after_compression": true
+  },
+  "energy_variants_post_compress": {
+    "house1.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 17,
+        "days_view_higher": 364,
+        "days_view_lower": 148,
+        "err_pct_max": 53.77180981143802,
+        "err_pct_p50": 0.13490870933579435,
+        "err_pct_p95": 0.8156289162827526,
+        "err_pct_p99": 1.987476504781431,
+        "signed_err_pct_mean": 0.2870137696851056,
+        "signed_err_pct_p50": 0.09707437405812319
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 9,
+        "days_view_higher": 50,
+        "days_view_lower": 18,
+        "err_pct_max": 48.294778066037985,
+        "err_pct_p50": 0.2633861098988243,
+        "err_pct_p95": 3.515737551397455,
+        "err_pct_p99": 21.377848283118237,
+        "signed_err_pct_mean": 1.2873002141635945,
+        "signed_err_pct_p50": 0.22109030702864035
+      },
+      "view_days_without_exact": []
+    },
+    "house1.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 19,
+        "days_view_higher": 194,
+        "days_view_lower": 318,
+        "err_pct_max": 3.7409704071753693,
+        "err_pct_p50": 0.1472089010038244,
+        "err_pct_p95": 0.7951118539373547,
+        "err_pct_p99": 2.9419706990944694,
+        "signed_err_pct_mean": -0.12665588833048483,
+        "signed_err_pct_p50": -0.05422319375962981
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 20,
+        "days_view_higher": 10,
+        "days_view_lower": 58,
+        "err_pct_max": 10.045403924455673,
+        "err_pct_p50": 0.42055205581976307,
+        "err_pct_p95": 2.7837838413341798,
+        "err_pct_p99": 8.755554816396138,
+        "signed_err_pct_mean": -0.7087294207328144,
+        "signed_err_pct_p50": -0.3759332622373587
+      },
+      "view_days_without_exact": []
+    },
+    "house2.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 31,
+        "days_view_higher": 325,
+        "days_view_lower": 107,
+        "err_pct_max": 45.02827374552126,
+        "err_pct_p50": 0.21834650459876054,
+        "err_pct_p95": 1.0658455788129884,
+        "err_pct_p99": 1.4508681566573352,
+        "signed_err_pct_mean": 0.3988425340454015,
+        "signed_err_pct_p50": 0.1525712359814535
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 17,
+        "days_view_higher": 50,
+        "days_view_lower": 10,
+        "err_pct_max": 12.105637550181866,
+        "err_pct_p50": 0.4771309719720551,
+        "err_pct_p95": 6.552796007915422,
+        "err_pct_p99": 10.069348816550914,
+        "signed_err_pct_mean": 1.5502701990084296,
+        "signed_err_pct_p50": 0.438550469387126
+      },
+      "view_days_without_exact": []
+    },
+    "house2.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 16,
+        "days_view_higher": 264,
+        "days_view_lower": 168,
+        "err_pct_max": 2.355293941124697,
+        "err_pct_p50": 0.17869511160586726,
+        "err_pct_p95": 0.9205137999870517,
+        "err_pct_p99": 1.260767134107062,
+        "signed_err_pct_mean": 0.14800013844416535,
+        "signed_err_pct_p50": 0.04449997916061388
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 19,
+        "days_view_higher": 17,
+        "days_view_lower": 43,
+        "err_pct_max": 28.073919667234847,
+        "err_pct_p50": 0.5956138136794904,
+        "err_pct_p95": 24.28944197019081,
+        "err_pct_p99": 26.28708091085352,
+        "signed_err_pct_mean": -3.4399366998701058,
+        "signed_err_pct_p50": -0.3756230877393889
+      },
+      "view_days_without_exact": []
+    },
+    "house3.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 64,
+        "days_view_higher": 369,
+        "days_view_lower": 46,
+        "err_pct_max": 54.13721271352531,
+        "err_pct_p50": 0.3003127042369607,
+        "err_pct_p95": 1.839857304181033,
+        "err_pct_p99": 3.8310289098024137,
+        "signed_err_pct_mean": 0.6678579054887186,
+        "signed_err_pct_p50": 0.296363086815111
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 78,
+        "days_view_higher": 141,
+        "days_view_lower": 6,
+        "err_pct_max": 38.649393325694895,
+        "err_pct_p50": 1.0752290451312594,
+        "err_pct_p95": 4.715712915378484,
+        "err_pct_p99": 10.578905847312974,
+        "signed_err_pct_mean": 1.9262830344087105,
+        "signed_err_pct_p50": 1.0752290451312594
+      },
+      "view_days_without_exact": []
+    },
+    "house3.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 30,
+        "days_view_higher": 254,
+        "days_view_lower": 161,
+        "err_pct_max": 4.379069513196166,
+        "err_pct_p50": 0.2053408933880013,
+        "err_pct_p95": 1.2228340036752423,
+        "err_pct_p99": 2.9973194755503734,
+        "signed_err_pct_mean": 0.054788344524581124,
+        "signed_err_pct_p50": 0.06028636614876974
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 76,
+        "days_view_higher": 18,
+        "days_view_lower": 129,
+        "err_pct_max": 11.927702546439422,
+        "err_pct_p50": 1.0285074846064142,
+        "err_pct_p95": 6.937539397850786,
+        "err_pct_p99": 11.379490334232049,
+        "signed_err_pct_mean": -1.6459034149110068,
+        "signed_err_pct_p50": -1.0050000653827373
+      },
+      "view_days_without_exact": []
+    }
+  },
+  "energy_variants_pre_compress": {
+    "house1.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 17,
+        "err_pct_max": 53.77180981143802,
+        "err_pct_p50": 0.13490870933579435,
+        "err_pct_p95": 0.8156289162827526,
+        "err_pct_p99": 1.987476504781431
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 9,
+        "err_pct_max": 48.294778066037985,
+        "err_pct_p50": 0.2633861098988243,
+        "err_pct_p95": 3.515737551397455,
+        "err_pct_p99": 21.377848283118237
+      },
+      "view_days_without_exact": []
+    },
+    "house1.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 19,
+        "err_pct_max": 3.7409704071753693,
+        "err_pct_p50": 0.1472089010038244,
+        "err_pct_p95": 0.7951118539373547,
+        "err_pct_p99": 2.9419706990944694
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 20,
+        "err_pct_max": 10.045403924455673,
+        "err_pct_p50": 0.42055205581976307,
+        "err_pct_p95": 2.7837838413341798,
+        "err_pct_p99": 8.755554816396138
+      },
+      "view_days_without_exact": []
+    },
+    "house2.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 31,
+        "err_pct_max": 45.02827374552126,
+        "err_pct_p50": 0.21834650459876054,
+        "err_pct_p95": 1.0658455788129884,
+        "err_pct_p99": 1.4508681566573352
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 17,
+        "err_pct_max": 12.105637550181866,
+        "err_pct_p50": 0.4771309719720551,
+        "err_pct_p95": 6.552796007915422,
+        "err_pct_p99": 10.069348816550914
+      },
+      "view_days_without_exact": []
+    },
+    "house2.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 16,
+        "err_pct_max": 2.355293941124697,
+        "err_pct_p50": 0.17869511160586726,
+        "err_pct_p95": 0.9205137999870517,
+        "err_pct_p99": 1.260767134107062
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 19,
+        "err_pct_max": 28.073919667234847,
+        "err_pct_p50": 0.5956138136794904,
+        "err_pct_p95": 24.28944197019081,
+        "err_pct_p99": 26.28708091085352
+      },
+      "view_days_without_exact": []
+    },
+    "house3.hold_across_flagged": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 64,
+        "err_pct_max": 54.13721271352531,
+        "err_pct_p50": 0.3003127042369607,
+        "err_pct_p95": 1.839857304181033,
+        "err_pct_p99": 3.8310289098024137
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 78,
+        "err_pct_max": 38.649393325694895,
+        "err_pct_p50": 1.0752290451312594,
+        "err_pct_p95": 4.715712915378484,
+        "err_pct_p99": 10.578905847312974
+      },
+      "view_days_without_exact": []
+    },
+    "house3.hold_across_flagged_cap_120s": {
+      "covered_minutes_mismatch_days": 0,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 30,
+        "err_pct_max": 4.379069513196201,
+        "err_pct_p50": 0.2053408933880013,
+        "err_pct_p95": 1.2228340036752423,
+        "err_pct_p99": 2.9973194755503734
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 76,
+        "err_pct_max": 11.927702546439422,
+        "err_pct_p50": 1.0285074846064142,
+        "err_pct_p95": 6.937539397850786,
+        "err_pct_p99": 11.379490334232049
+      },
+      "view_days_without_exact": []
+    }
+  },
+  "energy_vs_exact_post_compress": {
+    "house1": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 580,
+      "days_in_view": 580,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 129,
+        "days_view_higher": 482,
+        "days_view_lower": 30,
+        "err_pct_max": 53.80991201642898,
+        "err_pct_p50": 0.4637282186980798,
+        "err_pct_p95": 2.43535575232986,
+        "err_pct_p99": 4.314503549410746,
+        "signed_err_pct_mean": 0.8398613875387658,
+        "signed_err_pct_p50": 0.4637282186980798,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2025-11-22T17:00:00+00:00",
+            "err_pct": 53.80991201642898,
+            "exact_wh": 3372.1116666666667,
+            "view_wh": 5186.641987595737
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2026-03-11T17:00:00+00:00",
+            "err_pct": 8.374906393631317,
+            "exact_wh": 10252.691944444445,
+            "view_wh": 11111.345297619046
+          },
+          {
+            "coverage": 0.9923611111111111,
+            "day": "2025-09-10T17:00:00+00:00",
+            "err_pct": 6.511191891128003,
+            "exact_wh": 7303.465,
+            "view_wh": 7779.007620851372
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2025-07-23T17:00:00+00:00",
+            "err_pct": 5.840688859058403,
+            "exact_wh": 12468.173611111111,
+            "view_wh": 13196.400838143338
+          },
+          {
+            "coverage": 0.9958333333333333,
+            "day": "2025-11-05T17:00:00+00:00",
+            "err_pct": 5.071272051832431,
+            "exact_wh": 8230.211944444445,
+            "view_wh": 8647.58838258963
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 31,
+        "days_view_higher": 64,
+        "days_view_lower": 4,
+        "err_pct_max": 48.320578547772676,
+        "err_pct_p50": 0.9274108324284017,
+        "err_pct_p95": 5.565904321820771,
+        "err_pct_p99": 22.589402795217204,
+        "signed_err_pct_mean": 1.9724213680934932,
+        "signed_err_pct_p50": 0.9274108324284017,
+        "worst": [
+          {
+            "coverage": 0.7388888888888889,
+            "day": "2025-12-28T17:00:00+00:00",
+            "err_pct": 48.320578547772676,
+            "exact_wh": 5568.933333333333,
+            "view_wh": 8259.874138939762
+          },
+          {
+            "coverage": 0.9055555555555556,
+            "day": "2025-03-02T17:00:00+00:00",
+            "err_pct": 9.915838618585502,
+            "exact_wh": 21323.448888888888,
+            "view_wh": 23437.847668627674
+          },
+          {
+            "coverage": 0.003472222222222222,
+            "day": "2025-12-22T17:00:00+00:00",
+            "err_pct": 8.120256001978762,
+            "exact_wh": 25.669444444444444,
+            "view_wh": 27.753869047619048
+          },
+          {
+            "coverage": 0.8777777777777778,
+            "day": "2025-12-29T17:00:00+00:00",
+            "err_pct": 6.380910305897746,
+            "exact_wh": 8553.056388888888,
+            "view_wh": 9098.819245476745
+          },
+          {
+            "coverage": 0.030555555555555555,
+            "day": "2026-07-06T17:00:00+00:00",
+            "err_pct": 4.052321779963539,
+            "exact_wh": 118.38777777777777,
+            "view_wh": 123.1852314814815
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    },
+    "house2": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 492,
+      "days_in_view": 492,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 152,
+        "days_view_higher": 423,
+        "days_view_lower": 9,
+        "err_pct_max": 45.463300822628206,
+        "err_pct_p50": 0.6858028708754891,
+        "err_pct_p95": 1.946866215694443,
+        "err_pct_p99": 2.3042946118256613,
+        "signed_err_pct_mean": 0.920329636777049,
+        "signed_err_pct_p50": 0.6858028708754891,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2026-01-04T17:00:00+00:00",
+            "err_pct": 45.463300822628206,
+            "exact_wh": 2773.8866666666668,
+            "view_wh": 4034.9871064121076
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2025-11-18T17:00:00+00:00",
+            "err_pct": 4.045689007156071,
+            "exact_wh": 7975.534166666666,
+            "view_wh": 8298.199475709476
+          },
+          {
+            "coverage": 1.0,
+            "day": "2025-09-18T17:00:00+00:00",
+            "err_pct": 2.6271333892995368,
+            "exact_wh": 8487.125833333334,
+            "view_wh": 8710.0939498927
+          },
+          {
+            "coverage": 1.0,
+            "day": "2026-09-17T17:00:00+00:00",
+            "err_pct": 2.3363686630156613,
+            "exact_wh": 8680.951666666666,
+            "view_wh": 8883.770701058202
+          },
+          {
+            "coverage": 1.0,
+            "day": "2025-08-29T17:00:00+00:00",
+            "err_pct": 2.307131902508334,
+            "exact_wh": 9002.24888888889,
+            "view_wh": 9209.942644947647
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 30,
+        "days_view_higher": 60,
+        "days_view_lower": 0,
+        "err_pct_max": 12.105637550181866,
+        "err_pct_p50": 0.9745816038301494,
+        "err_pct_p95": 7.480288579506294,
+        "err_pct_p99": 10.069348816550914,
+        "signed_err_pct_mean": 2.0777850092546735,
+        "signed_err_pct_p50": 0.9745816038301494,
+        "worst": [
+          {
+            "coverage": 0.08680555555555555,
+            "day": "2025-07-24T17:00:00+00:00",
+            "err_pct": 12.105637550181866,
+            "exact_wh": 767.4369444444444,
+            "view_wh": 860.3400793650794
+          },
+          {
+            "coverage": 0.01875,
+            "day": "2025-07-18T17:00:00+00:00",
+            "err_pct": 8.654300713519254,
+            "exact_wh": 302.60805555555555,
+            "view_wh": 328.79666666666674
+          },
+          {
+            "coverage": 0.08125,
+            "day": "2025-07-23T17:00:00+00:00",
+            "err_pct": 7.511043696820301,
+            "exact_wh": 355.09194444444444,
+            "view_wh": 381.7630555555555
+          },
+          {
+            "coverage": 0.06041666666666667,
+            "day": "2025-07-20T17:00:00+00:00",
+            "err_pct": 7.478669889121346,
+            "exact_wh": 87.94111111111111,
+            "view_wh": 94.51793650793653
+          },
+          {
+            "coverage": 0.07777777777777778,
+            "day": "2025-07-21T17:00:00+00:00",
+            "err_pct": 6.630154199246953,
+            "exact_wh": 190.0525,
+            "view_wh": 202.65327380952382
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    },
+    "house3": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 562,
+      "days_in_view": 562,
+      "exact_days_without_view": [],
+      "exact_days_without_view_count": 0,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 226,
+        "days_view_higher": 408,
+        "days_view_lower": 7,
+        "err_pct_max": 54.19570770217057,
+        "err_pct_p50": 1.1695092166847414,
+        "err_pct_p95": 5.351839988931065,
+        "err_pct_p99": 10.234928985324949,
+        "signed_err_pct_mean": 1.830870717288537,
+        "signed_err_pct_p50": 1.1695092166847414,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2025-12-30T17:00:00+00:00",
+            "err_pct": 54.19570770217057,
+            "exact_wh": 7220.036666666667,
+            "view_wh": 11132.986634522873
+          },
+          {
+            "coverage": 0.95625,
+            "day": "2025-03-31T17:00:00+00:00",
+            "err_pct": 13.50245325474547,
+            "exact_wh": 15640.325555555555,
+            "view_wh": 17752.153202584454
+          },
+          {
+            "coverage": 0.9826388888888888,
+            "day": "2025-09-01T17:00:00+00:00",
+            "err_pct": 13.121501657104512,
+            "exact_wh": 15288.68611111111,
+            "view_wh": 17294.791312530062
+          },
+          {
+            "coverage": 1.0,
+            "day": "2026-01-09T17:00:00+00:00",
+            "err_pct": 11.071211687949505,
+            "exact_wh": 16665.779444444444,
+            "view_wh": 18510.883166185664
+          },
+          {
+            "coverage": 0.9527777777777777,
+            "day": "2025-04-01T17:00:00+00:00",
+            "err_pct": 10.430107296218779,
+            "exact_wh": 22236.990833333333,
+            "view_wh": 24556.332836700334
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 116,
+        "days_view_higher": 145,
+        "days_view_lower": 2,
+        "err_pct_max": 39.27559952776473,
+        "err_pct_p50": 2.6479323944997315,
+        "err_pct_p95": 11.609292607216222,
+        "err_pct_p99": 29.34957033778626,
+        "signed_err_pct_mean": 4.327876558725947,
+        "signed_err_pct_p50": 2.6479323944997315,
+        "worst": [
+          {
+            "coverage": 0.7368055555555556,
+            "day": "2026-02-04T17:00:00+00:00",
+            "err_pct": 39.27559952776473,
+            "exact_wh": 7483.224166666667,
+            "view_wh": 10422.305322131577
+          },
+          {
+            "coverage": 0.020833333333333332,
+            "day": "2025-08-03T17:00:00+00:00",
+            "err_pct": 30.909090909090825,
+            "exact_wh": 154.30555555555554,
+            "view_wh": 201.99999999999986
+          },
+          {
+            "coverage": 0.5895833333333333,
+            "day": "2025-10-25T17:00:00+00:00",
+            "err_pct": 27.518828797559223,
+            "exact_wh": 10915.834444444445,
+            "view_wh": 13919.744237036111
+          },
+          {
+            "coverage": 0.3194444444444444,
+            "day": "2025-03-18T17:00:00+00:00",
+            "err_pct": 16.061693242385864,
+            "exact_wh": 4570.687222222222,
+            "view_wh": 5304.8169829244825
+          },
+          {
+            "coverage": 0.93125,
+            "day": "2025-08-30T17:00:00+00:00",
+            "err_pct": 15.458641124321051,
+            "exact_wh": 17319.979444444445,
+            "view_wh": 19997.412909567287
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    }
+  },
+  "energy_vs_exact_pre_compress": {
+    "house1": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 580,
+      "days_in_view": 580,
+      "full_coverage": {
+        "days": 512,
+        "days_over_gate": 129,
+        "err_pct_max": 53.80991201642898,
+        "err_pct_p50": 0.4637282186980798,
+        "err_pct_p95": 2.43535575232986,
+        "err_pct_p99": 4.314503549410746,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2025-11-22T17:00:00+00:00",
+            "err_pct": 53.80991201642898,
+            "exact_wh": 3372.1116666666667,
+            "view_wh": 5186.641987595737
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2026-03-11T17:00:00+00:00",
+            "err_pct": 8.374906393631317,
+            "exact_wh": 10252.691944444445,
+            "view_wh": 11111.345297619046
+          },
+          {
+            "coverage": 0.9923611111111111,
+            "day": "2025-09-10T17:00:00+00:00",
+            "err_pct": 6.511191891128003,
+            "exact_wh": 7303.465,
+            "view_wh": 7779.007620851372
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2025-07-23T17:00:00+00:00",
+            "err_pct": 5.840688859058403,
+            "exact_wh": 12468.173611111111,
+            "view_wh": 13196.400838143338
+          },
+          {
+            "coverage": 0.9958333333333333,
+            "day": "2025-11-05T17:00:00+00:00",
+            "err_pct": 5.071272051832431,
+            "exact_wh": 8230.211944444445,
+            "view_wh": 8647.58838258963
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 68,
+        "days_over_gate": 31,
+        "err_pct_max": 48.320578547772676,
+        "err_pct_p50": 0.9274108324284017,
+        "err_pct_p95": 5.565904321820771,
+        "err_pct_p99": 22.589402795217204,
+        "worst": [
+          {
+            "coverage": 0.7388888888888889,
+            "day": "2025-12-28T17:00:00+00:00",
+            "err_pct": 48.320578547772676,
+            "exact_wh": 5568.933333333333,
+            "view_wh": 8259.874138939762
+          },
+          {
+            "coverage": 0.9055555555555556,
+            "day": "2025-03-02T17:00:00+00:00",
+            "err_pct": 9.915838618585502,
+            "exact_wh": 21323.448888888888,
+            "view_wh": 23437.847668627674
+          },
+          {
+            "coverage": 0.003472222222222222,
+            "day": "2025-12-22T17:00:00+00:00",
+            "err_pct": 8.120256001978762,
+            "exact_wh": 25.669444444444444,
+            "view_wh": 27.753869047619048
+          },
+          {
+            "coverage": 0.8777777777777778,
+            "day": "2025-12-29T17:00:00+00:00",
+            "err_pct": 6.380910305897746,
+            "exact_wh": 8553.056388888888,
+            "view_wh": 9098.819245476745
+          },
+          {
+            "coverage": 0.030555555555555555,
+            "day": "2026-07-06T17:00:00+00:00",
+            "err_pct": 4.052321779963539,
+            "exact_wh": 118.38777777777777,
+            "view_wh": 123.1852314814815
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    },
+    "house2": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 492,
+      "days_in_view": 492,
+      "full_coverage": {
+        "days": 432,
+        "days_over_gate": 152,
+        "err_pct_max": 45.463300822628206,
+        "err_pct_p50": 0.6858028708754891,
+        "err_pct_p95": 1.946866215694443,
+        "err_pct_p99": 2.3042946118256613,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2026-01-04T17:00:00+00:00",
+            "err_pct": 45.463300822628206,
+            "exact_wh": 2773.8866666666668,
+            "view_wh": 4034.9871064121076
+          },
+          {
+            "coverage": 0.9986111111111111,
+            "day": "2025-11-18T17:00:00+00:00",
+            "err_pct": 4.045689007156071,
+            "exact_wh": 7975.534166666666,
+            "view_wh": 8298.199475709476
+          },
+          {
+            "coverage": 1.0,
+            "day": "2025-09-18T17:00:00+00:00",
+            "err_pct": 2.6271333892995368,
+            "exact_wh": 8487.125833333334,
+            "view_wh": 8710.0939498927
+          },
+          {
+            "coverage": 1.0,
+            "day": "2026-09-17T17:00:00+00:00",
+            "err_pct": 2.3363686630156613,
+            "exact_wh": 8680.951666666666,
+            "view_wh": 8883.770701058202
+          },
+          {
+            "coverage": 1.0,
+            "day": "2025-08-29T17:00:00+00:00",
+            "err_pct": 2.307131902508334,
+            "exact_wh": 9002.24888888889,
+            "view_wh": 9209.942644947647
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 60,
+        "days_over_gate": 30,
+        "err_pct_max": 12.105637550181866,
+        "err_pct_p50": 0.9745816038301494,
+        "err_pct_p95": 7.480288579506294,
+        "err_pct_p99": 10.069348816550914,
+        "worst": [
+          {
+            "coverage": 0.08680555555555555,
+            "day": "2025-07-24T17:00:00+00:00",
+            "err_pct": 12.105637550181866,
+            "exact_wh": 767.4369444444444,
+            "view_wh": 860.3400793650794
+          },
+          {
+            "coverage": 0.01875,
+            "day": "2025-07-18T17:00:00+00:00",
+            "err_pct": 8.654300713519254,
+            "exact_wh": 302.60805555555555,
+            "view_wh": 328.79666666666674
+          },
+          {
+            "coverage": 0.08125,
+            "day": "2025-07-23T17:00:00+00:00",
+            "err_pct": 7.511043696820301,
+            "exact_wh": 355.09194444444444,
+            "view_wh": 381.7630555555555
+          },
+          {
+            "coverage": 0.06041666666666667,
+            "day": "2025-07-20T17:00:00+00:00",
+            "err_pct": 7.478669889121346,
+            "exact_wh": 87.94111111111111,
+            "view_wh": 94.51793650793653
+          },
+          {
+            "coverage": 0.07777777777777778,
+            "day": "2025-07-21T17:00:00+00:00",
+            "err_pct": 6.630154199246953,
+            "exact_wh": 190.0525,
+            "view_wh": 202.65327380952382
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    },
+    "house3": {
+      "covered_minutes_mismatch_days": 0,
+      "days_in_exact": 562,
+      "days_in_view": 562,
+      "full_coverage": {
+        "days": 415,
+        "days_over_gate": 226,
+        "err_pct_max": 54.19570770217057,
+        "err_pct_p50": 1.1695092166847414,
+        "err_pct_p95": 5.351839988931065,
+        "err_pct_p99": 10.234928985324949,
+        "worst": [
+          {
+            "coverage": 0.9701388888888889,
+            "day": "2025-12-30T17:00:00+00:00",
+            "err_pct": 54.19570770217057,
+            "exact_wh": 7220.036666666667,
+            "view_wh": 11132.986634522873
+          },
+          {
+            "coverage": 0.95625,
+            "day": "2025-03-31T17:00:00+00:00",
+            "err_pct": 13.50245325474547,
+            "exact_wh": 15640.325555555555,
+            "view_wh": 17752.153202584454
+          },
+          {
+            "coverage": 0.9826388888888888,
+            "day": "2025-09-01T17:00:00+00:00",
+            "err_pct": 13.121501657104512,
+            "exact_wh": 15288.68611111111,
+            "view_wh": 17294.791312530062
+          },
+          {
+            "coverage": 1.0,
+            "day": "2026-01-09T17:00:00+00:00",
+            "err_pct": 11.071211687949505,
+            "exact_wh": 16665.779444444444,
+            "view_wh": 18510.883166185664
+          },
+          {
+            "coverage": 0.9527777777777777,
+            "day": "2025-04-01T17:00:00+00:00",
+            "err_pct": 10.430107296218779,
+            "exact_wh": 22236.990833333333,
+            "view_wh": 24556.332836700334
+          }
+        ]
+      },
+      "low_coverage": {
+        "days": 147,
+        "days_over_gate": 116,
+        "err_pct_max": 39.27559952776473,
+        "err_pct_p50": 2.6479323944997315,
+        "err_pct_p95": 11.609292607216222,
+        "err_pct_p99": 29.34957033778626,
+        "worst": [
+          {
+            "coverage": 0.7368055555555556,
+            "day": "2026-02-04T17:00:00+00:00",
+            "err_pct": 39.27559952776473,
+            "exact_wh": 7483.224166666667,
+            "view_wh": 10422.305322131577
+          },
+          {
+            "coverage": 0.020833333333333332,
+            "day": "2025-08-03T17:00:00+00:00",
+            "err_pct": 30.909090909090825,
+            "exact_wh": 154.30555555555554,
+            "view_wh": 201.99999999999986
+          },
+          {
+            "coverage": 0.5895833333333333,
+            "day": "2025-10-25T17:00:00+00:00",
+            "err_pct": 27.518828797559223,
+            "exact_wh": 10915.834444444445,
+            "view_wh": 13919.744237036111
+          },
+          {
+            "coverage": 0.3194444444444444,
+            "day": "2025-03-18T17:00:00+00:00",
+            "err_pct": 16.061693242385864,
+            "exact_wh": 4570.687222222222,
+            "view_wh": 5304.8169829244825
+          },
+          {
+            "coverage": 0.93125,
+            "day": "2025-08-30T17:00:00+00:00",
+            "err_pct": 15.458641124321051,
+            "exact_wh": 17319.979444444445,
+            "view_wh": 19997.412909567287
+          }
+        ]
+      },
+      "median_cadence_s": 7.0,
+      "view_days_without_exact": []
+    }
+  },
+  "env": {
+    "cpus": 16,
+    "docker_vm_disk_bytes": {
+      "free": 964172861440,
+      "total": 1081101176832
+    },
+    "memory_mb_visible": 15583,
+    "postgres": {
+      "checkpoint_timeout": "15min",
+      "effective_cache_size": "8GB",
+      "fsync": "on",
+      "maintenance_work_mem": "1947MB",
+      "max_connections": "100",
+      "max_wal_size": "16GB",
+      "shared_buffers": "3GB",
+      "synchronous_commit": "on",
+      "timescaledb": "2.31.0",
+      "version": "17.11",
+      "wal_compression": "off",
+      "work_mem": "7791kB"
+    },
+    "recorded_at": "2026-11-01T18:23:16.784454+00:00",
+    "refit_csv_bytes": {
+      "house1": 400840083,
+      "house10": 398756360,
+      "house11": 255832544,
+      "house12": 335009288,
+      "house13": 276518579,
+      "house15": 353152325,
+      "house16": 333937465,
+      "house17": 317925929,
+      "house18": 301534016,
+      "house19": 320691540,
+      "house2": 325391201,
+      "house20": 299757142,
+      "house21": 316713466,
+      "house3": 407273065,
+      "house4": 395763806,
+      "house5": 435272416,
+      "house6": 366398284,
+      "house7": 388975788,
+      "house8": 355439146,
+      "house9": 358228620
+    }
+  },
+  "estimates": {
+    "duration_seconds": 866.5,
+    "per_house": {
+      "house1": 62640072,
+      "house2": 51601734,
+      "house3": 62951346
+    },
+    "rows_inserted": 177193152,
+    "series_created": 27
+  },
+  "extrapolation": {
+    "assumptions": [
+      "the spec states no sampling rate; three scenarios are shown",
+      "REFIT: 10 series at about 7 s median cadence (measured)",
+      "the 30 s scenario includes the device_estimate aggregates: 9 series x 525,600 1 m rows x measured bytes/row (compressed with the measured device_estimate_1m ratio) plus measured 1 h / 1 d bytes per series-year",
+      "the measured rows/s is a BULK-LOAD figure (30k CSV rows per batch, policies off, no concurrent compression or refresh); small-batch ingest from many concurrent meters was not tested",
+      "the 1 m aggregate has one row per series per minute that holds a sample; the scenarios assume every minute is covered (upper bound)",
+      "1h/1d aggregate bytes are scaled from the measured 3-house size by series/10",
+      "compressed raw size uses the measured 17x for all cadences (not measured for others)",
+      "raw retention 13 months is NOT applied; figures are per year of ingest"
+    ],
+    "measured_inputs": {
+      "agg_1m_bytes_per_row_uncompressed": 151.3,
+      "agg_1m_compression_ratio_scratch_measurement": 19.14,
+      "device_estimate_bytes_per_row": 5.621,
+      "raw_bytes_per_reading_compressed": 5.617
+    },
+    "scenario_main_meter_only_1hz": {
+      "agg_1h_1d_gb_per_home_year": 0.00127,
+      "agg_1m_compressed_gb_per_home_year": 0.0042,
+      "agg_1m_uncompressed_gb_per_home_year": 0.0795,
+      "assumption": "1 series per home, one reading per 1 s each",
+      "average_rate_as_fraction_of_bulk_load_figure": 0.2,
+      "daily_ingest_rows_10k_homes": 864000000,
+      "device_estimate_agg_1h_1d_gb_per_home_year": 0.0,
+      "device_estimate_agg_1m_compressed_gb_per_home_year": 0.0,
+      "device_estimate_agg_1m_uncompressed_gb_per_home_year": 0.0,
+      "device_estimate_gb_per_home_year": 0.0,
+      "measured_bulk_load_rows_per_second_single_stream": 49583,
+      "raw_gb_per_home_year": 0.1771,
+      "readings_per_home_day": 86400,
+      "required_avg_rows_per_second": 10000,
+      "tb_per_year_10k_homes_1m_compressed": 1.83,
+      "tb_per_year_10k_homes_1m_uncompressed": 2.58
+    },
+    "scenario_main_plus_9_devices_30s_with_estimates": {
+      "agg_1h_1d_gb_per_home_year": 0.01267,
+      "agg_1m_compressed_gb_per_home_year": 0.0416,
+      "agg_1m_uncompressed_gb_per_home_year": 0.7954,
+      "assumption": "10 series per home, one reading per 30 s each, 9 device_estimate series",
+      "average_rate_as_fraction_of_bulk_load_figure": 0.07,
+      "daily_ingest_rows_10k_homes": 288000000,
+      "device_estimate_agg_1h_1d_gb_per_home_year": 0.01136,
+      "device_estimate_agg_1m_compressed_gb_per_home_year": 0.0303,
+      "device_estimate_agg_1m_uncompressed_gb_per_home_year": 0.7005,
+      "device_estimate_gb_per_home_year": 0.0532,
+      "measured_bulk_load_rows_per_second_single_stream": 49583,
+      "raw_gb_per_home_year": 0.059,
+      "readings_per_home_day": 28800,
+      "required_avg_rows_per_second": 3333,
+      "tb_per_year_10k_homes_1m_compressed": 2.08,
+      "tb_per_year_10k_homes_1m_uncompressed": 16.32
+    },
+    "scenario_refit_like_10_series_7s": {
+      "agg_1h_1d_gb_per_home_year": 0.01267,
+      "agg_1m_compressed_gb_per_home_year": 0.0416,
+      "agg_1m_uncompressed_gb_per_home_year": 0.7954,
+      "assumption": "10 series per home, one reading per 7 s each",
+      "average_rate_as_fraction_of_bulk_load_figure": 0.29,
+      "daily_ingest_rows_10k_homes": 1234285714,
+      "device_estimate_agg_1h_1d_gb_per_home_year": 0.0,
+      "device_estimate_agg_1m_compressed_gb_per_home_year": 0.0,
+      "device_estimate_agg_1m_uncompressed_gb_per_home_year": 0.0,
+      "device_estimate_gb_per_home_year": 0.0,
+      "measured_bulk_load_rows_per_second_single_stream": 49583,
+      "raw_gb_per_home_year": 0.2531,
+      "readings_per_home_day": 123429,
+      "required_avg_rows_per_second": 14286,
+      "tb_per_year_10k_homes_1m_compressed": 3.07,
+      "tb_per_year_10k_homes_1m_uncompressed": 10.61
+    }
+  },
+  "harness_check": {
+    "backfill_keys_are_view_names": true,
+    "backfill_timed_view_keys": [
+      "energy.device_estimate_1d",
+      "energy.device_estimate_1h",
+      "energy.device_estimate_1m",
+      "energy.reading_1d",
+      "energy.reading_1h",
+      "energy.reading_1m"
+    ],
+    "compress_stats_reading": {
+      "compressed_after_bytes": 13107200,
+      "compressed_before_bytes": 193036288,
+      "compressed_chunks": 15,
+      "ratio_compressed_chunks": 14.73,
+      "total_chunks": 15
+    },
+    "compressed_chunks_matches_db": true,
+    "csv_rows_loaded": 200000,
+    "db_compressed_chunks": 15,
+    "ratio_is_number": true,
+    "scratch_db": "wattprint_audit_h"
+  },
+  "idempotency": {
+    "post_compress": {
+      "identical": true,
+      "reading_1d_after": {
+        "cov": "22185510",
+        "digest": "0b9295f52d1dc9d04262afb80b0f0b20",
+        "n": 16340,
+        "samples": "191928740",
+        "wh": 27346572.870271545
+      },
+      "reading_1d_before": {
+        "cov": "22185510",
+        "digest": "0b9295f52d1dc9d04262afb80b0f0b20",
+        "n": 16340,
+        "samples": "191928740",
+        "wh": 27346572.870271545
+      },
+      "reading_rows_after": 196881280,
+      "reading_rows_before": 196881280,
+      "rows_bad": 0,
+      "rows_dup": 1000000,
+      "rows_in": 1000000,
+      "rows_new": 0
+    },
+    "pre_compress": {
+      "identical": true,
+      "reading_1d_after": {
+        "cov": "22185510",
+        "digest": "a68ceee71176c9a989f1f1679f34f948",
+        "n": 16340,
+        "samples": "191928740",
+        "wh": 27346572.870271545
+      },
+      "reading_1d_before": {
+        "cov": "22185510",
+        "digest": "a68ceee71176c9a989f1f1679f34f948",
+        "n": 16340,
+        "samples": "191928740",
+        "wh": 27346572.870271545
+      },
+      "reading_rows_after": 196881280,
+      "reading_rows_before": 196881280,
+      "rows_bad": 0,
+      "rows_dup": 1000000,
+      "rows_in": 1000000,
+      "rows_new": 0
+    }
+  },
+  "isolation": {
+    "audit_db": {
+      "bad_tokens_checked": 4,
+      "device_estimate_1d_series_visible": 9,
+      "device_estimate_1h_series_visible": 9,
+      "device_estimate_1m_series_visible": 9,
+      "homes_checked": 2,
+      "own_reading_1d_rows_visible": 5800,
+      "reading_1d_series_visible": 10,
+      "reading_1h_series_visible": 10,
+      "reading_1m_series_visible": 10,
+      "views_checked": 15
+    }
+  },
+  "latency": {
+    "cold_after_restart": {
+      "compute_bill_month": {
+        "first_call_ms": 47.8,
+        "first_calls_ms": [
+          47.8,
+          21.3,
+          19.0,
+          18.6,
+          19.6
+        ]
+      },
+      "device_breakdown_1d_hourly": {
+        "first_call_ms": 17.6,
+        "first_calls_ms": [
+          17.6,
+          2.7,
+          2.1,
+          3.0,
+          2.7
+        ]
+      },
+      "device_breakdown_30d_daily": {
+        "first_call_ms": 6.3,
+        "first_calls_ms": [
+          6.3,
+          2.9,
+          3.4,
+          3.1,
+          2.8
+        ]
+      },
+      "latest_power": {
+        "first_call_ms": 2.6,
+        "first_calls_ms": [
+          2.6,
+          2.1,
+          1.8,
+          2.0,
+          2.2
+        ]
+      },
+      "series_1d_over_90d": {
+        "first_call_ms": 21.0,
+        "first_calls_ms": [
+          21.0,
+          3.7,
+          4.3,
+          3.7,
+          4.0
+        ]
+      },
+      "series_1h_over_45d": {
+        "first_call_ms": 5.9,
+        "first_calls_ms": [
+          5.9,
+          5.7,
+          5.4,
+          4.9,
+          5.3
+        ]
+      },
+      "series_5m_over_1d": {
+        "first_call_ms": 9.5,
+        "first_calls_ms": [
+          9.5,
+          7.7,
+          5.3,
+          5.9,
+          7.3
+        ]
+      },
+      "series_6h_over_90d": {
+        "first_call_ms": 17.1,
+        "first_calls_ms": [
+          17.1,
+          6.3,
+          6.2,
+          5.6,
+          6.6
+        ]
+      }
+    },
+    "lagging_watermark": {
+      "latest_power": {
+        "last_point": "LatestPower(ts=datetime.datetime(2026, 10, 31, 18, 30, tzinfo=datetime.timezone.utc), watts=1234.0)",
+        "last_point_shows_tail": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.04,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.18,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 2,
+            "execution_ms": 0.07,
+            "node_counts": {
+              "Aggregate": 1,
+              "Append": 1,
+              "Index Scan": 2,
+              "Limit": 1,
+              "Result": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 1.03,
+            "relations_scanned": 2,
+            "root_rows": 1,
+            "shared_hit": 3,
+            "shared_read": 0,
+            "sql": "SELECT bucket, last_w FROM energy.reading_1m WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket DESC LIMIT 1",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 20.0,
+        "warm": {
+          "max_ms": 2.59,
+          "n": 30,
+          "p50_ms": 1.57,
+          "p95_ms": 1.88
+        }
+      },
+      "latest_power_sees_tail": true,
+      "raw_rows_restored": true,
+      "series_1d_over_90d": {
+        "last_point": "Point(ts=datetime.datetime(2026, 10, 31, 17, 0, tzinfo=datetime.timezone.utc), avg_w=1234.0, min_w=1234.0, max_w=1234.0, energy_wh=1871.5666666666675)",
+        "last_point_shows_tail": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.05,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.17,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 11,
+            "execution_ms": 1.18,
+            "node_counts": {
+              "Aggregate": 3,
+              "Append": 1,
+              "Custom Scan": 1,
+              "Index Scan": 11,
+              "Result": 3,
+              "Sort": 2,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 1.67,
+            "relations_scanned": 12,
+            "root_rows": 76,
+            "shared_hit": 72,
+            "shared_read": 0,
+            "sql": "SELECT bucket AS ts, avg_w, min_w, max_w, energy_wh FROM energy.reading_1d WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "warm": {
+          "max_ms": 5.86,
+          "n": 30,
+          "p50_ms": 4.49,
+          "p95_ms": 4.98
+        }
+      },
+      "series_1h_over_45d": {
+        "last_point": "Point(ts=datetime.datetime(2026, 10, 31, 18, 0, tzinfo=datetime.timezone.utc), avg_w=1234.0, min_w=1234.0, max_w=1234.0, energy_wh=637.566666666667)",
+        "last_point_shows_tail": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.04,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.17,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 6,
+            "execution_ms": 0.96,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 1,
+              "Custom Scan": 1,
+              "Index Scan": 6,
+              "Result": 2,
+              "Sort": 1,
+              "Subquery Scan": 3
+            },
+            "planning_ms": 1.61,
+            "relations_scanned": 7,
+            "root_rows": 897,
+            "shared_hit": 352,
+            "shared_read": 0,
+            "sql": "SELECT bucket AS ts, avg_w, min_w, max_w, energy_wh FROM energy.reading_1h WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "warm": {
+          "max_ms": 5.76,
+          "n": 30,
+          "p50_ms": 4.84,
+          "p95_ms": 5.66
+        }
+      },
+      "series_5m_over_1d": {
+        "last_point": "Point(ts=datetime.datetime(2026, 10, 31, 18, 30, tzinfo=datetime.timezone.utc), avg_w=1234.0, min_w=1234.0, max_w=1234.0, energy_wh=20.566666666666666)",
+        "last_point_shows_tail": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.07,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.15,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 2,
+            "execution_ms": 1.53,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 1,
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1,
+              "Index Scan": 1,
+              "Result": 2,
+              "Sort": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 0.76,
+            "relations_scanned": 2,
+            "root_rows": 227,
+            "shared_hit": 313,
+            "shared_read": 0,
+            "sql": "SELECT time_bucket(CAST($1 AS interval), bucket, origin => CAST($2 AS timestamptz)) AS ts, sum(CAST(avg_w AS double precision) * n) / NULLIF(sum(n), 0) AS avg_w",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "warm": {
+          "max_ms": 4.57,
+          "n": 30,
+          "p50_ms": 3.73,
+          "p95_ms": 4.42
+        }
+      },
+      "series_week_15m_over_7d": {
+        "last_point": "Point(ts=datetime.datetime(2026, 10, 31, 18, 30, tzinfo=datetime.timezone.utc), avg_w=1234.0, min_w=1234.0, max_w=1234.0, energy_wh=20.566666666666666)",
+        "last_point_shows_tail": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.04,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.23,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 2,
+            "execution_ms": 8.02,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 1,
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1,
+              "Index Scan": 1,
+              "Result": 2,
+              "Sort": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 0.67,
+            "relations_scanned": 2,
+            "root_rows": 651,
+            "shared_hit": 3029,
+            "shared_read": 0,
+            "sql": "SELECT time_bucket(CAST($1 AS interval), bucket, origin => CAST($2 AS timestamptz)) AS ts, sum(CAST(avg_w AS double precision) * n) / NULLIF(sum(n), 0) AS avg_w",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "warm": {
+          "max_ms": 11.72,
+          "n": 30,
+          "p50_ms": 10.56,
+          "p95_ms": 11.33
+        }
+      },
+      "tail_rows": 772,
+      "tail_rows_end": "2026-10-31T18:30:30+00:00",
+      "tail_rows_start": "2026-10-31T17:00:30+00:00",
+      "watermarks": {
+        "1d": "2026-10-31T17:00:00+00:00",
+        "1h": "2026-10-31T12:00:00+00:00",
+        "1m": "2026-10-31T11:57:00+00:00"
+      }
+    },
+    "settled_data": {
+      "compressed_chunks_reading": 636,
+      "compute_bill_month": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Index Scan": 1
+            },
+            "planning_ms": 0.13,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 2,
+            "shared_read": 0,
+            "sql": "SELECT core.home.id, core.home.name, core.home.postal_code, core.home.province_code, core.home.home_type, core.home.floor_area_m2, core.home.year_built, core.ho",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.02,
+            "node_counts": {
+              "Index Scan": 1,
+              "Limit": 1
+            },
+            "planning_ms": 0.09,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 2,
+            "shared_read": 0,
+            "sql": "SELECT billing.tariff_version.id, billing.tariff_version.plan_code, billing.tariff_version.valid_from, billing.tariff_version.valid_to, billing.tariff_version.v",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.05,
+            "node_counts": {
+              "Aggregate": 1,
+              "Index Only Scan": 1
+            },
+            "planning_ms": 0.19,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT count(*) AS count_1 FROM billing.tariff_version WHERE billing.tariff_version.plan_code = $1::VARCHAR AND billing.tariff_version.valid_from > $2::DATE AND",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.02,
+            "node_counts": {
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1
+            },
+            "planning_ms": 0.09,
+            "relations_scanned": 1,
+            "root_rows": 6,
+            "shared_hit": 2,
+            "shared_read": 0,
+            "sql": "SELECT billing.tariff_tier.version_id, billing.tariff_tier.tier_no, billing.tariff_tier.from_kwh, billing.tariff_tier.to_kwh, billing.tariff_tier.price_per_kwh ",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.02,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.18,
+            "relations_scanned": 1,
+            "root_rows": 10,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id, kind, device_id FROM energy.series WHERE home_id = $1 AND metric = 'power_w' AND kind IN ('main', 'device')",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 4,
+            "execution_ms": 0.28,
+            "node_counts": {
+              "Aggregate": 4,
+              "Append": 2,
+              "Bitmap Heap Scan": 4,
+              "Bitmap Index Scan": 4,
+              "Result": 4,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 1.55,
+            "relations_scanned": 4,
+            "root_rows": 1,
+            "shared_hit": 21,
+            "shared_read": 0,
+            "sql": "SELECT series_id, sum(energy_wh)::numeric AS wh FROM energy.reading_1d WHERE series_id = ANY($1) AND bucket >= $2 AND bucket < $3 GROUP BY series_id",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 4,
+            "execution_ms": 0.25,
+            "node_counts": {
+              "Aggregate": 4,
+              "Append": 2,
+              "Bitmap Heap Scan": 4,
+              "Bitmap Index Scan": 4,
+              "Result": 4,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 1.09,
+            "relations_scanned": 4,
+            "root_rows": 1,
+            "shared_hit": 21,
+            "shared_read": 0,
+            "sql": "SELECT coalesce(sum(covered_minutes), 0) FROM energy.reading_1d WHERE series_id = ANY($1) AND bucket >= $2 AND bucket < $3",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 4,
+            "execution_ms": 0.33,
+            "node_counts": {
+              "Aggregate": 4,
+              "Append": 2,
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1,
+              "Index Scan": 3,
+              "Result": 4,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 1.13,
+            "relations_scanned": 4,
+            "root_rows": 9,
+            "shared_hit": 120,
+            "shared_read": 0,
+            "sql": "SELECT series_id, sum(energy_wh)::numeric AS wh FROM energy.device_estimate_1d WHERE series_id = ANY($1) AND bucket >= $2 AND bucket < $3 GROUP BY series_id",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.05,
+            "node_counts": {
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1
+            },
+            "planning_ms": 0.16,
+            "relations_scanned": 1,
+            "root_rows": 9,
+            "shared_hit": 2,
+            "shared_read": 0,
+            "sql": "SELECT core.device.id, core.device.name FROM core.device WHERE core.device.id IN ($1::UUID, $2::UUID, $3::UUID, $4::UUID, $5::UUID, $6::UUID, $7::UUID, $8::UUID",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Index Scan": 1
+            },
+            "planning_ms": 0.11,
+            "relations_scanned": 1,
+            "root_rows": 0,
+            "shared_hit": 3,
+            "shared_read": 0,
+            "sql": "SELECT billing.bill.id, billing.bill.home_id, billing.bill.period_start, billing.bill.period_end, billing.bill.version_id, billing.bill.kwh_total, billing.bill.",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 17.51,
+          "n": 30,
+          "p50_ms": 14.51,
+          "p95_ms": 17.03
+        },
+        "warm": {
+          "max_ms": 27.12,
+          "n": 30,
+          "p50_ms": 13.42,
+          "p95_ms": 16.25
+        }
+      },
+      "device_breakdown_1d_hourly": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.09,
+            "relations_scanned": 1,
+            "root_rows": 9,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id, device_id FROM energy.series WHERE home_id = $1 AND kind = 'device' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 1,
+            "execution_ms": 0.2,
+            "node_counts": {
+              "Aggregate": 3,
+              "Append": 1,
+              "Index Scan": 1,
+              "Result": 3,
+              "Subquery Scan": 3
+            },
+            "planning_ms": 0.63,
+            "relations_scanned": 1,
+            "root_rows": 9,
+            "shared_hit": 28,
+            "shared_read": 0,
+            "sql": "SELECT series_id, sum(energy_wh) AS wh FROM energy.device_estimate_1h WHERE series_id = ANY($1) AND bucket >= $2 AND bucket < $3 GROUP BY series_id",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 2.94,
+          "n": 30,
+          "p50_ms": 2.44,
+          "p95_ms": 2.81
+        },
+        "warm": {
+          "max_ms": 25.98,
+          "n": 30,
+          "p50_ms": 2.38,
+          "p95_ms": 3.14
+        }
+      },
+      "device_breakdown_30d_daily": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.13,
+            "relations_scanned": 1,
+            "root_rows": 9,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id, device_id FROM energy.series WHERE home_id = $1 AND kind = 'device' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 4,
+            "execution_ms": 0.31,
+            "node_counts": {
+              "Aggregate": 4,
+              "Append": 2,
+              "Index Scan": 3,
+              "Result": 4,
+              "Seq Scan": 1,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 0.96,
+            "relations_scanned": 4,
+            "root_rows": 9,
+            "shared_hit": 87,
+            "shared_read": 0,
+            "sql": "SELECT series_id, sum(energy_wh) AS wh FROM energy.device_estimate_1d WHERE series_id = ANY($1) AND bucket >= $2 AND bucket < $3 GROUP BY series_id",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 3.52,
+          "n": 30,
+          "p50_ms": 2.94,
+          "p95_ms": 3.39
+        },
+        "warm": {
+          "max_ms": 25.28,
+          "n": 30,
+          "p50_ms": 3.25,
+          "p95_ms": 3.85
+        }
+      },
+      "latest_power": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.13,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 2,
+            "execution_ms": 0.09,
+            "node_counts": {
+              "Aggregate": 1,
+              "Append": 1,
+              "Custom Scan": 1,
+              "Index Scan": 2,
+              "Limit": 1,
+              "Result": 2,
+              "Sort": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 0.79,
+            "relations_scanned": 3,
+            "root_rows": 1,
+            "shared_hit": 4,
+            "shared_read": 0,
+            "sql": "SELECT bucket, last_w FROM energy.reading_1m WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket DESC LIMIT 1",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 20.0,
+        "varied_windows": {
+          "max_ms": 7.22,
+          "n": 30,
+          "p50_ms": 1.54,
+          "p95_ms": 4.29
+        },
+        "warm": {
+          "max_ms": 6.12,
+          "n": 30,
+          "p50_ms": 1.71,
+          "p95_ms": 2.46
+        }
+      },
+      "runs_per_case": 30,
+      "series_1d_over_90d": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.02,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.08,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 10,
+            "execution_ms": 0.32,
+            "node_counts": {
+              "Aggregate": 3,
+              "Append": 1,
+              "Custom Scan": 1,
+              "Index Scan": 10,
+              "Result": 4,
+              "Sort": 1,
+              "Subquery Scan": 4
+            },
+            "planning_ms": 1.2,
+            "relations_scanned": 11,
+            "root_rows": 87,
+            "shared_hit": 69,
+            "shared_read": 0,
+            "sql": "SELECT bucket AS ts, avg_w, min_w, max_w, energy_wh FROM energy.reading_1d WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 3.89,
+          "n": 30,
+          "p50_ms": 3.19,
+          "p95_ms": 3.7
+        },
+        "warm": {
+          "max_ms": 25.36,
+          "n": 30,
+          "p50_ms": 3.37,
+          "p95_ms": 3.96
+        }
+      },
+      "series_1h_over_45d": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.04,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.18,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 6,
+            "execution_ms": 0.85,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 1,
+              "Custom Scan": 1,
+              "Index Scan": 6,
+              "Result": 3,
+              "Sort": 1,
+              "Subquery Scan": 3
+            },
+            "planning_ms": 1.75,
+            "relations_scanned": 7,
+            "root_rows": 887,
+            "shared_hit": 354,
+            "shared_read": 0,
+            "sql": "SELECT bucket AS ts, avg_w, min_w, max_w, energy_wh FROM energy.reading_1h WHERE series_id = $1 AND bucket >= $2 AND bucket < $3 ORDER BY bucket",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 5.74,
+          "n": 30,
+          "p50_ms": 5.22,
+          "p95_ms": 5.72
+        },
+        "warm": {
+          "max_ms": 8.93,
+          "n": 30,
+          "p50_ms": 4.81,
+          "p95_ms": 5.66
+        }
+      },
+      "series_5m_over_1d": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.03,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.14,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 1,
+            "execution_ms": 1.31,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 1,
+              "Bitmap Heap Scan": 1,
+              "Bitmap Index Scan": 1,
+              "Result": 3,
+              "Sort": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 0.48,
+            "relations_scanned": 1,
+            "root_rows": 289,
+            "shared_hit": 461,
+            "shared_read": 0,
+            "sql": "SELECT time_bucket(CAST($1 AS interval), bucket, origin => CAST($2 AS timestamptz)) AS ts, sum(CAST(avg_w AS double precision) * n) / NULLIF(sum(n), 0) AS avg_w",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 11.22,
+          "n": 30,
+          "p50_ms": 8.22,
+          "p95_ms": 10.79
+        },
+        "warm": {
+          "max_ms": 30.58,
+          "n": 30,
+          "p50_ms": 3.55,
+          "p95_ms": 4.4
+        }
+      },
+      "series_6h_over_90d": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.05,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.23,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 10,
+            "execution_ms": 2.07,
+            "node_counts": {
+              "Aggregate": 3,
+              "Append": 2,
+              "Bitmap Heap Scan": 10,
+              "Bitmap Index Scan": 10,
+              "Result": 4,
+              "Sort": 1,
+              "Subquery Scan": 3
+            },
+            "planning_ms": 1.25,
+            "relations_scanned": 10,
+            "root_rows": 332,
+            "shared_hit": 640,
+            "shared_read": 0,
+            "sql": "SELECT time_bucket(CAST($1 AS interval), bucket, origin => CAST($2 AS timestamptz)) AS ts, sum(CAST(avg_w AS double precision) * n) / NULLIF(sum(n), 0) AS avg_w",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 5.76,
+          "n": 30,
+          "p50_ms": 4.31,
+          "p95_ms": 5.27
+        },
+        "warm": {
+          "max_ms": 29.2,
+          "n": 30,
+          "p50_ms": 3.59,
+          "p95_ms": 6.25
+        }
+      },
+      "series_week_15m_over_7d": {
+        "pass": true,
+        "plans": [
+          {
+            "chunk_relations_scanned": 0,
+            "execution_ms": 0.04,
+            "node_counts": {
+              "Seq Scan": 1
+            },
+            "planning_ms": 0.19,
+            "relations_scanned": 1,
+            "root_rows": 1,
+            "shared_hit": 1,
+            "shared_read": 0,
+            "sql": "SELECT series_id FROM energy.series WHERE home_id = $1 AND kind = 'main' AND metric = 'power_w'",
+            "subplans_removed": 0
+          },
+          {
+            "chunk_relations_scanned": 2,
+            "execution_ms": 9.25,
+            "node_counts": {
+              "Aggregate": 2,
+              "Append": 2,
+              "Bitmap Heap Scan": 2,
+              "Bitmap Index Scan": 2,
+              "Result": 3,
+              "Sort": 1,
+              "Subquery Scan": 2
+            },
+            "planning_ms": 0.75,
+            "relations_scanned": 2,
+            "root_rows": 673,
+            "shared_hit": 3182,
+            "shared_read": 0,
+            "sql": "SELECT time_bucket(CAST($1 AS interval), bucket, origin => CAST($2 AS timestamptz)) AS ts, sum(CAST(avg_w AS double precision) * n) / NULLIF(sum(n), 0) AS avg_w",
+            "subplans_removed": 0
+          }
+        ],
+        "target_p95_ms": 100.0,
+        "varied_windows": {
+          "max_ms": 55.22,
+          "n": 30,
+          "p50_ms": 33.14,
+          "p95_ms": 52.29
+        },
+        "warm": {
+          "max_ms": 40.05,
+          "n": 30,
+          "p50_ms": 10.8,
+          "p95_ms": 11.61
+        }
+      }
+    }
+  },
+  "load": {
+    "house1": {
+      "csv_rows": 6960008,
+      "load_seconds": 1403.7,
+      "process_wall_seconds": 1404.7,
+      "readings_per_s": 49583,
+      "rows_bad": 0,
+      "rows_dup": 0,
+      "rows_in": 69600080,
+      "rows_new": 69600080,
+      "shift_days": 4131
+    },
+    "house2": {
+      "csv_rows": 5733526,
+      "load_seconds": 1280.7,
+      "process_wall_seconds": 1281.9,
+      "readings_per_s": 44769,
+      "rows_bad": 0,
+      "rows_dup": 0,
+      "rows_in": 57335260,
+      "rows_new": 57335260,
+      "shift_days": 4174
+    },
+    "house3": {
+      "csv_rows": 6994594,
+      "load_seconds": 1567.5,
+      "process_wall_seconds": 1568.6,
+      "readings_per_s": 44623,
+      "rows_bad": 0,
+      "rows_dup": 0,
+      "rows_in": 69945940,
+      "rows_new": 69945940,
+      "shift_days": 4169
+    },
+    "run_parallel_2-3": {
+      "aggregate_readings_per_s": 81141,
+      "houses": [
+        2,
+        3
+      ],
+      "mean_per_stream_readings_per_s": 44696,
+      "mode": "parallel",
+      "readings": 127281200,
+      "wall_seconds": 1568.6
+    },
+    "run_sequential_1": {
+      "aggregate_readings_per_s": 49547,
+      "houses": [
+        1
+      ],
+      "mean_per_stream_readings_per_s": 49583,
+      "mode": "sequential",
+      "readings": 69600080,
+      "wall_seconds": 1404.7
+    }
+  },
+  "policies": {
+    "jobs_remaining": 0,
+    "state": "off"
+  },
+  "policy_drill": {
+    "aggregate_rows_before_policies": {
+      "1d": 130,
+      "1h": 2760,
+      "1m": 164310
+    },
+    "copied_rows": {
+      "reading": 1533860
+    },
+    "jobs_after_set_policies_true": [
+      {
+        "config": {
+          "compress_after": "2 days",
+          "hypertable_id": 2
+        },
+        "hypertable": "device_estimate",
+        "job_id": 1015,
+        "proc": "policy_compression",
+        "schedule": "12:00:00"
+      },
+      {
+        "config": {
+          "drop_after": "400 days",
+          "hypertable_id": 2
+        },
+        "hypertable": "device_estimate",
+        "job_id": 1017,
+        "proc": "policy_retention",
+        "schedule": "1 day"
+      },
+      {
+        "config": {
+          "end_offset": "01:00:00",
+          "mat_hypertable_id": 8,
+          "start_offset": "60 days"
+        },
+        "hypertable": "device_estimate_1d",
+        "job_id": 1025,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "01:00:00"
+      },
+      {
+        "config": {
+          "end_offset": "01:00:00",
+          "mat_hypertable_id": 7,
+          "start_offset": "30 days"
+        },
+        "hypertable": "device_estimate_1h",
+        "job_id": 1024,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "01:00:00"
+      },
+      {
+        "config": {
+          "compress_after": "14 days",
+          "hypertable_id": 6
+        },
+        "hypertable": "device_estimate_1m",
+        "job_id": 1026,
+        "proc": "policy_compression",
+        "schedule": "12:00:00"
+      },
+      {
+        "config": {
+          "end_offset": "00:01:00",
+          "mat_hypertable_id": 6,
+          "start_offset": "7 days"
+        },
+        "hypertable": "device_estimate_1m",
+        "job_id": 1023,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "00:01:00"
+      },
+      {
+        "config": {
+          "drop_after": "400 days",
+          "hypertable_id": 6
+        },
+        "hypertable": "device_estimate_1m",
+        "job_id": 1027,
+        "proc": "policy_retention",
+        "schedule": "1 day"
+      },
+      {
+        "config": {
+          "compress_after": "2 days",
+          "hypertable_id": 1
+        },
+        "hypertable": "reading",
+        "job_id": 1014,
+        "proc": "policy_compression",
+        "schedule": "12:00:00"
+      },
+      {
+        "config": {
+          "drop_after": "400 days",
+          "hypertable_id": 1
+        },
+        "hypertable": "reading",
+        "job_id": 1016,
+        "proc": "policy_retention",
+        "schedule": "1 day"
+      },
+      {
+        "config": {
+          "end_offset": "01:00:00",
+          "mat_hypertable_id": 5,
+          "start_offset": "60 days"
+        },
+        "hypertable": "reading_1d",
+        "job_id": 1020,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "01:00:00"
+      },
+      {
+        "config": {
+          "end_offset": "01:00:00",
+          "mat_hypertable_id": 4,
+          "start_offset": "30 days"
+        },
+        "hypertable": "reading_1h",
+        "job_id": 1019,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "01:00:00"
+      },
+      {
+        "config": {
+          "compress_after": "14 days",
+          "hypertable_id": 3
+        },
+        "hypertable": "reading_1m",
+        "job_id": 1021,
+        "proc": "policy_compression",
+        "schedule": "12:00:00"
+      },
+      {
+        "config": {
+          "end_offset": "00:01:00",
+          "mat_hypertable_id": 3,
+          "start_offset": "7 days"
+        },
+        "hypertable": "reading_1m",
+        "job_id": 1018,
+        "proc": "policy_refresh_continuous_aggregate",
+        "schedule": "00:01:00"
+      },
+      {
+        "config": {
+          "drop_after": "400 days",
+          "hypertable_id": 3
+        },
+        "hypertable": "reading_1m",
+        "job_id": 1022,
+        "proc": "policy_retention",
+        "schedule": "1 day"
+      }
+    ],
+    "jobs_paused_for_deterministic_drill": true,
+    "mid_slice_raw_rows_intact": true,
+    "old_slice": {
+      "default_backfill_skipped_windows": 2,
+      "materialized_rows_after_1m_retention_job": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 0
+      },
+      "materialized_rows_after_backfill_over_dropped_range": {
+        "1d": 0,
+        "1h": 0,
+        "1m": 0
+      },
+      "materialized_rows_after_raw_retention": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      },
+      "materialized_rows_after_refresh_policies": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      },
+      "materialized_rows_before": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      },
+      "raw_rows_after": 0,
+      "raw_rows_before": 700920,
+      "view_rows_after_1m_retention_job": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 0
+      },
+      "view_rows_after_backfill_over_dropped_range": {
+        "1d": 0,
+        "1h": 0,
+        "1m": 0
+      },
+      "view_rows_after_default_guarded_backfill": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 0
+      },
+      "view_rows_after_raw_retention": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      },
+      "view_rows_after_refresh_policies": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      },
+      "view_rows_before": {
+        "1d": 50,
+        "1h": 1200,
+        "1m": 71280
+      }
+    },
+    "raw_chunks_after_compression_policy": {
+      "compressed": 10,
+      "total": 12
+    },
+    "raw_chunks_after_raw_retention": {
+      "compressed": 5,
+      "total": 7
+    },
+    "raw_chunks_before": {
+      "compressed": 0,
+      "total": 12
+    },
+    "recent_slice_raw_rows_intact": true,
+    "refresh_policy_jobs_found": {
+      "1d": true,
+      "1h": true,
+      "1m": true
+    },
+    "retention_policy_jobs": [
+      "device_estimate",
+      "device_estimate_1m",
+      "reading",
+      "reading_1m"
+    ],
+    "run_at": "2026-11-01T19:18:38.767820+00:00",
+    "slices": {
+      "mid": [
+        "2026-09-01 00:00:00+00:00",
+        "2026-09-04 00:00:00+00:00"
+      ],
+      "old": [
+        "2025-02-01 00:00:00+00:00",
+        "2025-02-06 00:00:00+00:00"
+      ],
+      "recent": [
+        "2026-10-25 00:00:00+00:00",
+        "2026-11-01 00:00:00+00:00"
+      ]
+    }
+  },
+  "rebuild": {
+    "from_empty": {
+      "device_types_seeded": 22,
+      "load_output": "house 1: rows_in=100000 rows_new=100000 rows_dup=0 rows_bad=0 in 1.9s (53,575 readings/s)",
+      "manual_steps": 0,
+      "policy_jobs_after_migration": 14,
+      "readings": 100000,
+      "series": 10,
+      "tariff_tiers_seeded": 11
+    }
+  },
+  "refresh_cost": {
+    "forced_30_day_window_seconds": {
+      "1d": 0.086,
+      "1h": 1.157,
+      "1m": 30.948
+    },
+    "markers_left_after_cleanup": 0,
+    "one_invalidated_day_refresh_seconds": {
+      "1d": 0.017,
+      "1h": 0.013,
+      "1m": 0.233
+    },
+    "policy_window_nothing_to_do_seconds": {
+      "1d": 0.004,
+      "1h": 0.004,
+      "1m": 0.006
+    },
+    "policy_window_with_one_invalidation_seconds": {
+      "1d": 0.015,
+      "1h": 0.008,
+      "1m": 0.046
+    },
+    "query_plan_30d_window": {
+      "over_materialization_table": {
+        "chunk_relations_scanned": 4,
+        "execution_ms": 11.77,
+        "node_counts": {
+          "Aggregate": 5,
+          "Append": 1,
+          "Index Scan": 2,
+          "Seq Scan": 2
+        },
+        "planning_ms": 0.41,
+        "relations_scanned": 4,
+        "root_rows": 880,
+        "shared_hit": 1295,
+        "shared_read": 0,
+        "subplans_removed": 0
+      },
+      "over_realtime_view_reading_1h": {
+        "chunk_relations_scanned": 4,
+        "execution_ms": 17.14,
+        "node_counts": {
+          "Aggregate": 3,
+          "Append": 2,
+          "Index Scan": 2,
+          "Result": 4,
+          "Seq Scan": 2,
+          "Subquery Scan": 3
+        },
+        "planning_ms": 2.42,
+        "relations_scanned": 4,
+        "root_rows": 880,
+        "shared_hit": 1295,
+        "shared_read": 0,
+        "subplans_removed": 0
+      }
+    },
+    "reading_1d_checksum_after_forced_recompute_equals_before": false,
+    "reading_1d_checksum_restored_after_marker_cycle": false,
+    "reading_1d_diff_vs_snapshot_after_forced_recompute": {
+      "max_rel_diff": 3.4539585477366196e-16,
+      "new_rows": 0,
+      "rows_changed": 12,
+      "rows_lost": 0,
+      "rows_now": 16340
+    },
+    "reading_1d_diff_vs_snapshot_after_marker_cycle": {
+      "max_rel_diff": 3.4539585477366196e-16,
+      "new_rows": 0,
+      "rows_changed": 12,
+      "rows_lost": 0,
+      "rows_now": 16340
+    },
+    "scratch_comparison": {
+      "window_only": {
+        "backfill_seconds_per_view": {
+          "energy.device_estimate_1d": 0.01,
+          "energy.device_estimate_1h": 0.01,
+          "energy.device_estimate_1m": 0.01,
+          "energy.reading_1d": 0.07,
+          "energy.reading_1h": 0.65,
+          "energy.reading_1m": 21.69
+        },
+        "copied_rows": {
+          "reading": 3850040
+        },
+        "plan_of_1d_source_query_over_reading_1h": {
+          "chunk_relations_scanned": 4,
+          "execution_ms": 6.28,
+          "node_counts": {
+            "Aggregate": 3,
+            "Append": 2,
+            "Bitmap Heap Scan": 2,
+            "Bitmap Index Scan": 2,
+            "Index Scan": 2,
+            "Result": 4,
+            "Subquery Scan": 3
+          },
+          "planning_ms": 1.1,
+          "relations_scanned": 4,
+          "root_rows": 300,
+          "shared_hit": 222,
+          "shared_read": 0,
+          "subplans_removed": 0
+        }
+      },
+      "window_plus_newer_raw_with_1m_and_1h_materialized_only": {
+        "backfill_seconds_per_view": {
+          "energy.device_estimate_1d": 0.01,
+          "energy.device_estimate_1h": 0.01,
+          "energy.device_estimate_1m": 0.01,
+          "energy.reading_1d": 0.04,
+          "energy.reading_1h": 0.56,
+          "energy.reading_1m": 22.29
+        },
+        "copied_rows": {
+          "reading": 16882370
+        },
+        "plan_of_1d_source_query_over_reading_1h": {
+          "chunk_relations_scanned": 4,
+          "execution_ms": 4.2,
+          "node_counts": {
+            "Aggregate": 5,
+            "Append": 1,
+            "Bitmap Heap Scan": 2,
+            "Bitmap Index Scan": 2,
+            "Seq Scan": 2
+          },
+          "planning_ms": 0.45,
+          "relations_scanned": 4,
+          "root_rows": 300,
+          "shared_hit": 87,
+          "shared_read": 0,
+          "subplans_removed": 0
+        }
+      },
+      "window_plus_newer_unmaterialized_raw": {
+        "backfill_seconds_per_view": {
+          "energy.device_estimate_1d": 0.01,
+          "energy.device_estimate_1h": 0.01,
+          "energy.device_estimate_1m": 0.01,
+          "energy.reading_1d": 6.48,
+          "energy.reading_1h": 0.67,
+          "energy.reading_1m": 22.14
+        },
+        "copied_rows": {
+          "reading": 16882370
+        },
+        "plan_of_1d_source_query_over_reading_1h": {
+          "chunk_relations_scanned": 4,
+          "execution_ms": 5.92,
+          "node_counts": {
+            "Aggregate": 3,
+            "Append": 2,
+            "Bitmap Heap Scan": 2,
+            "Bitmap Index Scan": 2,
+            "Index Scan": 2,
+            "Result": 4,
+            "Subquery Scan": 3
+          },
+          "planning_ms": 0.8,
+          "relations_scanned": 4,
+          "root_rows": 300,
+          "shared_hit": 222,
+          "shared_read": 0,
+          "subplans_removed": 0
+        }
+      }
+    }
+  },
+  "stats": {
+    "bytes": {
+      "aggregates": {
+        "device_estimate_1d": 5480448,
+        "device_estimate_1h": 52707328,
+        "device_estimate_1m": 3009716224,
+        "reading_1d": 6168576,
+        "reading_1h": 58744832,
+        "reading_1m": 3357270016
+      },
+      "aggregates_total": 6490087424,
+      "device_estimate": 995926016,
+      "reading": 1105944576
+    },
+    "bytes_per_device_estimate_raw": 5.621,
+    "bytes_per_home_year_reading_plus_aggregates": 883957799,
+    "bytes_per_reading_incl_reading_aggregates": 22.999,
+    "bytes_per_reading_raw": 5.617,
+    "home_days_of_data": {
+      "REFIT House 1": 639.0,
+      "REFIT House 2": 617.4,
+      "REFIT House 3": 614.6
+    },
+    "home_years": 5.123,
+    "rows": {
+      "aggregates": {
+        "device_estimate_1d": 14706,
+        "device_estimate_1h": 342054,
+        "device_estimate_1m": 20325051,
+        "reading_1d": 16340,
+        "reading_1h": 378670,
+        "reading_1m": 22185510
+      },
+      "device_estimate": 177193152,
+      "reading": 196881280
+    },
+    "total_database_bytes": 8591958016
+  }
+}

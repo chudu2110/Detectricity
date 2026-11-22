@@ -1,0 +1,33 @@
+.env
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+dist/
+.idea/
+.vscode/
+!.vscode/
+!.vscode/settings.json
+.superpowers/
+
+# NILM dataset / training outputs (shipped as dataset/archive.zip and dataset/training/artifacts.zip)
+dataset/CLEAN_House*.csv
+dataset/preprocessed/
+dataset/training/data/
+dataset/training/artifacts/
+dataset/training/checkpoints/
+dataset/training/figures/
+dataset/training/logs/
+
+# Raw REFIT download (6.5 GB + 7z): never commit
+dataset/CLEAN_REFIT_*
+dataset/MetaData_Tables.xlsx
+
+# Keycloak provider jars (the login theme is built in wattprint-web/apps/keycloak-theme)
+keycloak/providers/*.jar
+
+# NILM model bundles per home (dataset/models/nilm/<home>/nilm_pipeline.pt), registered in tb_nilm_model
+dataset/models/

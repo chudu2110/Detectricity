@@ -1,0 +1,46 @@
+# Local credentials and machine settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+.DS_Store
+
+# Installed dependencies, generated builds and caches
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.expo/
+.gradle/
+.kotlin/
+*.tsbuildinfo
+**/dist/
+**/build/
+/wattprint-expo/android/
+/wattprint-expo/ios/
+.claude/worktrees/
+.claude/settings.local.json
+
+# Runtime evidence and local Git metadata backups
+/Agent-Rules/logs/
+/Agent-Rules/screenshots/
+*.log
+
+# Large raw files are already distributed in the tracked dataset archives
+/wattprint-backend/dataset/CLEAN_House*.csv
+/wattprint-backend/dataset/preprocessed/
+/wattprint-backend/dataset/training/data/
+/wattprint-backend/dataset/training/artifacts/
+/wattprint-backend/dataset/training/checkpoints/
+/wattprint-backend/dataset/training/figures/
+/wattprint-backend/dataset/training/logs/
+/wattprint-backend/dataset/CLEAN_REFIT_*
+/wattprint-backend/dataset/MetaData_Tables.xlsx

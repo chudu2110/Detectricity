@@ -1,0 +1,278 @@
+{
+  "format": "wattprint-nilm/2",
+  "appliances": [
+    "Appliance1",
+    "Appliance2",
+    "Appliance3",
+    "Appliance5",
+    "Appliance6",
+    "Appliance8"
+  ],
+  "labels": [
+    "Fridge",
+    "WashMach",
+    "Dishwash",
+    "Microwave",
+    "Toaster",
+    "Kettle"
+  ],
+  "on_threshold_w": [
+    50.0,
+    20.0,
+    10.0,
+    200.0,
+    200.0,
+    1000.0
+  ],
+  "gate": "soft",
+  "event_thresholds": [
+    0.36000001430511475,
+    0.18000000715255737,
+    0.46000000834465027,
+    0.18000000715255737,
+    0.3199999928474426,
+    0.3799999952316284
+  ],
+  "tau_w": 10000.0,
+  "sample_seconds": 15,
+  "window": 256,
+  "input": "(B, 9, 256) float32: aggregate W (resample 15 s, clip >= 0) + 8 sin/cos time features (data.py --window 256)",
+  "output": "appliance W (B, C, L) = P(ON) x power; Other = aggregate - sum(appliances), clamp >= 0",
+  "meta": {
+    "config": "focal_L256",
+    "det_loss": "focal",
+    "focal_gamma": 2.0,
+    "lambda": 5.0,
+    "final_epochs": 17,
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "trained_until": "2015-01-24 19:38:15",
+    "test_summary": {
+      "energy F1": 0.5674335956573486,
+      "energy P": 0.5514299273490906,
+      "energy R": 0.588700532913208,
+      "tách biệt": 0.484371542930603,
+      "F1 ON/OFF": 0.6601940934128674,
+      "mean |kWh err| %": 11.369935035705566,
+      "total kWh err %": 11.900782585144043
+    }
+  },
+  "members": [
+    {
+      "seed": 11,
+      "scale_w": [
+        43.57794952392578,
+        114.08710479736328,
+        317.21234130859375,
+        44.27190399169922,
+        30.906890869140625,
+        204.95713806152344
+      ],
+      "detector_config": {
+        "c_in": 10,
+        "c_out": 6,
+        "kernel_size": 5,
+        "conv_channels": 64,
+        "hidden": 64,
+        "num_layers": 2,
+        "dropout": 0.1
+      },
+      "regressor_config": {
+        "c_in": 1,
+        "c_out": 6,
+        "c_embedding": 8,
+        "kernel_size": 3,
+        "kernel_size_head": 3,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "conv_bias": true,
+        "use_efficient_attention": false,
+        "n_encoder_layers": 3,
+        "d_model": 96,
+        "dp_rate": 0.2,
+        "pffn_ratio": 4,
+        "n_head": 8,
+        "norm_eps": 1e-05
+      }
+    },
+    {
+      "seed": 22,
+      "scale_w": [
+        43.57794952392578,
+        114.08710479736328,
+        317.21234130859375,
+        44.27190399169922,
+        30.906890869140625,
+        204.95713806152344
+      ],
+      "detector_config": {
+        "c_in": 10,
+        "c_out": 6,
+        "kernel_size": 5,
+        "conv_channels": 64,
+        "hidden": 64,
+        "num_layers": 2,
+        "dropout": 0.1
+      },
+      "regressor_config": {
+        "c_in": 1,
+        "c_out": 6,
+        "c_embedding": 8,
+        "kernel_size": 3,
+        "kernel_size_head": 3,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "conv_bias": true,
+        "use_efficient_attention": false,
+        "n_encoder_layers": 3,
+        "d_model": 96,
+        "dp_rate": 0.2,
+        "pffn_ratio": 4,
+        "n_head": 8,
+        "norm_eps": 1e-05
+      }
+    },
+    {
+      "seed": 33,
+      "scale_w": [
+        43.57794952392578,
+        114.08710479736328,
+        317.21234130859375,
+        44.27190399169922,
+        30.906890869140625,
+        204.95713806152344
+      ],
+      "detector_config": {
+        "c_in": 10,
+        "c_out": 6,
+        "kernel_size": 5,
+        "conv_channels": 64,
+        "hidden": 64,
+        "num_layers": 2,
+        "dropout": 0.1
+      },
+      "regressor_config": {
+        "c_in": 1,
+        "c_out": 6,
+        "c_embedding": 8,
+        "kernel_size": 3,
+        "kernel_size_head": 3,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "conv_bias": true,
+        "use_efficient_attention": false,
+        "n_encoder_layers": 3,
+        "d_model": 96,
+        "dp_rate": 0.2,
+        "pffn_ratio": 4,
+        "n_head": 8,
+        "norm_eps": 1e-05
+      }
+    },
+    {
+      "seed": 44,
+      "scale_w": [
+        43.57794952392578,
+        114.08710479736328,
+        317.21234130859375,
+        44.27190399169922,
+        30.906890869140625,
+        204.95713806152344
+      ],
+      "detector_config": {
+        "c_in": 10,
+        "c_out": 6,
+        "kernel_size": 5,
+        "conv_channels": 64,
+        "hidden": 64,
+        "num_layers": 2,
+        "dropout": 0.1
+      },
+      "regressor_config": {
+        "c_in": 1,
+        "c_out": 6,
+        "c_embedding": 8,
+        "kernel_size": 3,
+        "kernel_size_head": 3,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "conv_bias": true,
+        "use_efficient_attention": false,
+        "n_encoder_layers": 3,
+        "d_model": 96,
+        "dp_rate": 0.2,
+        "pffn_ratio": 4,
+        "n_head": 8,
+        "norm_eps": 1e-05
+      }
+    },
+    {
+      "seed": 55,
+      "scale_w": [
+        43.57794952392578,
+        114.08710479736328,
+        317.21234130859375,
+        44.27190399169922,
+        30.906890869140625,
+        204.95713806152344
+      ],
+      "detector_config": {
+        "c_in": 10,
+        "c_out": 6,
+        "kernel_size": 5,
+        "conv_channels": 64,
+        "hidden": 64,
+        "num_layers": 2,
+        "dropout": 0.1
+      },
+      "regressor_config": {
+        "c_in": 1,
+        "c_out": 6,
+        "c_embedding": 8,
+        "kernel_size": 3,
+        "kernel_size_head": 3,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "conv_bias": true,
+        "use_efficient_attention": false,
+        "n_encoder_layers": 3,
+        "d_model": 96,
+        "dp_rate": 0.2,
+        "pffn_ratio": 4,
+        "n_head": 8,
+        "norm_eps": 1e-05
+      }
+    }
+  ],
+  "files": {
+    "nilm_pipeline.pt2": "architecture + weights + inference (torch.export, dynamic batch, window fixed): torch.export.load(path).module()(x) -> (appliance_w, other_w, p_on)",
+    "nilm_pipeline.pt": "weights + config, torch.load(weights_only=True); use with inference.py + model/",
+    "inference.py": "NILMModel(path).predict(x), make_input(series)",
+    "model/": "architecture source, copy of app/ml/nilm (GRUDetector, NILMFormerRegressor)"
+  }
+}
