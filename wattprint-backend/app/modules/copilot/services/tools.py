@@ -65,15 +65,6 @@ def _vi(ctx: Ctx, vi: str, en: str) -> str:
     return vi if ctx.lang == "vi" else en
 
 
-async def _avg_price(ctx: Ctx) -> float | None:
-    """VND per kWh of the running cycle, VAT included; None without a tariff or any kWh yet."""
-    try:
-        bill = await current_bill(ctx.session, ctx.home_id, ctx.now)
-    except LookupError:
-        return None
-    return float(bill.amount_total / bill.kwh) if bill.kwh else None
-
-
 async def _daily_kwh(ctx: Ctx, lo: date, hi: date) -> dict[date, float]:
     """Main-meter kWh per local day in [lo, hi)."""
     rows = await ctx.session.execute(
@@ -378,8 +369,7 @@ async def standby(ctx: Ctx, nights: int = 14) -> Outcome:
         return Outcome({"error": "no full night of readings yet"}, "reading_1m")
     base = statistics.median(w for _, w in watts)
     kwh_month = base * 24 * 30 / 1000
-    price = await _avg_price(ctx)
-    vnd = kwh_month * price if price else None
+    vnd = await _saving_vnd(ctx, kwh_month)
     return Outcome(
         data={
             "method": "5th percentile of whole-home power, 00:00-05:00, per night",
@@ -459,21 +449,91 @@ async def query_data(ctx: Ctx, question: str) -> Outcome:
     )
 
 
+async def _device_use(ctx: Ctx, device_id: str, days: int = 30) -> tuple[float, float] | None:
+    """(average watts while on, hours on per day) of a device of this home over `days` days, from
+    its recognised on/off cycles; None without a cycle."""
+    try:
+        did = uuid.UUID(str(device_id))
+    except ValueError:
+        return None
+    row = (
+        await ctx.session.execute(
+            text(
+                "SELECT sum(energy_wh) AS wh, "
+                "sum(extract(epoch FROM end_ts - start_ts)) / 3600 AS hours "
+                "FROM public.tb_device_cycle WHERE home_id = :h AND device_id = :d "
+                "AND start_ts >= :lo"
+            ),
+            {"h": ctx.home_id, "d": did, "lo": ctx.now - timedelta(days=days)},
+        )
+    ).one()
+    if not row.hours:
+        return None
+    return float(row.wh) / float(row.hours), float(row.hours) / days
+
+
+async def _saving(ctx: Ctx, task: dict[str, Any], standby_w: float | None) -> tuple[float, str]:
+    """(kWh per month, how it was measured) the task saves, from this home's own readings. The
+    model only chooses the action and its size; a size beyond what was measured is capped."""
+    kind = task.get("kind")
+    if kind == "standby" and standby_w:
+        watts = min(max(0.0, float(task.get("watts") or 0)), standby_w)
+        return watts * 24 * 30 / 1000, f"{round(watts)} W of {round(standby_w)} W measured standby"
+    if kind == "device_hours" and (use := await _device_use(ctx, task.get("device_id", ""))):
+        avg_w, hours_day = use
+        hours = min(max(0.0, float(task.get("hours_per_day") or 0)), hours_day)
+        return avg_w * hours * 30 / 1000, (
+            f"{hours:.1f} h/day less of {hours_day:.1f} h/day measured at {round(avg_w)} W"
+        )
+    return 0.0, "not measurable from the readings"
+
+
+def _tiered(tiers: list[Any], kwh: float) -> float:
+    return sum(
+        max(0.0, min(kwh, float(t.to_kwh) if t.to_kwh is not None else kwh) - float(t.from_kwh))
+        * float(t.price_per_kwh)
+        for t in tiers
+    )
+
+
+async def _saving_vnd(ctx: Ctx, kwh: float) -> float | None:
+    """VND per month that `kwh` less per month saves, VAT included: priced on the top tiers of
+    the cycle's projected kWh (where the saved kWh come off), not at the average price."""
+    try:
+        b = await current_bill(ctx.session, ctx.home_id, ctx.now)
+    except LookupError:
+        return None
+    f = await forecast_bill(ctx.session, ctx.home_id, ctx.now)
+    top = float(f.kwh if f else b.kwh)
+    if not top:
+        return None
+    cut = _tiered(b.tiers, top) - _tiered(b.tiers, max(0.0, top - kwh))
+    return cut * (1 + float(b.vat_rate))
+
+
 async def propose_plan(ctx: Ctx, title: str, tasks: list[dict[str, Any]]) -> Outcome:
-    tasks = [
-        {
-            "label": str(t.get("label", ""))[:120],
-            "detail": str(t.get("detail", ""))[:300],
-            "kwh_month": max(0.0, float(t.get("kwh_month") or 0)),
-        }
-        for t in tasks[:6]
-        if t.get("label")
-    ]
+    tasks = [t for t in tasks[:6] if t.get("label")]
     if not tasks:
         return Outcome({"error": "a plan needs at least one task"}, "tb_suggestion")
+    standby_w = None
+    if any(t.get("kind") == "standby" for t in tasks):
+        measured = await standby(ctx)
+        standby_w = measured.data.get("typical_watts") if "error" not in measured.data else None
+    saved = []
+    for t in tasks:
+        kwh_month, basis = await _saving(ctx, t, standby_w)
+        saved.append(
+            {
+                "label": str(t["label"])[:120],
+                "detail": str(t.get("detail", ""))[:300],
+                "kwh_month": round(kwh_month, 1),
+                "basis": basis,
+            }
+        )
+    tasks = saved
     kwh = round(sum(t["kwh_month"] for t in tasks), 1)
-    price = await _avg_price(ctx)
-    vnd = round(kwh * price) if price else None
+    price = await _saving_vnd(ctx, kwh) if kwh else None
+    vnd = round(price) if price is not None else None
     plan = Suggestion(
         home_id=ctx.home_id,
         kind="plan",
@@ -485,10 +545,19 @@ async def propose_plan(ctx: Ctx, title: str, tasks: list[dict[str, Any]]) -> Out
     ctx.session.add(plan)
     await ctx.session.commit()  # the reply names it: a later failing tool must not roll it back
     return Outcome(
-        data={"plan_id": str(plan.id), "kwh_per_month": kwh, "vnd_per_month": vnd},
+        data={
+            "plan_id": str(plan.id),
+            "tasks": [
+                {"label": t["label"], "kwh_per_month": t["kwh_month"], "basis": t["basis"]}
+                for t in tasks
+            ],
+            "kwh_per_month": kwh,
+            "vnd_per_month": vnd,
+            "note": "computed from this home's readings and tariff; 0 = not measurable",
+        },
         detail=_vi(ctx, "Kế hoạch tiết kiệm", "Savings plan"),
         tier="estimated",
-        sources=["tariff"],
+        sources=["meter", "tariff"],
         widgets=[
             {
                 "kind": "plan",
@@ -572,8 +641,10 @@ TOOLS: dict[str, tuple[Tool, dict]] = {
         propose_plan,
         _fn(
             "propose_plan",
-            "Save a savings plan the user can start: 2-5 concrete tasks from this home's data, "
-            "each with the kWh per month it saves (estimate it from the tools' figures).",
+            "Save a savings plan the user can start: 2-5 concrete tasks from this home's data. "
+            "Give each task's action, never its savings: the system measures the kWh and VND. "
+            "kind standby: cut `watts` of always-on load (from the standby tool); device_hours: "
+            "run `device_id` (from devices_breakdown) `hours_per_day` less; tip: anything else.",
             {
                 "title": {"type": "string", "maxLength": 200},
                 "tasks": {
@@ -584,9 +655,12 @@ TOOLS: dict[str, tuple[Tool, dict]] = {
                         "properties": {
                             "label": {"type": "string"},
                             "detail": {"type": "string"},
-                            "kwh_month": {"type": "number", "minimum": 0},
+                            "kind": {"type": "string", "enum": ["standby", "device_hours", "tip"]},
+                            "watts": {"type": "number", "minimum": 0},
+                            "device_id": {"type": "string"},
+                            "hours_per_day": {"type": "number", "minimum": 0, "maximum": 24},
                         },
-                        "required": ["label", "detail", "kwh_month"],
+                        "required": ["label", "detail", "kind"],
                         "additionalProperties": False,
                     },
                 },

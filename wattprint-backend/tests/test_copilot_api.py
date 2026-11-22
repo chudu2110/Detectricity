@@ -248,12 +248,12 @@ async def test_a_proposed_plan_is_accepted_once_by_its_home(client, make_member,
     turns, _ = script
     me = await make_member("owner")
     other = await make_member("owner")
-    task = {"label": "Tắt TV ở chế độ chờ", "detail": "Rút phích qua đêm", "kwh_month": 4.5}
+    task = {"label": "Tắt TV ở chế độ chờ", "detail": "Rút phích qua đêm", "kind": "tip"}
     turns += [("propose_plan", {"title": "Tiết kiệm", "tasks": [task]}), ["Đã lưu kế hoạch."]]
     _, events = await ask(client, me, "Lập kế hoạch tiết kiệm")
     reply = events[-1][1]["reply"]
     plan = next(w for w in reply["widgets"] if w["kind"] == "plan")
-    assert (reply["intent"], plan["kwh"], plan["status"]) == ("plan", 4.5, "proposed")
+    assert (reply["intent"], plan["kwh"], plan["status"]) == ("plan", 0.0, "proposed")
     url = f"/api/v1/copilot/plans/{plan['id']}/accept"
     assert (await client.post(url, headers=other.headers)).status_code == 404
     r = await client.post(url, headers=me.headers)
@@ -354,7 +354,7 @@ async def test_a_plan_survives_a_later_failing_tool(client, make_member, script,
         raise RuntimeError("statement timeout")
 
     monkeypatch.setitem(tools.TOOLS, "standby", (broken, tools.TOOLS["standby"][1]))
-    task = {"label": "Rút sạc qua đêm", "detail": "", "kwh_month": 2}
+    task = {"label": "Rút sạc qua đêm", "detail": "", "kind": "tip"}
     turns += [
         ("propose_plan", {"title": "P", "tasks": [task]}),
         ("standby", {}),
@@ -390,3 +390,88 @@ async def test_voice_is_rate_limited_per_user(client, make_member, monkeypatch):
     webm = {**me.headers, "Content-Type": "audio/webm"}
     codes = [(await client.post(url, content=b"x", headers=webm)).status_code for _ in range(3)]
     assert codes == [200, 200, 429]
+
+
+async def test_plan_savings_are_measured_not_claimed(client, make_member, script):
+    """The model picks the action; the kWh come from the device's cycles, capped at its use."""
+    from datetime import UTC, datetime, timedelta
+
+    turns, _ = script
+    me = await make_member("owner")
+    now = datetime.now(UTC)
+    async with SessionLocal() as s, s.begin():
+        did = await s.scalar(
+            text(
+                "INSERT INTO public.tb_device (home_id, device_type_code, name, origin) "
+                "VALUES (:h, 'fridge', 'Máy lạnh', 'nilm') RETURNING id"
+            ),
+            {"h": me.home_id},
+        )
+        for i in range(10):  # 10 runs of 2 h at 1000 W over the last 30 days: 0.67 h/day
+            start = now - timedelta(days=2 * i + 1)
+            await s.execute(
+                text(
+                    "INSERT INTO public.tb_device_cycle "
+                    "(home_id, device_id, start_ts, end_ts, energy_wh, peak_w) "
+                    "VALUES (:h, :d, :s, :e, 2000, 1200)"
+                ),
+                {"h": me.home_id, "d": did, "s": start, "e": start + timedelta(hours=2)},
+            )
+    task = {
+        "label": "Bật máy lạnh ít hơn",
+        "detail": "",
+        "kind": "device_hours",
+        "device_id": str(did),
+        "hours_per_day": 5,  # more than it runs: capped
+        "kwh_month": 999,  # a saving the model claims is ignored
+    }
+    turns += [("propose_plan", {"title": "P", "tasks": [task]}), ["Đã lưu kế hoạch."]]
+    _, events = await ask(client, me, "Lập kế hoạch")
+    plan = next(w for w in events[-1][1]["reply"]["widgets"] if w["kind"] == "plan")
+    assert plan["kwh"] == 20.0
+
+
+async def test_an_unbacked_figure_is_rewritten(client, make_member, script):
+    turns, seen = script
+    me = await make_member("owner")
+    turns += [
+        ("compare_periods", {"period": "week"}),
+        ["Tuần này dùng 50 kWh [1]."],
+        ["Tuần này dùng 0 kWh [1]."],  # the rewrite
+    ]
+    _, events = await ask(client, me)
+    done = events[-1][1]
+    assert done["reply"]["text"] == "Tuần này dùng 0 kWh [1]."
+    assert seen[-1][-1]["role"] == "user" and "50 kWh" in seen[-1][-1]["content"]
+    async with SessionLocal() as s:
+        usage = await s.scalar(
+            text("SELECT usage FROM ai.ai_message WHERE id = :m"), {"m": done["message_id"]}
+        )
+    assert usage["grounding"] == {"unbacked": ["50 kWh"], "rewritten": True}
+    assert usage["rounds"] == 3
+
+
+async def test_a_figure_still_unbacked_is_cut_out(client, make_member, script):
+    turns, _ = script
+    me = await make_member("owner")
+    claim = "Tuần này dùng 0 kWh [1]. Bạn sẽ tiết kiệm 120.000 đ."
+    turns += [("compare_periods", {"period": "week"}), [claim], [claim]]
+    _, events = await ask(client, me)
+    assert events[-1][1]["reply"]["text"] == "Tuần này dùng 0 kWh [1]."
+
+
+async def test_figures_without_any_tool_are_not_shown(client, make_member, script):
+    turns, _ = script
+    me = await make_member("owner")
+    turns += [["Hóa đơn tháng này khoảng 500.000 đ."], ["Hóa đơn khoảng 500.000 đ."]]
+    _, events = await ask(client, me, "Hóa đơn bao nhiêu?")
+    assert events[-1][1]["reply"]["text"] == chat.NO_FIGURES["vi"]
+
+
+async def test_a_comparison_of_the_wrong_period_is_not_shown(client, make_member, script):
+    turns, _ = script
+    me = await make_member("owner")
+    wrong = "So với tháng trước, bạn dùng 0 kWh [1]."
+    turns += [("compare_periods", {"period": "week"}), [wrong], [wrong]]
+    _, events = await ask(client, me)
+    assert events[-1][1]["reply"]["text"] == chat.NO_FIGURES["vi"]

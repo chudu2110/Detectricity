@@ -13,7 +13,7 @@ from app.database import SessionLocal
 
 from ..models import Conversation, Message, ToolCall
 from ..utils import CopilotUnavailableError
-from . import guard, llm
+from . import grounding, guard, llm
 from .tools import SPECS, TIERS, Ctx, Outcome, run_tool
 
 log = logging.getLogger("copilot.chat")
@@ -26,6 +26,16 @@ DECLINE = {
     "vi": "Mình chỉ giúp được các câu hỏi về điện năng của nhà bạn, nên không trả lời câu này.",
     "en": "I can only help with questions about your home's energy, so I won't answer this one.",
 }
+NO_FIGURES = {
+    "vi": "Mình chưa có đủ số liệu để trả lời chính xác câu này.",
+    "en": "I don't have the data to answer this one accurately yet.",
+}
+REWRITE = (
+    "Your answer quoted figures that no tool result above backs: {bad}. Rewrite the answer using "
+    "only figures from the tool results (say plainly when a figure is not available), with the "
+    "same rules and citations, and without the {follow} line."
+)
+CYCLE_TOOLS = {"current_bill", "bill_forecast", "bill_history"}
 
 SOURCES = {
     "tariff": (
@@ -88,6 +98,8 @@ PROMPT = """You are Detectricity, the energy assistant for one household in Viet
   describe them or paste URLs.
 - Call tools first, without writing anything before them.
 - Only for a savings plan the user asks for, call propose_plan with tasks grounded in the data.
+  Never state a saving yourself: quote the kWh and VND the tools computed, or say it is not
+  measurable. Name the period every comparison is over (this week, this billing cycle...).
 - Outside home energy, decline briefly.
 - A label in brackets such as [số điện thoại] or [email] is personal data the app removed: you do
   not need it, so never ask for it or guess it.
@@ -223,6 +235,49 @@ class Answer:
         }
 
 
+async def grounded(text: str, messages: list[dict], state: Answer) -> str:
+    """The answer with every figure backed by a tool result: one rewrite by the model, then the
+    sentences still quoting an unbacked figure are dropped. The check goes in the usage."""
+    calls = [(name, args, o) for name, args, o, ok, _ in state.calls if ok]
+    results = [o.data for *_, o in calls]
+    compared = {
+        "cycle" if args.get("period") == "cycle" else "week"
+        for name, args, _ in calls
+        if name == "compare_periods"
+    }
+    periods = (
+        compared | {"cycle" for name, *_ in calls if name in CYCLE_TOOLS} if compared else None
+    )
+    verdict = grounding.check(text, results, periods)
+    if verdict.ok:
+        return text
+    log.warning("copilot answer quoted unbacked figures: %s", verdict.problems)
+    record: dict[str, Any] = {"unbacked": verdict.problems}
+    turn = llm.Turn()
+    note = REWRITE.format(bad="; ".join(verdict.problems), follow=FOLLOW)
+    try:
+        rewrite = [{"role": "assistant", "content": text}, {"role": "user", "content": note}]
+        async with aclosing(llm.stream([*messages, *rewrite], None, turn)) as deltas:
+            async for _ in deltas:
+                pass
+        state.count(turn.usage)
+        retry = FollowUps()
+        retry.feed(turn.text)
+        text = retry.close()[0]
+        verdict = grounding.check(text, results, periods)
+        record["rewritten"] = True
+    except CopilotUnavailableError as e:
+        log.warning("copilot rewrite failed: %s", e.message)
+    if not verdict.ok:
+        bad = [p for p in verdict.problems if p in text]
+        text = grounding.drop_sentences(text, bad) if bad else text
+        record["dropped"] = verdict.problems
+        if not text or len(bad) < len(verdict.problems):  # a wrong period cannot be cut out
+            text = NO_FIGURES[state.lang]
+    state.usage["grounding"] = record
+    return text
+
+
 def event(name: str, data: dict[str, Any]) -> str:
     return f"event: {name}\ndata: {json.dumps(data, ensure_ascii=False, default=str)}\n\n"
 
@@ -324,6 +379,8 @@ async def answer(
             if screen:
                 screen.cancel()
         text, follow_ups = follow.close()
+        if text != DECLINE[lang]:
+            text = await grounded(text, messages, state)
         reply = state.reply(text, follow_ups)
         s.add(
             Message(
