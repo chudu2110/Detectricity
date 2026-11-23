@@ -30,35 +30,43 @@ class Turn:
 
     text: str = ""
     calls: list[Call] = field(default_factory=list)
-    usage: dict[str, Any] = field(default_factory=dict)  # OpenRouter's: tokens, cached, cost
+    usage: dict[str, Any] = field(default_factory=dict)  # Provider usage; cost is OpenRouter-only
 
 
 async def stream(
     messages: list[dict[str, Any]], tools: list[dict[str, Any]] | None, turn: Turn
 ) -> AsyncIterator[str]:
     """Stream one chat completion: yield text deltas, fill `turn` with the text and tool calls."""
-    if not settings.openrouter_api_key:
+    direct_openai = bool(settings.openai_api_key)
+    key = settings.openai_api_key if direct_openai else settings.openrouter_api_key
+    if not key:
         raise CopilotUnavailableError
+    base_url = settings.openai_base_url if direct_openai else settings.openrouter_base_url
+    model = settings.openai_model if direct_openai else settings.openrouter_model
     body: dict[str, Any] = {
-        "model": settings.openrouter_model,
+        "model": model,
         "messages": messages,
         "stream": True,
         "temperature": 0.2,
-        "max_tokens": settings.copilot_max_tokens,
-        "usage": {"include": True},  # tokens and cost in the last chunk
     }
+    if direct_openai:
+        body["max_completion_tokens"] = settings.copilot_max_tokens
+        body["stream_options"] = {"include_usage": True}
+    else:
+        body["max_tokens"] = settings.copilot_max_tokens
+        body["usage"] = {"include": True}
     if tools:
         body["tools"] = tools
     calls: dict[int, Call] = {}
     timeout = httpx.Timeout(settings.copilot_llm_timeout_s, connect=5.0)
     try:
         async with (
-            httpx.AsyncClient(base_url=settings.openrouter_base_url, timeout=timeout) as client,
+            httpx.AsyncClient(base_url=base_url, timeout=timeout) as client,
             client.stream(
                 "POST",
                 "/chat/completions",
                 json=body,
-                headers={"Authorization": f"Bearer {settings.openrouter_api_key}"},
+                headers={"Authorization": f"Bearer {key}"},
             ) as res,
         ):
             if res.status_code != 200:

@@ -72,6 +72,9 @@
   },
   "scripts": {
     "start": "expo start --port 11094",
+    "start:qr": "expo start --port 11094 --lan --dev-client",
+    "start:tunnel": "expo start --port 11094 --tunnel --dev-client",
+    "start:usb": "adb reverse tcp:12093 tcp:12093 && adb reverse tcp:12095 tcp:12095 && adb reverse tcp:12094 tcp:12094 && expo start --port 12094 --localhost --dev-client",
     "android": "expo run:android --port 11094",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",

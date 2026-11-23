@@ -33,7 +33,15 @@ cp .env.example .env   # optional; see Environment
 pnpm android           # expo run:android: builds and launches the dev build
 ```
 
-`pnpm start` starts Metro for an already installed dev build.
+`pnpm start` starts Metro for an already installed dev build. For a physical Android device, use one of:
+
+```sh
+pnpm start:qr       # LAN mode; scan the QR code from the development build
+pnpm start:tunnel   # tunnel mode; useful when phone and computer are on different networks
+pnpm start:usb      # USB mode; requires USB debugging and adb, forwards Metro over localhost
+```
+
+Expo Go is not supported: this app uses native modules (`react-native-mmkv` and Skia) that are not included in Expo Go. Install the Android development build with `pnpm android` first. For QR/LAN or tunnel mode, set `EXPO_PUBLIC_API_URL` and `EXPO_PUBLIC_KEYCLOAK_URL` to an address reachable from the phone; USB mode can use `adb reverse` for the local ports.
 
 ### Local demo without Google
 

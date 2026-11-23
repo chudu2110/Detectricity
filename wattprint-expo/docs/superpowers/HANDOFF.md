@@ -94,7 +94,7 @@ item), Next. Reference report: `reports/2026-10-25-base-and-data-layer.md`.
 
 The default Home demo opens onto a kinetic landscape. Use the artwork's pause control or the
 device's Reduce Motion preference to freeze it. Energy has an adjustable plot and Assistant
-has an animated welcome orb. The [native clip](../../../Agent-Rules/screenshots/detectricity-kinetic.mp4)
+has an animated welcome orb. The native clip (historical artifact unavailable in this workspace)
 records all three.
 
 The demo was left open with Metro, API and workers running at the user's request. Verify on the

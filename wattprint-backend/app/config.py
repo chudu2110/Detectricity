@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     keycloak_client_ids: str = "wattprint-mobile,wattprint-web"
     # Local, loopback-only demo login; never enabled by default.
     local_demo_enabled: bool = False
+    local_demo_proxy_ip: str = ""
     local_demo_client_id: str = "wattprint-local-demo"
     local_demo_email: str = "refit.house2@wattprint.local"
     demo_password: str = ""
@@ -45,7 +46,10 @@ class Settings(BaseSettings):
     # Weather for the home's province (OpenWeather); empty = /energy/weather answers 503.
     openweather_api_key: str = ""
 
-    # Copilot: LLM through OpenRouter (OpenAI-compatible); free-form data questions via text2sql.
+    # Copilot: prefer a direct OpenAI key; fall back to OpenRouter when no OpenAI key is set.
+    openai_api_key: str = ""
+    openai_base_url: str = "https://api.openai.com/v1"
+    openai_model: str = "gpt-4o-mini"
     openrouter_api_key: str = ""
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     openrouter_model: str = "openai/gpt-6-luna"

@@ -1,9 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fetchSources } from '@/features/data-sources/api';
 import { fetchDevices } from '@/features/dashboard/api';
 import { i18n } from '@/i18n';
 import { Devices } from '.';
 
+jest.mock('@/features/data-sources/api', () => ({
+  fetchSources: jest.fn(),
+  discoverPlugs: jest.fn(),
+}));
 jest.mock('@/features/dashboard/api', () => ({ fetchDevices: jest.fn() }));
 jest.mock('expo-router', () => ({
   useIsFocused: () => true,
@@ -12,6 +17,7 @@ jest.mock('expo-router', () => ({
 
 it('clears the search independently and restores all devices from an empty filtered result', async () => {
   await i18n.changeLanguage('en');
+  jest.mocked(fetchSources).mockResolvedValue([]);
   jest.mocked(fetchDevices).mockResolvedValue([
     {
       id: 'fridge-1',

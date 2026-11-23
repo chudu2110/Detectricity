@@ -92,7 +92,7 @@ record: [glass art prompt](../../../../Agent-Rules/references/glass-art-prompt.m
 The app asset is `assets/illustrations/eco-home-glass.png`.
 
 The direct Gradle build with Expo Blur 58.0.6 completed in 2m 24s (verified:
-[Android build log](../../../../Agent-Rules/logs/glass-android-build2.current.log)).
+Android build log (historical artifact unavailable in this workspace)).
 Every modeled token pair in the revised contrast report passed
 (verified: `node scripts/contrast-report.js`).
 
@@ -106,13 +106,13 @@ Assistant dock hid on keyboard entry, returned on dismissal, and the billing pro
 a streamed answer with tariff and meter sources. Account reopened on its settings page. The
 final cold-start session recorded no React Native JS warnings or errors during sign-in and
 Account verification. The demo was left on Home. Physical-device and iOS checks remain pending.
-See [Home](../../../../Agent-Rules/screenshots/detectricity-glass-home.png) and
-[Assistant](../../../../Agent-Rules/screenshots/detectricity-glass-assistant.png).
+See Home (historical artifact unavailable in this workspace) and
+Assistant (historical artifact unavailable in this workspace).
 
-[Frontend checks](../../../../Agent-Rules/logs/glass-final-check.log) passed lint, types and all
+Frontend checks (historical artifact unavailable in this workspace) passed lint, types and all
 572 tests in 69 suites, with a Jest worker teardown warning.
-[Formatting](../../../../Agent-Rules/logs/glass-final-format.log) passed.
-[Expo Doctor](../../../../Agent-Rules/logs/glass-final-doctor.log) passed 19 of 20 checks and
+Formatting (historical artifact unavailable in this workspace) passed.
+Expo Doctor (historical artifact unavailable in this workspace) passed 19 of 20 checks and
 reported 14 SDK package version differences.
 
 Docs updated: workspace entry point and design brief, frontend README and AGENTS, design system,
@@ -131,10 +131,10 @@ focus the editable field. During streaming the user's send action becomes Stop.
 Verified on SmartXu API 36 at default settings and with transition animation scale 0 and font
 scale 1.5. The emulator preferences were restored. Home, Energy period selection and Assistant
 drafting were exercised in the native client. See the
-[motion recording](../../../../Agent-Rules/screenshots/detectricity-motion.mp4).
-[Lint, typecheck and 577 tests passed](../../../../Agent-Rules/logs/type-motion-check.log);
-Jest reported a worker teardown warning. [Format passed](../../../../Agent-Rules/logs/type-motion-format.log).
-[Expo Doctor](../../../../Agent-Rules/logs/type-motion-doctor.log) reports the existing 14
+motion recording (historical artifact unavailable in this workspace).
+Lint, typecheck and 577 tests passed (historical artifact unavailable in this workspace);
+Jest reported a worker teardown warning. Format passed (historical artifact unavailable in this workspace).
+Expo Doctor (historical artifact unavailable in this workspace) reports the existing 14
 package version differences in one check. Physical phone and iOS verification remain pending.
 
 ## Kinetic landscape and interaction
@@ -148,7 +148,7 @@ follow the direction of travel without replacing the tab state.
 The SmartXu API 36 emulator was tested with the Home scene running, paused, under OS Reduce Motion,
 then resumed. Separate frames of the landscape changed while running and were identical while
 paused or reduced. The original OS preference was restored. See the
-[device recording](../../../../Agent-Rules/screenshots/detectricity-kinetic.mp4).
-[Lint, types and 579 tests](../../../../Agent-Rules/logs/landscape-check.log) passed, with the
-existing Jest worker teardown warning. [Formatting](../../../../Agent-Rules/logs/landscape-format.log)
-passed. [Expo Doctor](../../../../Agent-Rules/logs/landscape-doctor.log) passed 19 of 20 checks.
+device recording (historical artifact unavailable in this workspace).
+Lint, types and 579 tests (historical artifact unavailable in this workspace) passed, with the
+existing Jest worker teardown warning. Formatting (historical artifact unavailable in this workspace)
+passed. Expo Doctor (historical artifact unavailable in this workspace) passed 19 of 20 checks.

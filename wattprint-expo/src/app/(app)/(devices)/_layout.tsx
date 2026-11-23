@@ -6,6 +6,8 @@ export default function DevicesLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="devices" options={{ title: t('tabs.devices') }} />
+      <Stack.Screen name="sources" options={{ title: t('dataSources.add') }} />
+      <Stack.Screen name="groups/[type]" options={{ title: t('dataSources.groupTitle') }} />
     </Stack>
   );
 }

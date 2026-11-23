@@ -86,9 +86,10 @@ Work records: `docs/superpowers/HANDOFF.md` (gates, standing rules), `specs/`, `
 
 ## Device verification
 
-- No Expo Go. Use the dev build on the physical phone (Pixel 8a, adb serial `3C081JEKB17021`; always
-  `adb -s 3C081JEKB17021 ...`): `pnpm android` for native changes, `npx expo start --dev-client` for JS-only changes.
-  Metro is reached through `adb -s 3C081JEKB17021 reverse tcp:11094 tcp:11094`, so the deep link uses `localhost:11094`.
+- Expo Go is not supported because the app includes native modules (`react-native-mmkv` and Skia). Use the dev build on the physical phone (Pixel 8a, adb serial `3C081JEKB17021`; always
+  `adb -s 3C081JEKB17021 ...`): `pnpm android` for native changes, `pnpm start:qr` for LAN/QR,
+  `pnpm start:tunnel` for a remote network, or `pnpm start:usb` after USB debugging is enabled.
+  The USB script runs `adb reverse tcp:11094 tcp:11094`, so the deep link uses `localhost:11094`.
   FastAPI and Keycloak (docker compose in `wattprint-backend`) are reached the same way:
   `adb -s 3C081JEKB17021 reverse tcp:11093 tcp:11093` and `... reverse tcp:11095 tcp:11095` (the app defaults `EXPO_PUBLIC_API_URL` to `http://localhost:11093/api/v1`; without
   `adb reverse`, set it to the LAN IP of the machine).

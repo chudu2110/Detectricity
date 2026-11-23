@@ -1,6 +1,8 @@
-name: wattprint
+name: ${COMPOSE_PROJECT_NAME:-wattprint}
 
 x-copilot-env: &copilot-env
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
   OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
   OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openai/gpt-6-luna}
   TEXT2SQL_URL: ${TEXT2SQL_URL:-http://host.docker.internal:11101}
@@ -12,14 +14,14 @@ x-copilot-env: &copilot-env
 services:
   db:
     image: timescale/timescaledb:2.31.0-pg18
-    container_name: wattprint-db
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       PGPORT: ${DB_PORT:-11096}
     ports:
-      - "${DB_PORT:-11096}:${DB_PORT:-11096}"
+      - "${DB_PUBLISH_PORT:-11096}:${DB_PORT:-11096}"
     volumes:
       # PG18 images keep PGDATA at /var/lib/postgresql/18/docker, so the volume mounts one level up.
       - wattprint_pg18data:/var/lib/postgresql
@@ -38,7 +40,7 @@ services:
 
   keycloak-db:
     image: postgres:18-alpine
-    container_name: wattprint-keycloak-db
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-keycloak-db
     environment:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?KEYCLOAK_DB_PASSWORD is required}
@@ -54,7 +56,7 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.2
-    container_name: wattprint-keycloak
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-keycloak
     # start-dev: HTTP and relaxed checks. Production needs `start`, TLS and a real hostname.
     command: start-dev --import-realm
     environment:
@@ -103,13 +105,13 @@ services:
   mailpit:
     # Dev SMTP: catches every mail Keycloak sends (verify email, reset password). Inbox: http://localhost:11099
     image: axllent/mailpit:v1.27.4
-    container_name: wattprint-mailpit
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-mailpit
     ports:
       - "${MAILPIT_BIND:-127.0.0.1}:${MAILPIT_PORT:-11099}:8025"
 
   api:
     build: .
-    container_name: wattprint-api
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-api
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:11096/${POSTGRES_DB}
       # Issuer = the URL clients (the phone) use; JWKS = how this container reaches Keycloak.
@@ -123,11 +125,14 @@ services:
       REFIT_SEED_DIR: /data
       # The House 2 seed revision is opt-in: demo homes come from scripts/seed_demo_homes.py.
       SEED_REFIT: ${SEED_REFIT:-0}
+      LOCAL_DEMO_ENABLED: ${LOCAL_DEMO_ENABLED:-false}
+      LOCAL_DEMO_PROXY_IP: ${LOCAL_DEMO_PROXY_IP:-}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
       <<: *copilot-env
     extra_hosts:
       - "host.docker.internal:host-gateway" # text2sql runs in its own compose project
     ports:
-      - "${API_PORT:-11093}:11093"
+      - "${API_BIND:-0.0.0.0}:${API_PORT:-11093}:11093"
     depends_on:
       db:
         condition: service_healthy
@@ -144,7 +149,7 @@ services:
   insight:
     # Insight worker: bills, forecasts, cohorts, alerts, weather and mail, each on its own cadence.
     build: .
-    container_name: wattprint-insight
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-insight
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:11096/${POSTGRES_DB}
       DASHBOARD_URL: ${DASHBOARD_URL:-http://localhost:11092}
@@ -171,7 +176,7 @@ services:
       args:
         WITH_NILM: "1"
     image: wattprint-nilm
-    container_name: wattprint-nilm
+    container_name: ${COMPOSE_PROJECT_NAME:-wattprint}-nilm
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:11096/${POSTGRES_DB}
       NILM_MODEL_DIR: /data/models/nilm
