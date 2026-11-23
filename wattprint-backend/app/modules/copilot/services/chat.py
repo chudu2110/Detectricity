@@ -36,7 +36,7 @@ REWRITE = (
     "only figures from the tool results (say plainly when a figure is not available), with the "
     "same rules and citations, and without the {follow} line."
 )
-CYCLE_TOOLS = {"current_bill", "bill_forecast", "bill_history"}
+CYCLE_TOOLS = {"current_bill", "bill_forecast", "bill_history", "explain_bill_change"}
 FRESH = {"vi": "số liệu đến {:%H:%M %d/%m}", "en": "data up to {:%H:%M %d/%m}"}
 # The usual next questions per intent, when the model suggested none.
 NEXT = {
@@ -93,6 +93,7 @@ STEPS = {
     "bill_forecast": ("Dự báo hoá đơn cuối kỳ", "Forecast the cycle's bill"),
     "bill_history": ("Đọc các hoá đơn trước", "Read past bills"),
     "compare_periods": ("So với kỳ trước", "Compare with the previous period"),
+    "explain_bill_change": ("Tách nguyên nhân thay đổi hóa đơn", "Explain the bill change"),
     "weather": ("Xem thời tiết", "Check the weather"),
     "cohort": ("So với hộ tương tự", "Compare with similar homes"),
     "alerts": ("Xem cảnh báo", "Check alerts"),
@@ -106,6 +107,7 @@ INTENTS = {
     "current_bill": "bill",
     "bill_history": "bill",
     "compare_periods": "bill",
+    "explain_bill_change": "bill",
     "bill_forecast": "forecast",
     "weather": "weather",
     "cohort": "peers",
@@ -128,6 +130,8 @@ PROMPT = """You are Detectricity, the energy assistant for one household in Viet
 - Only for a savings plan the user asks for, call propose_plan with tasks grounded in the data.
   Never state a saving yourself: quote the kWh and VND the tools computed, or say it is not
   measurable. Name the period every comparison is over (this week, this billing cycle...).
+- For why the bill went up or down, call explain_bill_change and give the biggest causes in
+  VND; weigh the weather only when its result says it is available.
 - Outside home energy, decline briefly.
 - A label in brackets such as [số điện thoại] or [email] is personal data the app removed: you do
   not need it, so never ask for it or guess it.

@@ -1,3 +1,4 @@
+import calendar
 import inspect
 import json
 import logging
@@ -15,7 +16,7 @@ from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
-from app.modules.billing.api import bill_history, current_bill, forecast_bill
+from app.modules.billing.api import bill_history, current_bill, forecast_bill, window_amount
 from app.modules.energy.api import device_breakdown, weather_at
 from app.modules.home.api import Device, Home, Province
 from app.modules.insight.api import cohort_for, list_alerts
@@ -30,6 +31,9 @@ MAX_ROWS_TO_LLM = 30
 SET_PROVINCE = "set the province or city in Account > Home settings"
 NO_TARIFF = "the tariff is set by the system, not in the app: contact support"
 WAIT_DAYS = "it appears after 7 full days of meter readings"
+WEATHER_BASE_C = 26.0  # cooling degree-days count the heat above this (fans, air conditioning)
+WEATHER_MIN_DAYS = 28  # days with both readings and weather before the weather is weighed
+WEATHER_MIN_R2 = 0.3  # how closely daily use must follow the heat to credit the weather
 WAIT_NIGHT = "it appears after one full night (00:00-05:00) of meter readings"
 
 
@@ -603,6 +607,241 @@ async def propose_plan(ctx: Ctx, title: str, tasks: list[dict[str, Any]]) -> Out
     )
 
 
+def _add_month(d: date) -> date:
+    year, month = (d.year + 1, 1) if d.month == 12 else (d.year, d.month + 1)
+    return date(year, month, min(d.day, calendar.monthrange(year, month)[1]))
+
+
+def _cycle_start(day_of_month: int, today: date) -> date:
+    if today.day >= day_of_month:
+        return today.replace(day=day_of_month)
+    return (today.replace(day=1) - timedelta(days=1)).replace(day=day_of_month)  # day <= 28
+
+
+@dataclass
+class _Window:
+    start: date
+    days: int
+    cycle_days: int
+    days_with_data: int = 0
+    kwh: float = 0.0  # scaled up to all its days when some have no readings
+
+    @property
+    def end(self) -> date:
+        return self.start + timedelta(days=self.days)
+
+
+async def _filled(ctx: Ctx, w: _Window) -> _Window:
+    daily = await _daily_kwh(ctx, w.start, w.end)
+    w.days_with_data = len(daily)
+    w.kwh = sum(daily.values()) / len(daily) * w.days if daily else 0.0
+    return w
+
+
+async def _device_runs(ctx: Ctx, w: _Window) -> dict[uuid.UUID, tuple[float, float]]:
+    """Per device: (hours on per day, average watts while on) over the window, from its cycles."""
+    rows = await ctx.session.execute(
+        text(
+            "SELECT device_id, sum(energy_wh) AS wh, "
+            "sum(extract(epoch FROM end_ts - start_ts)) / 3600 AS hours "
+            "FROM public.tb_device_cycle WHERE home_id = :h AND start_ts >= :lo AND start_ts < :hi "
+            "GROUP BY device_id"
+        ),
+        {"h": ctx.home_id, "lo": _midnight(w.start), "hi": _midnight(w.end)},
+    )
+    return {
+        r.device_id: (float(r.hours) / max(w.days_with_data, 1), float(r.wh) / float(r.hours))
+        for r in rows
+        if r.hours
+    }
+
+
+async def _degree_days(ctx: Ctx, province: str, lo: date, hi: date) -> dict[date, float]:
+    """Cooling degree-days per local day in [lo, hi): how far above WEATHER_BASE_C it was."""
+    rows = await ctx.session.execute(
+        text(
+            "SELECT (ts AT TIME ZONE 'Asia/Ho_Chi_Minh')::date AS day, "
+            "avg(greatest(temp_c - :base, 0)) AS cdd, count(*) AS n "
+            "FROM public.tb_weather_hourly WHERE province_code = :p AND ts >= :lo AND ts < :hi "
+            "GROUP BY day"
+        ),
+        {"p": province, "base": WEATHER_BASE_C, "lo": _midnight(lo), "hi": _midnight(hi)},
+    )
+    return {r.day: float(r.cdd) for r in rows if r.n >= 20}  # a day with most of its hours
+
+
+async def _weather_part(ctx: Ctx, home: Home, cur: _Window, prev: _Window) -> dict[str, Any]:
+    """kWh of the change the weather explains, when this home's daily use follows the heat:
+    daily kWh against cooling degree-days over the last 90 days, then that slope times how much
+    hotter the current period was. Otherwise why not."""
+    if not home.province_code:
+        return {"available": False, "why": "the home has no province", "fix": SET_PROVINCE}
+    today = _today(ctx)
+    kwh = await _daily_kwh(ctx, today - timedelta(days=90), today)
+    cdd = await _degree_days(ctx, home.province_code, prev.start, today)
+    days = [d for d in kwh if d in cdd]
+    if len(days) < WEATHER_MIN_DAYS:
+        return {
+            "available": False,
+            "why": f"{len(days)} days with both readings and weather, {WEATHER_MIN_DAYS} needed",
+        }
+    x, y = [cdd[d] for d in days], [kwh[d] for d in days]
+    if statistics.pvariance(x) == 0:
+        return {"available": False, "why": "the temperature did not vary over those days"}
+    slope = statistics.linear_regression(x, y).slope
+    r2 = statistics.correlation(x, y) ** 2
+    if slope <= 0 or r2 < WEATHER_MIN_R2:
+        return {"available": False, "why": "this home's use does not follow the heat", "r2": r2}
+
+    def mean(w: _Window) -> float | None:
+        seen = [
+            cdd[w.start + timedelta(days=i)]
+            for i in range(w.days)
+            if w.start + timedelta(days=i) in cdd
+        ]
+        return statistics.fmean(seen) if seen else None
+
+    now_cdd, before_cdd = mean(cur), mean(prev)
+    if now_cdd is None or before_cdd is None:
+        return {"available": False, "why": "no weather for one of the two periods"}
+    return {
+        "available": True,
+        "kwh": round(slope * (now_cdd - before_cdd) * cur.days, 1),
+        "degree_days_current": round(now_cdd * cur.days, 1),
+        "degree_days_previous": round(before_cdd * cur.days, 1),
+        "fit_r2": round(r2, 2),
+        "days_used": len(days),
+    }
+
+
+async def explain_bill_change(ctx: Ctx, period: str = "cycle") -> Outcome:
+    """Why the bill moved: the change in VND split into calendar days, tariff and usage (adding
+    up to it), the usage into devices (new ones, longer runs, higher power) and the weather."""
+    home = await ctx.session.get(Home, ctx.home_id)
+    if home.tariff_plan_code is None:
+        return Outcome({"error": "the home has no tariff plan", "fix": NO_TARIFF}, "tb_bill")
+    day = home.billing_cycle_day or 1
+    today = _today(ctx)
+    start = _cycle_start(day, today)
+    prev_start = _cycle_start(day, start - timedelta(days=1))
+    if period == "last_cycle":
+        before = _cycle_start(day, prev_start - timedelta(days=1))
+        cur = _Window(prev_start, (start - prev_start).days, (start - prev_start).days)
+        prev = _Window(before, (prev_start - before).days, (prev_start - before).days)
+    else:
+        period, n = "cycle", (today - start).days
+        if n < 1:
+            return Outcome(
+                {"error": "the cycle started today", "fix": "ask again tomorrow"}, "reading_1d"
+            )
+        cur = _Window(start, n, (_add_month(start) - start).days)
+        prev = _Window(prev_start, n, (start - prev_start).days)
+    cur, prev = await _filled(ctx, cur), await _filled(ctx, prev)
+    if not cur.days_with_data or not prev.days_with_data:
+        return Outcome(
+            {
+                "error": "no readings in one of the two periods",
+                "days_with_data_current": cur.days_with_data,
+                "days_with_data_previous": prev.days_with_data,
+            },
+            "reading_1d",
+        )
+
+    async def price(w: _Window, kwh: float) -> float:
+        amount = await window_amount(
+            ctx.session, home.tariff_plan_code, w.start, w.days, w.cycle_days, Decimal(f"{kwh:.3f}")
+        )
+        return float(amount)
+
+    # Each step changes one thing, so the three add up to the change exactly.
+    same_rate = prev.kwh / prev.days * cur.days  # the previous daily use over this period's days
+    before, after = await price(prev, prev.kwh), await price(cur, cur.kwh)
+    old_tariff, new_tariff = await price(prev, same_rate), await price(cur, same_rate)
+    calendar_vnd, tariff_vnd, usage_vnd = (
+        old_tariff - before,
+        new_tariff - old_tariff,
+        after - new_tariff,
+    )
+    usage_kwh = cur.kwh - same_rate
+
+    span = (_midnight(cur.start), _midnight(cur.end)), (_midnight(prev.start), _midnight(prev.end))
+
+    def scaled(w: _Window, parts) -> dict[uuid.UUID, float]:
+        """kWh per device, scaled up like the meter's when some days have no readings."""
+        return {p.device_id: float(p.kwh) * w.days / w.days_with_data for p in parts}
+
+    now_kwh = scaled(cur, await device_breakdown(ctx.session, ctx.home_id, *span[0]))
+    old_kwh = scaled(prev, await device_breakdown(ctx.session, ctx.home_id, *span[1]))
+    now_runs, old_runs = await _device_runs(ctx, cur), await _device_runs(ctx, prev)
+    devices = {
+        d.id: d
+        for d in await ctx.session.scalars(select(Device).where(Device.home_id == ctx.home_id))
+    }
+    rows = []
+    for did in set(now_kwh) | set(old_kwh):
+        then = old_kwh.get(did, 0.0) / prev.days * cur.days
+        change = now_kwh.get(did, 0.0) - then
+        row: dict[str, Any] = {
+            "name": devices[did].name if did in devices else "?",
+            "kwh_change": round(change, 1),
+            "vnd_change": round(usage_vnd * change / usage_kwh) if abs(usage_kwh) > 0.05 else None,
+            "new": old_kwh.get(did, 0.0) < 0.1 and now_kwh.get(did, 0.0) >= 0.5,
+        }
+        if did in now_runs and did in old_runs:
+            (h0, w0), (h1, w1) = old_runs[did], now_runs[did]
+            row["runtime"] = {
+                "hours_per_day_before": round(h0, 1),
+                "hours_per_day_now": round(h1, 1),
+                "watts_before": round(w0),
+                "watts_now": round(w1),
+                "kwh_from_longer_runs": round((h1 - h0) * w0 * cur.days / 1000, 1),
+                "kwh_from_higher_power": round(h1 * (w1 - w0) * cur.days / 1000, 1),
+            }
+        rows.append(row)
+    rows.sort(key=lambda r: abs(r["kwh_change"]), reverse=True)
+    weather_part = await _weather_part(ctx, home, cur, prev)
+
+    def side(w: _Window, vnd: float) -> dict[str, Any]:
+        return {
+            "from": str(w.start),
+            "days": w.days,
+            "days_with_data": w.days_with_data,
+            "kwh": round(w.kwh, 1),
+            "amount_vnd_with_vat": round(vnd),
+        }
+
+    return Outcome(
+        data={
+            "period": period,
+            "current": side(cur, after),
+            "previous": side(prev, before),
+            "change_vnd": round(after - before),
+            "change_kwh": round(cur.kwh - prev.kwh, 1),
+            "calendar_vnd": round(calendar_vnd),
+            "tariff_vnd": round(tariff_vnd),
+            "usage_vnd": round(usage_vnd),
+            "usage_kwh": round(usage_kwh, 1),
+            "devices": rows[:6],
+            "unexplained_kwh": round(usage_kwh - sum(r["kwh_change"] for r in rows), 1),
+            "weather": weather_part,
+            "note": (
+                "calendar_vnd + tariff_vnd + usage_vnd = change_vnd. Device figures are estimates; "
+                "unexplained_kwh is use no device explains; runtime is given only for a device "
+                "with recognised on/off cycles in both periods. A period whose days_with_data is "
+                "below its days was scaled up from the days with readings."
+            ),
+        },
+        detail=_vi(
+            ctx,
+            f"Công tơ tổng, biểu giá, thiết bị · {cur.days} ngày",
+            f"Main meter, tariff, devices · {cur.days} days",
+        ),
+        tier="estimated",
+        sources=["meter", "tariff", "nilm"] + (["weather"] if weather_part["available"] else []),
+        links=["bill", "devices"],
+    )
+
+
 def _fn(name: str, description: str, properties: dict | None = None, required=()) -> dict:
     return {
         "type": "function",
@@ -645,6 +884,17 @@ TOOLS: dict[str, tuple[Tool, dict]] = {
             "Daily kWh of this week (last 7 days) or this billing cycle against the previous one.",
             {"period": {"type": "string", "enum": ["week", "cycle"]}},
             ["period"],
+        ),
+    ),
+    "explain_bill_change": (
+        explain_bill_change,
+        _fn(
+            "explain_bill_change",
+            "Why the bill went up or down: this billing cycle so far against the same days of the "
+            "previous one (cycle), or the last ended cycle against the one before (last_cycle). "
+            "Splits the change in VND into calendar days, tariff and usage, the usage into "
+            "devices (new devices, longer runs, higher power) and, with enough data, weather.",
+            {"period": {"type": "string", "enum": ["cycle", "last_cycle"]}},
         ),
     ),
     "weather": (weather, _fn("weather", "Weather now and the next 24 h at the home's province.")),
