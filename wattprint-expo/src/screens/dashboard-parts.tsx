@@ -1,3 +1,4 @@
+import { ApiError } from '@/lib/errors';
 import { useRouter } from 'expo-router';
 import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -272,4 +273,19 @@ export function DeviceList({ devices }: { devices: readonly LiveDevice[] }) {
 export function EstimatedPill() {
   const { t } = useTranslation();
   return <Pill tone="green">{t('dashboardNew.estimated')}</Pill>;
+}
+
+export function errorCode(error: unknown): string | undefined {
+  const body = error instanceof ApiError ? (error.body as { code?: unknown } | null) : null;
+  return typeof body?.code === 'string' ? body.code : undefined;
+}
+
+/** "1.234,5" or "1234.5" or "750.000" as a number; NaN when it is not one. */
+export function parseAmount(text: string): number {
+  const clean = text.replace(/\s/g, '');
+  if (!/^\d+([.,]\d+)*$/.test(clean)) return Number.NaN;
+  const groups = clean.split(/[.,]/);
+  if (groups.length === 1) return Number(clean);
+  const thousands = groups.length > 1 && groups.slice(1).every((group) => group.length === 3);
+  return Number(thousands ? groups.join('') : `${groups.slice(0, -1).join('')}.${groups.at(-1)}`);
 }

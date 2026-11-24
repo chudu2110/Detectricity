@@ -8,13 +8,18 @@ import {
   currentBillSchema,
   deviceDetailSchema,
   forecastSchema,
+  goalSchema,
   homeSchema,
   liveDeviceSchema,
   overviewSchema,
+  planSchema,
   provincesSchema,
   seriesSchema,
+  simulationSchema,
   weatherSchema,
+  type GoalInput,
   type HomeUpdate,
+  type SimulationInput,
 } from './schemas';
 
 export const fetchOverview = (signal?: AbortSignal) =>
@@ -65,3 +70,18 @@ export const acknowledgeAlert = (id: string) =>
     method: 'PATCH',
     body: { status: 'acknowledged' },
   });
+
+export const fetchGoal = (signal?: AbortSignal) =>
+  apiClient.request('/insights/goal', { schema: goalSchema.nullable(), signal });
+
+export const saveGoal = (body: GoalInput) =>
+  apiClient.request('/insights/goal', { schema: goalSchema, method: 'PUT', body });
+
+export const deleteGoal = () =>
+  apiClient.request('/insights/goal', { schema: z.undefined(), method: 'DELETE' });
+
+export const simulateSaving = (body: SimulationInput) =>
+  apiClient.request('/insights/simulate', { schema: simulationSchema, method: 'POST', body });
+
+export const fetchPlans = (signal?: AbortSignal) =>
+  apiClient.request('/copilot/plans', { schema: z.array(planSchema), signal });

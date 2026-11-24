@@ -17,6 +17,8 @@ import {
   VIETNAM_TIME_ZONE,
 } from '@/screens/dashboard-parts';
 
+import { DeviceSimulate } from './device-simulate';
+
 export function DeviceDetailScreen({ id }: { id: string }) {
   const { t, i18n } = useTranslation();
   const cached = useQueryClient()
@@ -124,6 +126,7 @@ export function DeviceDetailScreen({ id }: { id: string }) {
                 ))
               )}
             </Surface>
+            <DeviceSimulate deviceId={id} />
           </>
         )}
       </QueryContent>
