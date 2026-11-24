@@ -107,6 +107,10 @@ STEPS = {
     "standby": ("Đo điện nền ban đêm", "Measure night-time standby"),
     "query_data": ("Truy vấn dữ liệu của nhà", "Query the home's data"),
     "propose_plan": ("Lập kế hoạch tiết kiệm", "Draft a savings plan"),
+    "goal_status": ("Xem mục tiêu tháng", "Check the monthly goal"),
+    "set_monthly_goal": ("Đặt mục tiêu tháng", "Set the monthly goal"),
+    "simulate_saving": ("Mô phỏng tiết kiệm", "Simulate a saving"),
+    "plans_status": ("Xem kết quả kế hoạch", "Check how the plans did"),
 }
 INTENTS = {
     "devices_breakdown": "devices",
@@ -120,6 +124,10 @@ INTENTS = {
     "cohort": "peers",
     "standby": "standby",
     "propose_plan": "plan",
+    "goal_status": "plan",
+    "set_monthly_goal": "plan",
+    "simulate_saving": "plan",
+    "plans_status": "plan",
     "query_data": "data",
 }
 

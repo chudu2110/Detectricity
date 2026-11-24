@@ -719,6 +719,7 @@ def expected_app(rel: str) -> set[str]:
         "public.tb_suggestion",
         "public.tb_suggestion_feedback",
         "public.tb_savings_measure",
+        "public.tb_saving_goal",
         "public.tb_document",
         "public.tb_chunk",
         "public.tb_users",
@@ -942,6 +943,7 @@ async def test_matrix_covers_all_domain_tables(conn):
             "public.tb_suggestion",
             "public.tb_suggestion_feedback",
             "public.tb_savings_measure",
+            "public.tb_saving_goal",
             "public.tb_document",
             "public.tb_chunk",
         }:

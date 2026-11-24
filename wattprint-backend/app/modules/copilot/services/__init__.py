@@ -9,6 +9,7 @@ from .conversations import (
     rate,
     update_conversation,
 )
+from .plans import list_plans
 from .privacy import redact
 from .upkeep import measure_plans, prune_scope_tokens
 from .voice import EXT, keep_speech, kept_speech, prune_speech, speech, transcribe
@@ -25,6 +26,7 @@ __all__ = [
     "event",
     "keep_speech",
     "kept_speech",
+    "list_plans",
     "measure_plans",
     "prune_speech",
     "prune_scope_tokens",

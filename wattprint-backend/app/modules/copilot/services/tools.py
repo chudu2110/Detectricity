@@ -16,12 +16,26 @@ from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
-from app.modules.billing.api import bill_history, current_bill, forecast_bill, window_amount
+from app.modules.billing.api import (
+    bill_history,
+    current_bill,
+    forecast_bill,
+    margin,
+    window_amount,
+)
 from app.modules.energy.api import device_breakdown, weather_at
 from app.modules.home.api import Device, Home, Province
-from app.modules.insight.api import cohort_for, list_alerts
+from app.modules.insight.api import (
+    cohort_for,
+    device_use,
+    goal_progress,
+    list_alerts,
+    set_goal,
+    simulate,
+)
 
 from ..models import ScopeToken, Suggestion
+from .plans import list_plans
 
 log = logging.getLogger("copilot.tools")
 ICT = timezone(timedelta(hours=7))
@@ -478,27 +492,16 @@ async def query_data(ctx: Ctx, question: str) -> Outcome:
     )
 
 
-async def _device_use(ctx: Ctx, device_id: str, days: int = 30) -> tuple[float, float] | None:
-    """(average watts while on, hours on per day) of a device of this home over `days` days, from
-    its recognised on/off cycles; None without a cycle."""
+def _uuid(value: Any) -> uuid.UUID | None:
     try:
-        did = uuid.UUID(str(device_id))
+        return uuid.UUID(str(value))
     except ValueError:
         return None
-    row = (
-        await ctx.session.execute(
-            text(
-                "SELECT sum(energy_wh) AS wh, "
-                "sum(extract(epoch FROM end_ts - start_ts)) / 3600 AS hours "
-                "FROM public.tb_device_cycle WHERE home_id = :h AND device_id = :d "
-                "AND start_ts >= :lo"
-            ),
-            {"h": ctx.home_id, "d": did, "lo": ctx.now - timedelta(days=days)},
-        )
-    ).one()
-    if not row.hours:
-        return None
-    return float(row.wh) / float(row.hours), float(row.hours) / days
+
+
+async def _device_use(ctx: Ctx, device_id: Any) -> tuple[float, float] | None:
+    did = _uuid(device_id)
+    return await device_use(ctx.session, ctx.home_id, did, ctx.now) if did else None
 
 
 async def _saving(
@@ -524,27 +527,10 @@ async def _saving(
     return 0.0, {"measurable": False}
 
 
-def _tiered(tiers: list[Any], kwh: float) -> float:
-    return sum(
-        max(0.0, min(kwh, float(t.to_kwh) if t.to_kwh is not None else kwh) - float(t.from_kwh))
-        * float(t.price_per_kwh)
-        for t in tiers
-    )
-
-
 async def _saving_vnd(ctx: Ctx, kwh: float) -> float | None:
-    """VND per month that `kwh` less per month saves, VAT included: priced on the top tiers of
-    the cycle's projected kWh (where the saved kWh come off), not at the average price."""
-    try:
-        b = await current_bill(ctx.session, ctx.home_id, ctx.now)
-    except LookupError:
-        return None
-    f = await forecast_bill(ctx.session, ctx.home_id, ctx.now)
-    top = float(f.kwh if f else b.kwh)
-    if not top:
-        return None
-    cut = _tiered(b.tiers, top) - _tiered(b.tiers, max(0.0, top - kwh))
-    return cut * (1 + float(b.vat_rate))
+    """VND per month that `kwh` less per month saves, VAT included, on the cycle's top tiers."""
+    m = await margin(ctx.session, ctx.home_id, ctx.now)
+    return m.vnd(kwh) if m else None
 
 
 async def propose_plan(ctx: Ctx, title: str, tasks: list[dict[str, Any]]) -> Outcome:
@@ -842,6 +828,93 @@ async def explain_bill_change(ctx: Ctx, period: str = "cycle") -> Outcome:
     )
 
 
+NO_GOAL = "set one in the Energy tab, or tell me the kWh or VND a month you aim for"
+
+
+async def goal_status(ctx: Ctx) -> Outcome:
+    try:
+        g = await goal_progress(ctx.session, ctx.home_id, ctx.now)
+    except LookupError:
+        return Outcome({"error": "the home has no tariff plan", "fix": NO_TARIFF}, "tb_saving_goal")
+    if g is None:
+        return Outcome(
+            {"error": "the home has no monthly goal yet", "fix": NO_GOAL}, "tb_saving_goal"
+        )
+    unit = "kwh" if g["kind"] == "kwh" else "vnd"
+    data = {
+        "goal_unit": unit,
+        f"target_{unit}": g["target"],
+        "period": [str(g["period_start"]), str(g["period_end"])],
+        f"used_{unit}": g["used"],
+        f"projected_{unit}": g["projected"],
+        "status": g["status"],
+        f"excess_{unit}": g["excess"],
+        "cut_kwh_to_stay_within": g["cut_kwh"],
+        "days_left": g["days_left"],
+        f"left_per_day_{unit}": g["left_per_day"],
+        "biggest_devices_this_cycle": [
+            {"name": d["name"], "kwh": d["kwh"], "share": d["share"]} for d in g["devices"]
+        ],
+    }
+    return Outcome(
+        data,
+        detail=_vi(ctx, "Mục tiêu tháng · kỳ hóa đơn này", "Monthly goal · this billing cycle"),
+        tier="estimated" if g["projected"] is not None else "measured",
+        sources=["meter", "tariff", "nilm"],
+        links=["bill"],
+    )
+
+
+async def set_monthly_goal(ctx: Ctx, unit: str, target: float) -> Outcome:
+    if unit not in ("kwh", "vnd") or not 0 < float(target) <= 1_000_000_000:
+        return Outcome({"error": "a goal is a positive kWh or VND amount"}, "tb_saving_goal")
+    await set_goal(ctx.session, ctx.home_id, unit, Decimal(f"{float(target):.2f}"))
+    return await goal_status(ctx)
+
+
+async def simulate_saving(
+    ctx: Ctx,
+    device_id: str,
+    hours_per_day_less: float = 0.0,
+    new_watts: float | None = None,
+    price_vnd: float | None = None,
+) -> Outcome:
+    did = _uuid(device_id)
+    if did is None:
+        return Outcome({"error": "unknown device: take its id from devices_breakdown"}, "simulate")
+    data = await simulate(
+        ctx.session, ctx.home_id, did, ctx.now, float(hours_per_day_less or 0), new_watts, price_vnd
+    )
+    return Outcome(
+        data,
+        detail=_vi(ctx, "Mô phỏng theo 30 ngày gần nhất", "Simulated on the last 30 days"),
+        tier="estimated",
+        sources=["nilm", "tariff"],
+        links=["devices"],
+    )
+
+
+async def plans_status(ctx: Ctx) -> Outcome:
+    plans = await list_plans(ctx.session, ctx.home_id, ctx.now)
+    return Outcome(
+        [
+            {
+                "title": p["title"],
+                "status": p["status"],
+                "started": str(p["started_at"].date()) if p["started_at"] else None,
+                "expected_kwh_per_month": p["expected_kwh_per_month"],
+                "expected_vnd_per_month": p["expected_vnd_per_month"],
+                "measured": p["measure"],
+            }
+            for p in plans
+        ]
+        or {"note": "no savings plan yet"},
+        detail=_vi(ctx, "Kế hoạch và kết quả đo", "Plans and what they measured"),
+        tier="measured",
+        sources=["meter"],
+    )
+
+
 def _fn(name: str, description: str, properties: dict | None = None, required=()) -> dict:
     return {
         "type": "function",
@@ -917,6 +990,51 @@ TOOLS: dict[str, tuple[Tool, dict]] = {
             "Answered by a read-only SQL query; ask one precise question.",
             {"question": {"type": "string", "maxLength": 500}},
             ["question"],
+        ),
+    ),
+    "goal_status": (
+        goal_status,
+        _fn(
+            "goal_status",
+            "The home's monthly goal (kWh or VND) against this billing cycle: used, projected at "
+            "its end, whether it stays within, the kWh to cut and the devices to start with.",
+        ),
+    ),
+    "set_monthly_goal": (
+        set_monthly_goal,
+        _fn(
+            "set_monthly_goal",
+            "Set the home's monthly goal, only when the user states the amount themselves: unit "
+            "kwh or vnd (VAT included) per billing cycle. Returns the goal's progress.",
+            {
+                "unit": {"type": "string", "enum": ["kwh", "vnd"]},
+                "target": {"type": "number", "exclusiveMinimum": 0},
+            },
+            ["unit", "target"],
+        ),
+    ),
+    "simulate_saving": (
+        simulate_saving,
+        _fn(
+            "simulate_saving",
+            "What if: a device (id from devices_breakdown) run hours_per_day_less, and/or replaced "
+            "by one of new_watts costing price_vnd. Gives kWh and VND a month and the payback "
+            "time, from its measured use; the user gives watts and price, never you.",
+            {
+                "device_id": {"type": "string"},
+                "hours_per_day_less": {"type": "number", "minimum": 0, "maximum": 24},
+                "new_watts": {"type": "number", "minimum": 0},
+                "price_vnd": {"type": "number", "minimum": 0},
+            },
+            ["device_id"],
+        ),
+    ),
+    "plans_status": (
+        plans_status,
+        _fn(
+            "plans_status",
+            "The savings plans and, for each one started, the measured before/after saving with "
+            "its 95% margin, or that the trial is still running or has too little data.",
         ),
     ),
     "propose_plan": (
