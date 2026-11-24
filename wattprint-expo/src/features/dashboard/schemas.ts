@@ -142,3 +142,71 @@ export const weatherSchema = z.object({
 });
 export type WeatherReading = z.output<typeof weatherSchema>;
 export type WeatherForecastSlot = z.output<typeof weatherSlot>;
+
+export const goalSchema = z.object({
+  kind: z.enum(['kwh', 'vnd']),
+  target: z.number(),
+  period_start: day,
+  period_end: day,
+  used: z.number(),
+  projected: z.number().nullable(),
+  status: z.enum(['on_track', 'over', 'no_forecast']),
+  excess: z.number(),
+  cut_kwh: z.number().nullable(),
+  days_left: z.number().int(),
+  left_per_day: z.number().nullable(),
+  devices: z.array(
+    z.object({ id: z.string(), name: z.string(), kwh: z.number(), share: z.number() }),
+  ),
+});
+
+export type Goal = z.output<typeof goalSchema>;
+export type GoalInput = { kind: Goal['kind']; target: number };
+
+export const simulationSchema = z.object({
+  device: z.string(),
+  watts_when_on: z.number(),
+  hours_per_day: z.number(),
+  hours_per_day_cut: z.number(),
+  new_watts: z.number().nullable(),
+  kwh_per_month_before: z.number(),
+  kwh_per_month_after: z.number(),
+  kwh_per_month_saved: z.number(),
+  vnd_per_month_saved: z.number().nullable(),
+  price_vnd: z.number().nullable(),
+  payback_months: z.number().nullable(),
+});
+
+export type Simulation = z.output<typeof simulationSchema>;
+export type SimulationInput = {
+  device_id: string;
+  hours_per_day_less?: number;
+  new_watts?: number;
+  price_vnd?: number;
+};
+
+const planMeasureSchema = z.object({
+  status: z.enum(['measuring', 'measured', 'not_enough_data']),
+  trial_day: z.number().int(),
+  trial_days: z.number().int(),
+  days_with_data_before: z.number().int(),
+  days_with_data_after: z.number().int(),
+  min_days: z.number().int().nullish(),
+  kwh_per_month_saved: z.number().nullish(),
+  kwh_per_month_margin: z.number().nullish(),
+  clear: z.boolean().nullish(),
+  vnd_per_month_saved: z.number().nullish(),
+});
+
+export const planSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  status: z.string(),
+  started_at: dateTime.nullable(),
+  tasks: z.array(z.string()),
+  expected_kwh_per_month: z.number().nullable(),
+  expected_vnd_per_month: z.number().nullable(),
+  measure: planMeasureSchema.nullable(),
+});
+
+export type Plan = z.output<typeof planSchema>;

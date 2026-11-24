@@ -7,8 +7,10 @@ import {
   fetchDevice,
   fetchDevices,
   fetchForecast,
+  fetchGoal,
   fetchHome,
   fetchOverview,
+  fetchPlans,
   fetchProvinces,
   fetchSeries,
   fetchWeather,
@@ -82,4 +84,16 @@ export const alertsQuery = () =>
   queryOptions({
     queryKey: ['dashboard', 'alerts'],
     queryFn: ({ signal }) => fetchAlerts(signal),
+  });
+
+export const goalQuery = () =>
+  queryOptions({
+    queryKey: ['dashboard', 'goal'],
+    queryFn: ({ signal }) => fetchGoal(signal),
+  });
+
+export const plansQuery = () =>
+  queryOptions({
+    queryKey: ['dashboard', 'plans'],
+    queryFn: ({ signal }) => fetchPlans(signal),
   });

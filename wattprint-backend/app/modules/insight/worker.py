@@ -33,6 +33,7 @@ JOBS = [
     Job("alerts", 300, jobs.alerts),
     Job("mail", 300, jobs.mail),
     Job("upkeep", 3600, jobs.upkeep),
+    Job("weather", 86_400, jobs.weather),
 ]
 
 

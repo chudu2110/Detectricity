@@ -11,6 +11,8 @@ import { ApiError } from '@/lib/errors';
 import { billQuery, forecastQuery, seriesQuery } from '@/features/dashboard/queries';
 import { type EnergyPeriod, energyBuckets, periodWindow } from '@/features/dashboard/period';
 import { formatCurrency } from '@/lib/format';
+import { GoalSection } from './goal-section';
+import { PlansSection } from './plans-section';
 import {
   dashboardNumber,
   EnergyBars,
@@ -135,6 +137,8 @@ export function Energy() {
           )}
         </QueryContent>
       )}
+      <GoalSection />
+      <PlansSection />
     </Page>
   );
 }

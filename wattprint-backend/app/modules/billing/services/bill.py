@@ -341,6 +341,22 @@ class CurrentBill:
     today_amount: Decimal
 
 
+async def window_amount(
+    session, plan_code: str, start: date, days: int, cycle_days: int, kwh: Decimal
+) -> Decimal:
+    """VND, VAT included, of `kwh` used over the `days` days from `start`: each tariff version's
+    tiers as wide as its share of a `cycle_days` cycle (EVN's split by days), its kWh in
+    proportion to its days. A whole cycle (days == cycle_days) is priced as its bill is."""
+    segments = await _segments(session, plan_code, start, start + timedelta(days=days - 1))
+    total, rest = Decimal(0), kwh
+    for i, s in enumerate(segments):
+        part = rest if i == len(segments) - 1 else _round(kwh * s.days / days, "0.001")
+        rest -= part
+        amount = _tier_amount(_scaled(s.tiers, s.days, cycle_days), part)
+        total += amount * (_ONE + s.version.vat_rate)
+    return _round(total)
+
+
 def _cycle_start(today: date, cycle_day: int) -> date:
     if today.day >= cycle_day:
         return today.replace(day=cycle_day)

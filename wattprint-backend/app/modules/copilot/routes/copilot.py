@@ -3,6 +3,7 @@ import time
 import uuid
 from collections import defaultdict, deque
 from collections.abc import AsyncIterator
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Header, Query, Request
@@ -19,6 +20,7 @@ from ..schemas import (
     ConversationSummary,
     ConversationUpdate,
     FeedbackIn,
+    PlanItem,
     PlanRead,
     Transcript,
 )
@@ -101,6 +103,14 @@ async def delete_conversation(conversation_id: uuid.UUID, member: Membership, db
 )
 async def feedback(message_id: uuid.UUID, body: FeedbackIn, member: Membership, db: DbSession):
     await services.rate(db, member.user_id, member.home_id, message_id, body.value)
+
+
+@router.get("/plans", summary="The home's savings plans, newest first, with what each saved")
+async def plans(member: Membership, db: DbSession) -> list[PlanItem]:
+    return [
+        PlanItem.model_validate(p)
+        for p in await services.list_plans(db, member.home_id, datetime.now(UTC))
+    ]
 
 
 @router.post("/plans/{plan_id}/accept", summary="Start trying a savings plan Wappi proposed")

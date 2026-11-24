@@ -1,5 +1,13 @@
 import { deviceEnergy } from './period';
-import { alertSchema, deviceDetailSchema, overviewSchema, seriesSchema } from './schemas';
+import {
+  alertSchema,
+  deviceDetailSchema,
+  goalSchema,
+  overviewSchema,
+  planSchema,
+  seriesSchema,
+  simulationSchema,
+} from './schemas';
 
 it('accepts nullable readings and backend timestamps with UTC offsets', () => {
   expect(overviewSchema.parse({ live: null, today: null }).live).toBeNull();
@@ -54,4 +62,35 @@ it('keeps numeric detector data and accepts a Vietnam-offset alert timestamp', (
 
   expect(alertSchema.parse(alert)).toEqual(alert);
   expect(alertSchema.safeParse({ ...alert, payload: { days: '2' } }).success).toBe(false);
+});
+
+it('reads the goal, simulation and plans as the backend sends them', () => {
+  expect(goalSchema.nullable().parse(null)).toBeNull();
+  const plan = planSchema.parse({
+    id: '01a20bf7-1aa8-726f-9f5d-bec1c3d528d1',
+    title: 'Giảm điện nền',
+    status: 'accepted',
+    created_at: '2026-11-24T05:11:24.512345Z',
+    started_at: '2026-11-24T05:20:00.000001Z',
+    tasks: ['Rút sạc'],
+    expected_kwh_per_month: 102.2,
+    expected_vnd_per_month: 319428,
+    measure: {
+      status: 'measuring',
+      trial_day: 0,
+      trial_days: 14,
+      days_with_data_before: 14,
+      days_with_data_after: 0,
+      min_days: 10,
+      kwh_per_day_before: null,
+      kwh_per_day_after: null,
+      kwh_per_month_saved: null,
+      kwh_per_month_margin: null,
+      clear: null,
+      vnd_per_month_saved: null,
+      note: null,
+    },
+  });
+  expect(plan.measure?.status).toBe('measuring');
+  expect(() => simulationSchema.parse({ device: 'Fridge' })).toThrow();
 });

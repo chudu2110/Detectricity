@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.modules.home.api import Home
 
-from .bill import ICT, _amounts, _cycle_start, _local_midnight, _price, _round
+from .bill import ICT, _amounts, _cycle_start, _local_midnight, _price, _round, current_bill
 
 MODEL_VERSION = "weekday-profile-v1"
 PROFILE_DAYS = 28  # whole days the profile looks back over
@@ -127,3 +127,48 @@ async def forecast_bill(
         basis_days=len(history),
         as_of=today,
     )
+
+
+@dataclass
+class Margin:
+    """Where kWh saved in the running cycle come off: its tiers, from its projected kWh down."""
+
+    tiers: list  # TierUse of the tariff in force today
+    vat_rate: Decimal
+    top_kwh: float  # the cycle's projected kWh (or its kWh so far, without a forecast)
+
+    def _amount(self, kwh: float) -> float:
+        return sum(
+            max(0.0, min(kwh, float(t.to_kwh) if t.to_kwh is not None else kwh) - float(t.from_kwh))
+            * float(t.price_per_kwh)
+            for t in self.tiers
+        )
+
+    def vnd(self, kwh: float) -> float:
+        """VND, VAT included, that `kwh` less this cycle saves: priced on the top tiers, not at
+        the average price."""
+        cut = self._amount(self.top_kwh) - self._amount(max(0.0, self.top_kwh - kwh))
+        return cut * (1 + float(self.vat_rate))
+
+    def kwh(self, vnd: float) -> float | None:
+        """kWh to cut this cycle to save `vnd`; None when not even cutting all of it would."""
+        if vnd <= 0:
+            return 0.0
+        if self.vnd(self.top_kwh) < vnd:
+            return None
+        lo, hi = 0.0, self.top_kwh
+        for _ in range(40):  # vnd() only grows with kWh: bisect to well under 0.01 kWh
+            mid = (lo + hi) / 2
+            lo, hi = (mid, hi) if self.vnd(mid) < vnd else (lo, mid)
+        return hi
+
+
+async def margin(session: AsyncSession, home_id: uuid.UUID, now: datetime) -> Margin | None:
+    """The running cycle's Margin; None without a tariff plan or any kWh yet."""
+    try:
+        b = await current_bill(session, home_id, now)
+    except LookupError:
+        return None
+    f = await forecast_bill(session, home_id, now)
+    top = float(f.kwh if f else b.kwh)
+    return Margin(b.tiers, b.vat_rate, top) if top else None

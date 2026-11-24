@@ -50,8 +50,9 @@ the active scene ref. Keep the dock as an overlay outside the blur target. The l
 dock height and keyboard visibility and exposes content clearance through `useDockInset`
 (verified: `src/app/(app)/_layout.tsx`, `src/components/app-tab-bar.tsx`, `src/hooks/use-dock-inset.ts`).
 Home, Devices and Energy compose dashboard queries. Devices opens a
-parameterized detail route. Energy requests day, week or month windows and shows bill coverage and a
-separate forecast. Assistant uses the Copilot API and voice hook. Account links appearance, language,
+parameterized detail route. Energy requests day, week or month windows and shows bill coverage, a
+separate forecast, the monthly goal and the savings plans with their measured before/after saving;
+device detail simulates running a device less or replacing it. Assistant uses the Copilot API and voice hook. Account links appearance, language,
 notification preferences, home settings and alerts. Demo and Google sessions use the same business APIs.
 Logout clears the query cache (verified: `src/app/(app)/_layout.tsx`, `src/screens`, `src/features/dashboard`,
 `src/features/copilot`, `src/lib/session.ts`).
