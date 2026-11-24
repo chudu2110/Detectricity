@@ -1,4 +1,5 @@
 import { BlurView } from 'expo-blur';
+import { useRouter } from 'expo-router';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 import { type ComponentRef, type RefObject, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -83,6 +84,7 @@ export function AppTabBar({
   reducedMotion: boolean;
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const { dark } = useNavTheme();
   const [transparent, setTransparent] = useState(
     () => Platform.OS === 'android' && Number(Platform.Version) >= 31,
@@ -174,7 +176,12 @@ export function AppTabBar({
                     target: route.key,
                     canPreventDefault: true,
                   });
-                  if (!selected && !event.defaultPrevented) navigateToTab(route.key);
+                  if (event.defaultPrevented) return;
+                  if (route.name === '(devices)') {
+                    router.replace('/(app)/(devices)/devices');
+                  } else if (!selected) {
+                    navigateToTab(route.key);
+                  }
                 }}
                 className="min-h-[60px] flex-1 items-center justify-center gap-0.5 py-1"
               >

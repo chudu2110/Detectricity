@@ -25,8 +25,8 @@ async def ensure_devices(
     """Create (once) one origin='nilm' device and its 'device' series per label plus Other.
 
     Returns label -> series_id. A device is matched on (home, origin 'nilm', type), so renaming it
-    in the app keeps its series; the default name is the type's Vietnamese label. Fridges and Other
-    stay off the timeline: their dozens of runs a day (or none) would bury the rest. Flushes only.
+    in the app keeps its series. Each NILM device is child 1 in its type group; its series id and
+    full history remain unchanged. Flushes only.
     """
     out: dict[str, uuid.UUID] = {}
     for label in [*labels, OTHER]:
@@ -43,11 +43,11 @@ async def ensure_devices(
                 text(
                     "INSERT INTO public.tb_device "
                     "(home_id, device_type_code, name, origin, show_on_timeline) "
-                    "SELECT :h, code, label_vi, 'nilm', code NOT IN ('fridge_freezer', 'freezer', "
+                    "SELECT :h, code, :name, 'nilm', code NOT IN ('fridge_freezer', 'freezer', "
                     "'other') FROM public.cat_device_type "
                     "WHERE code = :c RETURNING id"
                 ),
-                {"h": home_id, "c": code},
+                {"h": home_id, "c": code, "name": _child_name(code)},
             )
         out[label] = await session.scalar(
             text(
@@ -60,3 +60,12 @@ async def ensure_devices(
         )
     await session.flush()
     return out
+
+
+def _child_name(code: str) -> str:
+    names = {
+        "fridge_freezer": "Fridge-Freezer1",
+        "washing_machine": "Washing-Machine1",
+        "dishwasher": "Dishwasher1",
+    }
+    return names.get(code, f"{code.replace('_', '-').title()}1")

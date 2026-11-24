@@ -30,9 +30,28 @@ def injection(question: str) -> bool:
 
 
 async def unsafe(question: str) -> str | None:
-    """Llama Guard's hazard category for the question (S1 violent crimes, S2 other crimes such as
-    stealing power...), or None when it is safe. A guard that cannot answer lets the question
-    through (logged): the tools stay scoped either way, and Wappi stays usable."""
+    """Return a flagged category from the selected provider, or None for a safe question.
+    A failed guard lets the question through; tools remain scoped to the user's home.
+    """
+    if settings.openai_api_key:
+        try:
+            async with httpx.AsyncClient(
+                base_url=settings.openai_base_url, timeout=httpx.Timeout(10.0, connect=5.0)
+            ) as client:
+                response = await client.post(
+                    "/moderations",
+                    json={"model": "omni-moderation-latest", "input": question},
+                    headers={"Authorization": f"Bearer {settings.openai_api_key}"},
+                )
+                response.raise_for_status()
+                result = response.json()["results"][0]
+        except (httpx.HTTPError, ValueError, KeyError, IndexError) as e:
+            log.warning("guard unavailable, question let through: %r", e)
+            return None
+        if not result["flagged"]:
+            return None
+        return next((name for name, flagged in result["categories"].items() if flagged), "unsafe")
+
     if not (settings.openrouter_api_key and settings.copilot_guard_model):
         return None
     try:

@@ -22,7 +22,7 @@ class DemoSession(BaseModel):
 async def demo_token() -> str:
     async with httpx.AsyncClient(timeout=10) as client:
         response = await client.post(
-            f"{settings.keycloak_issuer}/protocol/openid-connect/token",
+            f"{settings.jwks_url.rsplit('/protocol/openid-connect/certs', 1)[0]}/protocol/openid-connect/token",
             data={
                 "grant_type": "password",
                 "client_id": settings.local_demo_client_id,
@@ -39,7 +39,10 @@ async def local_demo_login(request: Request, db: DbSession) -> DemoSession:
     # A public/production deployment has no demo login. adb reverse reaches this host via loopback.
     if not settings.local_demo_enabled:
         raise HTTPException(404, "Not found")
-    if request.client is None or request.client.host not in {"127.0.0.1", "::1"}:
+    allowed = {"127.0.0.1", "::1"}
+    if settings.local_demo_proxy_ip:
+        allowed.add(settings.local_demo_proxy_ip)
+    if request.client is None or request.client.host not in allowed:
         raise HTTPException(403, "Local demo is available on loopback only")
     if not settings.demo_password:
         raise HTTPException(503, "Local demo is not configured")

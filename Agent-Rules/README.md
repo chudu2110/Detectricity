@@ -17,6 +17,8 @@ Updated 2026-11-21. Read the product brief and repository rules before editing.
 - `references/`: the original PDF, its rendered pages, the previous API setup guide, and the [glass hero image prompt](references/glass-art-prompt.md).
 - `skills/`: local reusable skills. Repository-specific instructions remain in each repo.
 
+[USB phone setup](phone-setup.md): current Samsung device, port forwarding, demo login and known limitations.
+
 ## Runtime
 
 Docker Desktop is installed at `D:\Docker`; container disks are at `D:\DockerData`.
@@ -24,7 +26,7 @@ Database: 11096. Keycloak: 11095. Host FastAPI: 11093. Metro: 11094.
 The Android development app id and URL scheme remain compatible with the existing installed build.
 
 The development demo uses a real, loopback-only Keycloak session for REFIT House 2.
-The public archived recording is replayed; these are not measurements of the user's personal home.
+The public REFIT recording is static demo data; these are not measurements of the user's personal home.
 Backend JWT validation remains enabled. Google credentials are still required to verify Google sign-in.
 
 Secrets belong only in the existing backend/frontend `.env` files as appropriate. Never place a private

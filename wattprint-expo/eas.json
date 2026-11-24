@@ -5,6 +5,7 @@
   },
   "build": {
     "development": {
+      "gradleCommand": ":app:assembleDebug -PreactNativeArchitectures=arm64-v8a",
       "developmentClient": true,
       "distribution": "internal",
       "env": {

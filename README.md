@@ -25,7 +25,7 @@ thư mục và application ID giữ tương thích với bản development đang
    [README backend](wattprint-backend/README.md).
 4. Frontend dùng Node và pnpm theo `wattprint-expo/package.json`. Chạy `pnpm install`
    trong `wattprint-expo`, rồi làm theo [README frontend](wattprint-expo/README.md)
-   để tạo Android development build. Không dùng Expo Go.
+   để tạo Android development build. Expo Go không tương thích với các native module của app.
 
 Các cổng phát triển: FastAPI `11093`, Metro `11094`, Keycloak `11095`, database
 `11096`. Không cần mang `node_modules`, `.venv`, native build hoặc cache từ máy cũ.

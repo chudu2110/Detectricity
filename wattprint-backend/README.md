@@ -29,7 +29,7 @@ API docs: http://localhost:11093/docs
 
 Docker Desktop is installed at `D:\Docker`, with the WSL disks under `D:\DockerData`.
 The host API, REFIT replay and CPU NILM worker run from this checkout; database and Keycloak run in Docker.
-The current demo has two days of REFIT House 2 data, repeated from the recording's last week to keep it live.
+The current REFIT House 2 recording is static demo data; it is not a live household feed.
 The demo home's weather location is Hồ Chí Minh for demonstration, not a measured REFIT location.
 
 `POST /api/v1/auth/demo` is disabled by default. With `LOCAL_DEMO_ENABLED=true`, the host API accepts it
@@ -58,10 +58,12 @@ and `DEMO_PASSWORD` in `.env`. Each home gets its own model (`tb_nilm_model`). P
 
 ### Copilot (Wappi)
 
-`POST /api/v1/copilot/chat` streams an answer (SSE) from an LLM through OpenRouter with tool calls over the
+`POST /api/v1/copilot/chat` streams an answer (SSE) from OpenAI directly when `OPENAI_API_KEY` is set,
+or from OpenRouter otherwise, with tool calls over the
 home's own services; free-form data questions go to `wattprint-text2sql-mcp` under a 5-minute scope token
 (the `copilot_ro` views show only that home). Voice uses AstralX (Whisper, TTS voice `speaker_05`). Env in
-`.env` (see `.env.example`): `OPENROUTER_API_KEY`, `TEXT2SQL_URL`, `TEXT2SQL_CONNECTION_ID` (the "Wattprint"
+`.env` (see `.env.example`): `OPENAI_API_KEY` and `OPENAI_MODEL=gpt-4o-mini` for direct OpenAI,
+or `OPENROUTER_API_KEY` for OpenRouter, plus `TEXT2SQL_URL`, `TEXT2SQL_CONNECTION_ID` (the "Wattprint"
 connection in text2sql), `TEXT2SQL_SERVICE_KEY` (sent as `X-Service-Key`), `ASTRALX_API_KEY`,
 `OPENWEATHER_API_KEY`. Without a key the matching endpoints answer 503 (`copilot_unavailable`,
 `voice_unavailable`, `weather_unavailable`). text2sql must also listen on the docker0 gateway
@@ -70,11 +72,12 @@ connection in text2sql), `TEXT2SQL_SERVICE_KEY` (sent as `X-Service-Key`), `ASTR
 
 Safety: personal data in a question (phone, ID, email, card, account numbers) is replaced by a label
 before it is stored or sent (`services/privacy.py`); a question asking the model to drop its rules is
-declined, and `COPILOT_GUARD_MODEL` (Llama Guard 4) screens harmful ones while the model's first round
+declined. Direct OpenAI uses `omni-moderation-latest`; OpenRouter uses `COPILOT_GUARD_MODEL`
+(Llama Guard 4) to screen harmful ones while the model's first round
 runs (`services/guard.py`). Whatever the model is told, its tools only read the asking home. Each
-answer's tokens and cost are in `ai.ai_message.usage`; answers read aloud are kept in `ai.ai_speech`.
+answer's token usage is in `ai.ai_message.usage` (cost is null when the provider omits it); answers read aloud are kept in `ai.ai_speech`.
 
-Keycloak console: http://localhost:11095 (user `admin`, `KEYCLOAK_ADMIN_PASSWORD`).
+Keycloak console: http://localhost:11095. `KEYCLOAK_ADMIN_PASSWORD` bootstraps the `admin` user only when the master realm is first created; it does not reset an existing password. For lost access, run `bash scripts/recover_keycloak_admin.sh` on the backend host, then remove the temporary recovery admin after restoring permanent access.
 
 ## Layout
 
@@ -109,6 +112,9 @@ Migrations need a database owner with permission to create extensions and roles 
 - Realm `wattprint`: public client `wattprint-mobile` (authorization code + PKCE, redirect `wattprint://auth`, no direct
   grants), resource client `wattprint-api` (bearer only; its audience is added to access tokens by a mapper), realm roles
   `admin` and `user`, self-registration off, brute-force protection on.
+- For an already imported realm, changing `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` in `.env` does
+  not change the Google identity provider. Update it in Keycloak Admin Console > realm `wattprint` >
+  Identity providers > Google, then restart the API/frontend with demo mode disabled to verify sign-in.
 - First start imports `keycloak/realm/wattprint-realm.json` (later starts skip it: edit realms in the console, or
   `docker compose rm -sfv keycloak keycloak-db` and delete the `wattprint_keycloak_pg18data` volume to re-import). It creates
   the user `admin` (email `admin@wattprint.local`, roles `admin`+`user`) with the password from `WATTPRINT_ADMIN_PASSWORD`

@@ -48,7 +48,7 @@ export function PageHeader({
         <DisplayText
           weight="semibold"
           accessibilityRole="header"
-          className="text-foreground text-[36px] leading-[44px] tracking-[-1.35px]"
+          className={`text-foreground tracking-[-1.35px] ${title.length > 15 ? 'text-[30px] leading-[38px]' : 'text-[36px] leading-[44px]'}`}
         >
           {title}
         </DisplayText>
@@ -62,11 +62,13 @@ type PageProps = ComponentProps<typeof ScrollView> & {
   title: string;
   eyebrow?: string;
   action?: ReactNode;
+  floatingAction?: ReactNode;
 };
 export function Page({
   title,
   eyebrow,
   action,
+  floatingAction,
   children,
   contentContainerStyle,
   ...props
@@ -83,12 +85,17 @@ export function Page({
         contentContainerClassName="gap-5 px-5"
         contentContainerStyle={[
           contentContainerStyle,
-          { paddingBottom: Math.max(insets.bottom, dockInset) + 16 },
+          { paddingBottom: Math.max(insets.bottom, dockInset) + (floatingAction ? 80 : 16) },
         ]}
       >
         <PageHeader title={title} eyebrow={eyebrow} action={action} />
         {children}
       </ScrollView>
+      {floatingAction && (
+        <View className="absolute right-5" style={{ bottom: dockInset + 16 }}>
+          {floatingAction}
+        </View>
+      )}
     </View>
   );
 }

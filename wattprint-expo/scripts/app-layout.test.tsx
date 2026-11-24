@@ -10,6 +10,9 @@ jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, right: 0, bottom: 0, left: 0 }),
 }));
 jest.mock('@/components/app-tab-bar', () => ({ AppTabBar: () => null }));
+jest.mock('@/features/dashboard/queries', () => ({
+  homeQuery: () => ({ queryKey: ['dashboard', 'home'], queryFn: jest.fn() }),
+}));
 
 it('reads native keyboard visibility on its receiver when the signed-in tabs mount', async () => {
   const visibility = jest.spyOn(Keyboard, 'isVisible');

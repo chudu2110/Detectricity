@@ -54,9 +54,14 @@
     },
     "extra": {
       "eas": {
-        "projectId": "b6012f6d-0fc1-4b6d-ad59-5451b11a3f70"
+        "projectId": "3a25ea1c-a07c-4dac-a3f5-00c2ca0631f1"
+      },
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
       }
     },
-    "owner": "dafoggo"
+    "owner": "taco29"
   }
 }

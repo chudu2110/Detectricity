@@ -280,18 +280,19 @@ class Answer:
         self.steps: list[dict[str, str]] = []
         self.calls: list[tuple[str, dict, Outcome, bool, int]] = []
         self.sources: list[str] = []
-        self.usage = {"rounds": 0, "prompt": 0, "cached": 0, "completion": 0, "cost": 0.0}
+        self.usage = {"rounds": 0, "prompt": 0, "cached": 0, "completion": 0, "cost": None}
         self.earlier: list[str] = []  # the conversation's earlier answers (checked when given)
         self.newest: datetime | None = None  # the main meter's newest reading
 
     def count(self, usage: dict[str, Any]) -> None:
-        """Adds one model round's tokens and cost (USD, as OpenRouter bills them)."""
+        """Add token usage; record USD cost only when the provider reports it."""
         u = self.usage
         u["rounds"] += 1
         u["prompt"] += usage.get("prompt_tokens") or 0
         u["cached"] += (usage.get("prompt_tokens_details") or {}).get("cached_tokens") or 0
         u["completion"] += usage.get("completion_tokens") or 0
-        u["cost"] += usage.get("cost") or 0.0
+        if usage.get("cost") is not None:
+            u["cost"] = (u["cost"] or 0.0) + usage["cost"]
 
     def cite(self, keys: list[str]) -> list[int]:
         for k in keys:

@@ -1,8 +1,10 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.modules.auth.api import User
+
 from ..models import Home, HomeMember, Province
-from ..schemas import HomeRead, HomeUpdate
+from ..schemas import HomeCreate, HomeRead, HomeUpdate
 from ..utils import HomeOwnerRequiredError, UnknownProvinceError
 
 # Required columns: null in a patch means "not sent", never "clear".
@@ -13,6 +15,26 @@ async def read_home(db: AsyncSession, member: HomeMember) -> HomeRead:
     home = await db.get(Home, member.home_id)
     fields = {k: getattr(home, k) for k in HomeRead.model_fields if k != "role"}
     return HomeRead.model_validate({**fields, "role": member.role})
+
+
+async def create_home(db: AsyncSession, user: User, body: HomeCreate) -> HomeRead:
+    existing = await db.scalar(select(HomeMember).where(HomeMember.user_id == user.id))
+    if existing is not None:
+        return await read_home(db, existing)
+    if await db.get(Province, body.province_code) is None:
+        raise UnknownProvinceError
+    home = Home(
+        name=body.name.strip(),
+        province_code=body.province_code,
+        billing_cycle_day=body.billing_cycle_day,
+    )
+    db.add(home)
+    await db.flush()
+    member = HomeMember(home_id=home.id, user_id=user.id, role="owner")
+    db.add(member)
+    await db.commit()
+    await db.refresh(home)
+    return await read_home(db, member)
 
 
 async def update_home(db: AsyncSession, member: HomeMember, patch: HomeUpdate) -> HomeRead:

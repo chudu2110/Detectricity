@@ -1,4 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -8,6 +9,7 @@ import { DeviceIllustration } from '@/components/illustrated-icon';
 import { EmptyState } from '@/components/states/empty-state';
 import { Text } from '@/components/ui/text';
 import { deviceQuery, devicesQuery } from '@/features/dashboard/queries';
+import { renameDevice } from '@/features/dashboard/api';
 import {
   BackButton,
   dashboardNumber,
@@ -16,14 +18,24 @@ import {
   MetricPair,
   VIETNAM_TIME_ZONE,
 } from '@/screens/dashboard-parts';
+import { EditDeviceButton, RenameDeviceForm } from './rename-device';
 
 import { DeviceSimulate } from './device-simulate';
 
 export function DeviceDetailScreen({ id }: { id: string }) {
   const { t, i18n } = useTranslation();
-  const cached = useQueryClient()
-    .getQueryData(devicesQuery().queryKey)
-    ?.find((device) => device.id === id);
+  const client = useQueryClient();
+  const [editing, setEditing] = useState(false);
+  const save = useMutation({
+    mutationFn: ({ name, room }: { name: string; room: string | null }) =>
+      renameDevice(id, name, room),
+    onSuccess: () => {
+      setEditing(false);
+      void client.invalidateQueries({ queryKey: devicesQuery().queryKey });
+      void client.invalidateQueries({ queryKey: deviceQuery(id).queryKey });
+    },
+  });
+  const cached = client.getQueryData(devicesQuery().queryKey)?.find((device) => device.id === id);
   const detail = useQuery(deviceQuery(id));
   const preview = detail.data ?? cached;
   const number = (value: number) => dashboardNumber(value, i18n.language);
@@ -37,10 +49,26 @@ export function DeviceDetailScreen({ id }: { id: string }) {
 
   return (
     <Page
-      title={preview?.name ?? t('dashboardNew.device')}
+      title={
+        preview?.type === 'other'
+          ? preview.name.replace(/1$/, '')
+          : (preview?.name ?? t('dashboardNew.device'))
+      }
       eyebrow={preview?.room ?? undefined}
       action={<BackButton />}
+      floatingAction={preview ? <EditDeviceButton onPress={() => setEditing(true)} /> : undefined}
     >
+      {editing && preview && (
+        <RenameDeviceForm
+          key={preview.name}
+          initialName={preview.name}
+          initialRoom={preview.room}
+          onSave={(name, room) => save.mutate({ name, room })}
+          onCancel={() => setEditing(false)}
+          busy={save.isPending}
+          error={save.error}
+        />
+      )}
       {preview && (
         <Surface variant="matcha" size="lg">
           <View className="flex-row items-center justify-between gap-4">

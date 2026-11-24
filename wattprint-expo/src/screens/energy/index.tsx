@@ -95,9 +95,6 @@ export function Energy() {
             </DisplayText>
             <View className="flex-row flex-wrap gap-4">
               <MetricPair label={t('energyNew.consumption')}>{kwh(data.kwh)}</MetricPair>
-              <MetricPair label={t('energyNew.coverage')}>
-                {Math.round(data.coverage * 100)}%
-              </MetricPair>
             </View>
             <Text className="text-muted-foreground text-sm">{t('energyNew.billNote')}</Text>
             {data.tiers
