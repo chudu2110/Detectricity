@@ -38,3 +38,11 @@ class HomeUpdate(BaseModel):
     occupants: int | None = Field(default=None, ge=1, le=30)
     billing_cycle_day: int | None = Field(default=None, ge=1, le=28)
     province_code: str | None = Field(default=None, max_length=16)
+
+
+class HomeCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1, max_length=255)
+    province_code: str = Field(min_length=1, max_length=16)
+    billing_cycle_day: int = Field(ge=1, le=28)

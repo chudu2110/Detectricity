@@ -1,12 +1,24 @@
 import { Tabs } from 'expo-router';
+import { useQuery } from '@tanstack/react-query';
 import { BlurTargetView } from 'expo-blur';
 import { type ComponentRef, createRef, useEffect, useState } from 'react';
-import { Easing, Keyboard, Platform, type View } from 'react-native';
+import {
+  ActivityIndicator,
+  Easing,
+  Keyboard,
+  Platform,
+  View as NativeView,
+  type View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppTabBar } from '@/components/app-tab-bar';
 import { DockInsetContext } from '@/hooks/use-dock-inset';
 import { useSystemReducedMotion } from '@/hooks/use-system-reduced-motion';
+import { homeQuery } from '@/features/dashboard/queries';
+import { ApiError } from '@/lib/errors';
+import { ErrorState } from '@/components/states/error-state';
+import { HomeOnboarding } from '@/screens/onboarding/home-onboarding';
 
 const tabGlide = {
   animation: 'timing' as const,
@@ -14,6 +26,7 @@ const tabGlide = {
 };
 
 export default function AppLayout() {
+  const home = useQuery({ ...homeQuery(), retry: false });
   const [targets] = useState(() => ({
     '(home)': createRef<ComponentRef<typeof View>>(),
     '(devices)': createRef<ComponentRef<typeof View>>(),
@@ -41,6 +54,24 @@ export default function AppLayout() {
       hide.remove();
     };
   }, []);
+
+  if (home.isError && home.error instanceof ApiError && home.error.status === 404) {
+    return <HomeOnboarding />;
+  }
+  if (home.isError) {
+    return (
+      <NativeView className="bg-background flex-1 items-center justify-center px-5">
+        <ErrorState error={home.error} onRetry={() => void home.refetch()} />
+      </NativeView>
+    );
+  }
+  if (home.data === undefined) {
+    return (
+      <NativeView className="bg-background flex-1 items-center justify-center">
+        <ActivityIndicator colorClassName="accent-primary-strong" />
+      </NativeView>
+    );
+  }
 
   return (
     <DockInsetContext value={keyboardVisible ? 0 : dockHeight + dockBottom}>

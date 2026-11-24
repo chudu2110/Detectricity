@@ -165,8 +165,6 @@ async def _cycles(
     by_series: dict[uuid.UUID, list[tuple[datetime, float, float]]] = {
         r.series_id: [] for r in rows
     }
-    if not rows:
-        return {}
     for r in await session.execute(
         text(
             "SELECT series_id, bucket, avg_w, energy_wh FROM public.device_estimate_1m "

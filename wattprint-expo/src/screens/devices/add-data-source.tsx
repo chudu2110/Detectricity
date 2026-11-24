@@ -111,6 +111,8 @@ export function AddDataSource() {
   const savePlug = useMutation({
     mutationFn: () => addPlug(selectedPlug, plugName.trim()),
     onSuccess: () => {
+      setSelectedPlug('');
+      setPlugName('');
       void client.invalidateQueries({ queryKey: sourceKeys.list });
       void client.invalidateQueries({ queryKey: sourceKeys.plugs });
       void client.invalidateQueries({ queryKey: ['dashboard'] });
@@ -200,7 +202,7 @@ export function AddDataSource() {
               variant={selectedPlug === plug.device_id ? 'solid' : 'outline'}
               onPress={() => {
                 setSelectedPlug(plug.device_id);
-                setPlugName(plug.assigned_name ?? plug.device_name);
+                setPlugName('');
                 savePlug.reset();
               }}
             >
@@ -215,11 +217,7 @@ export function AddDataSource() {
                 onChangeText={setPlugName}
                 placeholder={t('dataSources.exampleMicrowave')}
               />
-              <ActionButton
-                disabled={!plugName.trim()}
-                busy={savePlug.isPending}
-                onPress={() => savePlug.mutate()}
-              >
+              <ActionButton busy={savePlug.isPending} onPress={() => savePlug.mutate()}>
                 {t('dataSources.savePlug')}
               </ActionButton>
               <ErrorText error={savePlug.error} />

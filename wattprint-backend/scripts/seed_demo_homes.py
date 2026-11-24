@@ -155,7 +155,7 @@ async def seed_home(cfg: dict, home: dict, kc: Keycloak, password: str, extra: l
 
     async with SessionLocal() as s, s.begin():
         # The home is the one its REFIT meter is on, so a renamed home is found again.
-        name = f"REFIT House {house}"
+        name = "Nhà của Phi Líp" if house == 2 else f"REFIT House {house}"
         home_id = await s.scalar(
             text("SELECT home_id FROM public.tb_meter WHERE serial = :m"), {"m": refit.meter(house)}
         )
@@ -169,11 +169,12 @@ async def seed_home(cfg: dict, home: dict, kc: Keycloak, password: str, extra: l
             )
         await s.execute(
             text(
-                "UPDATE public.tb_home SET name = :n, province_code = NULL, home_type = NULL, "
-                "floor_area_m2 = NULL, occupants = NULL, tariff_plan_code = 'vn_residential' "
+                "UPDATE public.tb_home SET "
+                "province_code = COALESCE(province_code, '01'), "
+                "tariff_plan_code = 'vn_residential' "
                 "WHERE id = :h"
             ),
-            {"n": name, "h": home_id},
+            {"h": home_id},
         )
         for p, role in people + [({"email": e, "name": None}, "member") for e in extra]:
             uid = await ensure_profile(s, p["email"], p["name"], subs.get(p["email"]))

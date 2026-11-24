@@ -5,7 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
 import { AppIcon } from '@/components/app-icon';
-import { ActionButton, Page, QueryContent, SegmentedControl, Surface } from '@/components/app-ui';
+import {
+  ActionButton,
+  IconButton,
+  Page,
+  QueryContent,
+  SegmentedControl,
+  Surface,
+} from '@/components/app-ui';
 import { DisplayText } from '@/components/display-text';
 import { DeviceIllustration } from '@/components/illustrated-icon';
 import { TactilePressable } from '@/components/tactile-pressable';
@@ -32,6 +39,7 @@ function DeviceGroups({ groups, sources }: { groups: LiveDevice[][]; sources: Da
       <View className="gap-1">
         {groups.map((group, index) => {
           const parent = group[0];
+          const isOther = parent.type === 'other';
           const ids = new Set(group.map((device) => device.id));
           const plugCount = sources.filter(
             (source) => source.kind === 'plug' && source.device_id && ids.has(source.device_id),
@@ -42,12 +50,19 @@ function DeviceGroups({ groups, sources }: { groups: LiveDevice[][]; sources: Da
               {index > 0 && <View className="bg-border ml-16 h-px" />}
               <TactilePressable
                 accessibilityRole="button"
-                accessibilityLabel={t('dataSources.openGroup', { name: parent.name })}
+                accessibilityLabel={
+                  isOther ? parent.name : t('dataSources.openGroup', { name: parent.name })
+                }
                 onPress={() =>
-                  router.push({
-                    pathname: '/(app)/(devices)/groups/[type]',
-                    params: { type: parent.type },
-                  })
+                  isOther
+                    ? router.push({
+                        pathname: '/(app)/(devices)/[id]',
+                        params: { id: parent.id },
+                      })
+                    : router.push({
+                        pathname: '/(app)/(devices)/groups/[type]',
+                        params: { type: parent.type },
+                      })
                 }
                 className="min-h-[76px] flex-row items-center gap-2 rounded-2xl py-2.5"
               >
@@ -55,20 +70,21 @@ function DeviceGroups({ groups, sources }: { groups: LiveDevice[][]; sources: Da
                 <View className="flex-1 flex-row flex-wrap items-center justify-between gap-x-2 gap-y-1">
                   <View className="min-w-[44%] flex-1 gap-1">
                     <Text className="text-foreground text-[16px] leading-[22px] font-semibold">
-                      {parent.name}
+                      {parent.name.replace(/1$/, '')}
                     </Text>
-                    <Text className="text-muted-foreground text-[13px] leading-[18px]">
-                      {t('dataSources.groupChildren', {
-                        original: group.length,
-                        plugs: plugCount,
-                      })}
-                    </Text>
+                    {!isOther && (
+                      <Text className="text-muted-foreground text-[13px] leading-[18px]">
+                        {t('dataSources.groupDeviceCount', { count: group.length + plugCount })}
+                      </Text>
+                    )}
                   </View>
                   <DisplayText
                     weight="semibold"
                     className="text-brand-ink shrink text-[18px] leading-6 tabular-nums"
                   >
-                    {t('energy.kwh', { value: dashboardNumber(today, i18n.language) })}
+                    {isOther
+                      ? t('devices.watts', { value: dashboardNumber(parent.watts, i18n.language) })
+                      : t('energy.kwh', { value: dashboardNumber(today, i18n.language) })}
                   </DisplayText>
                 </View>
                 <AppIcon name="chevron" className="text-muted-foreground" size={14} />
@@ -93,6 +109,15 @@ export function Devices() {
   return (
     <Page
       title={t('tabs.devices')}
+      floatingAction={
+        <IconButton
+          label={t('dataSources.add')}
+          onPress={() => router.push('/(app)/(devices)/sources')}
+          variant="solid"
+        >
+          <AppIcon name="plus" className="text-primary-foreground" size={26} />
+        </IconButton>
+      }
       refreshControl={
         <RefreshControl
           refreshing={devices.isRefetching || sources.isRefetching}
@@ -103,9 +128,6 @@ export function Devices() {
         />
       }
     >
-      <ActionButton variant="tonal" onPress={() => router.push('/(app)/(devices)/sources')}>
-        {t('dataSources.add')}
-      </ActionButton>
       <Input className="bg-card/75 border-glass-rim min-h-14 gap-3 rounded-full px-4">
         <AppIcon name="search" size={20} className="text-primary-strong" />
         <InputField

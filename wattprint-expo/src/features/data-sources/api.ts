@@ -6,6 +6,7 @@ export const sourceSchema = z.object({
   id: z.string(),
   kind: z.enum(['plug', 'csv', 'meter']),
   name: z.string(),
+  room: z.string().nullable(),
   device_id: z.string().nullable(),
   created_at: z.string(),
   latest_kwh: z.coerce.number().nullable(),
@@ -44,6 +45,13 @@ export const addPlug = (device_id: string, name: string) =>
     method: 'POST',
     body: { device_id, name },
     schema: z.object({ id: z.string(), name: z.string(), kind: z.literal('plug') }),
+  });
+
+export const renamePlug = (id: string, name: string, room: string | null) =>
+  apiClient.request(`/energy/sources/${id}`, {
+    method: 'PATCH',
+    body: { name, room },
+    schema: z.object({ id: z.string(), name: z.string(), room: z.string().nullable() }),
   });
 
 export const previewCsv = (csv_text: string) =>

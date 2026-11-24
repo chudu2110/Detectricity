@@ -1,7 +1,9 @@
 import uuid
 from datetime import UTC, datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, Field
+from sqlalchemy import text
 
 from app.dependencies import DbSession
 
@@ -11,6 +13,11 @@ from ..schemas import Activity, Cycle, DayEnergy, Device, DeviceDetail, PowerSte
 from ..utils import DeviceNotFoundError
 
 router = APIRouter()
+
+
+class DeviceName(BaseModel):
+    name: str = Field(min_length=1, max_length=255)
+    room: str | None = Field(default=None, max_length=128)
 
 
 def _ms(ts: datetime) -> int:
@@ -36,14 +43,21 @@ def _cycle(c: services.Cycle) -> dict:
     return {"start": _ms(c.start), "end": _ms(c.end) if c.end else None, "kwh": c.kwh}
 
 
-@router.get("/devices", summary="The home's devices found by NILM: power now, today, month, week")
+@router.get(
+    "/devices",
+    summary="The home's devices found by NILM: power now, today, month, week",
+)
 async def list_devices(home_id: CurrentHome, db: DbSession) -> list[Device]:
     rows = await services.devices(db, home_id, datetime.now(UTC))
     return [Device(**_device(r)) for r in rows]
 
 
-@router.get("/devices/{device_id}", summary="One device: this month by day, last 24 h, its runs")
-async def get_device(device_id: uuid.UUID, home_id: CurrentHome, db: DbSession) -> DeviceDetail:
+@router.get(
+    "/devices/{device_id}", summary="One device: this month by day, last 24 h, its runs"
+)
+async def get_device(
+    device_id: uuid.UUID, home_id: CurrentHome, db: DbSession
+) -> DeviceDetail:
     d = await services.device_detail(db, home_id, device_id, datetime.now(UTC))
     if d is None:
         raise DeviceNotFoundError
@@ -60,9 +74,38 @@ async def get_device(device_id: uuid.UUID, home_id: CurrentHome, db: DbSession) 
     )
 
 
-@router.get("/activity", summary="Runs started in the last 24 h by devices on the timeline")
+@router.patch("/devices/{device_id}")
+async def rename_device(
+    device_id: uuid.UUID, body: DeviceName, home_id: CurrentHome, db: DbSession
+) -> dict:
+    name = body.name.strip()
+    if not name:
+        raise HTTPException(422, "Tên thiết bị không được để trống")
+    row = (
+        await db.execute(
+            text(
+                """
+            UPDATE public.tb_device SET name=:name, room=:room
+            WHERE id=:id AND home_id=:home AND deleted_at IS NULL
+            RETURNING id, name, room
+        """
+            ),
+            {"id": device_id, "home": home_id, "name": name, "room": body.room.strip() if body.room and body.room.strip() else None},
+        )
+    ).one_or_none()
+    if row is None:
+        raise DeviceNotFoundError
+    await db.commit()
+    return {"id": row.id, "name": row.name, "room": row.room}
+
+
+@router.get(
+    "/activity", summary="Runs started in the last 24 h by devices on the timeline"
+)
 async def activity(home_id: CurrentHome, db: DbSession) -> list[Activity]:
     return [
-        Activity(**_cycle(c), device=row.id, name=row.name, room=row.room, type=row.type)
+        Activity(
+            **_cycle(c), device=row.id, name=row.name, room=row.room, type=row.type
+        )
         for row, c in await services.activity(db, home_id, datetime.now(UTC))
     ]

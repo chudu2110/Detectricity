@@ -39,6 +39,7 @@ const paths = {
   chevron: <Path d="m9 5 7 7-7 7" />,
   close: <Path d="m6 6 12 12M6 18 18 6" />,
   plus: <Path d="M12 4v16M4 12h16" />,
+  edit: <Path d="m4 20 4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20ZM14.5 6.5l3 3" />,
   mic: (
     <>
       <Rect transform="translate(8 2)" width="8" height="13" rx="4" />

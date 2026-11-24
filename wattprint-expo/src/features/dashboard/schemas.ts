@@ -53,6 +53,7 @@ export const homeSchema = z.object({
 });
 
 export type Home = z.output<typeof homeSchema>;
+export type HomeCreate = Pick<Home, 'name' | 'province_code' | 'billing_cycle_day'>;
 export type HomeUpdate = Partial<
   Omit<Home, 'id' | 'role' | 'floor_area_m2'> & { floor_area_m2: string | number | null }
 >;

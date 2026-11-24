@@ -7,6 +7,7 @@
     "assistant": "Trợ lý"
   },
   "common": {
+    "cancel": "H\u1ee7y",
     "close": "Đóng"
   },
   "home": {
@@ -122,6 +123,14 @@
     "deviceToday": "Hôm nay: {{value}} kWh",
     "lastDay": "24 giờ qua: {{value}} kWh",
     "demoAccount": "Tài khoản demo: {{name}}"
+  },
+  "onboarding": {
+    "title": "Thi\u1ebft l\u1eadp nh\u00e0",
+    "eyebrow": "CH\u00c0O M\u1eeaNG \u0110\u1ebeN DETECTRICITY",
+    "intro": "T\u1ea1o th\u00f4ng tin h\u1ed9 gia \u0111\u00ecnh tr\u01b0\u1edbc khi k\u1ebft n\u1ed1i thi\u1ebft b\u1ecb v\u00e0 d\u1eef li\u1ec7u \u0111i\u1ec7n.",
+    "home": "Th\u00f4ng tin nh\u00e0",
+    "homePlaceholder": "V\u00ed d\u1ee5: Nh\u00e0 c\u1ee7a t\u00f4i",
+    "create": "T\u1ea1o nh\u00e0"
   },
   "account": {
     "title": "Tài khoản",
@@ -256,7 +265,7 @@
   },
   "energyNew": {
     "consumption": "Điện năng tiêu thụ",
-    "available": "Chạm biểu đồ để xem từng khoảng. Khoảng trống chưa có số liệu.",
+    "available": "Chạm biểu đồ để xem từng khoảng.",
     "missingReading": "Chưa ghi nhận",
     "bill": "Hóa đơn tạm tính",
     "coverage": "Độ phủ dữ liệu",
@@ -315,6 +324,13 @@
     "recorded": "Đã ghi nhận"
   },
   "dataSources": {
+    "groupDeviceCount": "{{count}} thiết bị",
+    "renameDevice": "Chỉnh sửa thiết bị",
+    "saveName": "Lưu thay đổi",
+    "room": "Vị trí",
+    "roomPlaceholder": "Ví dụ: Phòng bếp",
+    "cancel": "Hủy",
+    "plugMissing": "Không tìm thấy plug",
     "add": "Thêm nguồn dữ liệu",
     "title": "Nguồn dữ liệu",
     "eyebrow": "THÊM NGUỒN DỮ LIỆU",
@@ -361,13 +377,13 @@
     "meterDate": "Ngày ghi nhận (YYYY-MM-DD)",
     "saveReading": "Lưu chỉ số",
     "openGroup": "Mở nhóm {{name}}",
-    "groupChildren": "{{original}} dữ liệu REFIT · {{plugs}} plug",
+    "groupChildren": "{{original}} thiết bị · {{plugs}} plug",
     "groupTitle": "NHÓM THIẾT BỊ",
     "groupMissing": "Không tìm thấy nhóm thiết bị",
     "groupUsage": "Điện năng hôm nay",
-    "groupUsageInfo": "Ước tính từ dữ liệu REFIT gốc; plug mô phỏng chưa có số đo riêng.",
+    "groupUsageInfo": "Tổng điện năng của các thiết bị trong nhóm.",
     "groupMembers": "Thiết bị trong nhóm",
-    "refitChild": "{{name}} · REFIT",
+    "refitChild": "{{name}}",
     "refitInfo": "Dữ liệu gốc từ bộ REFIT",
     "todayUsage": "Hôm nay: {{value}} kWh",
     "noPlugReadings": "Chưa có số đo riêng",

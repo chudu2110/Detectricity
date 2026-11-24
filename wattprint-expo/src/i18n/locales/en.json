@@ -7,7 +7,8 @@
     "assistant": "Assistant"
   },
   "common": {
-    "close": "Close"
+    "close": "Close",
+    "cancel": "Cancel"
   },
   "home": {
     "greeting": {
@@ -122,6 +123,14 @@
     "deviceToday": "Today: {{value}} kWh",
     "lastDay": "Last 24 hours: {{value}} kWh",
     "demoAccount": "Demo account: {{name}}"
+  },
+  "onboarding": {
+    "title": "Set up your home",
+    "eyebrow": "WELCOME TO DETECTRICITY",
+    "intro": "Create your household profile before connecting devices and energy data.",
+    "home": "Home information",
+    "homePlaceholder": "For example: My home",
+    "create": "Create home"
   },
   "account": {
     "title": "Account",
@@ -256,7 +265,7 @@
   },
   "energyNew": {
     "consumption": "Energy consumption",
-    "available": "Tap the chart to inspect an interval. Gaps indicate missing readings.",
+    "available": "Tap the chart to inspect an interval.",
     "missingReading": "No reading",
     "bill": "Estimated bill",
     "coverage": "Data coverage",
@@ -315,6 +324,13 @@
     "recorded": "Recorded"
   },
   "dataSources": {
+    "groupDeviceCount": "{{count}} devices",
+    "renameDevice": "Edit device",
+    "saveName": "Save changes",
+    "room": "Room",
+    "roomPlaceholder": "For example, kitchen",
+    "cancel": "Cancel",
+    "plugMissing": "Plug not found",
     "add": "Add data source",
     "title": "Data sources",
     "eyebrow": "ADD DATA SOURCE",
@@ -361,13 +377,13 @@
     "meterDate": "Reading date (YYYY-MM-DD)",
     "saveReading": "Save reading",
     "openGroup": "Open {{name}} group",
-    "groupChildren": "{{original}} REFIT data · {{plugs}} plugs",
+    "groupChildren": "{{original}} devices · {{plugs}} plugs",
     "groupTitle": "DEVICE GROUP",
     "groupMissing": "Device group not found",
     "groupUsage": "Energy today",
-    "groupUsageInfo": "Estimated from the original REFIT data; simulated plugs have no separate readings yet.",
+    "groupUsageInfo": "Total energy across the devices in this group.",
     "groupMembers": "Devices in this group",
-    "refitChild": "{{name}} · REFIT",
+    "refitChild": "{{name}}",
     "refitInfo": "Original data from the REFIT dataset",
     "todayUsage": "Today: {{value}} kWh",
     "noPlugReadings": "No separate readings yet",

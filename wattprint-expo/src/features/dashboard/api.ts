@@ -14,6 +14,7 @@ import {
   provincesSchema,
   seriesSchema,
   weatherSchema,
+  type HomeCreate,
   type HomeUpdate,
 } from './schemas';
 
@@ -29,6 +30,13 @@ export const fetchDevice = (id: string, signal?: AbortSignal) =>
     signal,
   });
 
+export const renameDevice = (id: string, name: string, room: string | null) =>
+  apiClient.request(`/energy/devices/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: { name, room },
+    schema: z.object({ id: z.string(), name: z.string(), room: z.string().nullable() }),
+  });
+
 export const fetchSeries = (since: string, until: string, signal?: AbortSignal, maxPoints = 24) =>
   apiClient.request(
     `/energy/series?since=${encodeURIComponent(since)}&until=${encodeURIComponent(until)}&max_points=${maxPoints}`,
@@ -40,6 +48,9 @@ export const fetchWeather = (lang: 'en' | 'vi', signal?: AbortSignal) =>
 
 export const fetchHome = (signal?: AbortSignal) =>
   apiClient.request('/homes/current', { schema: homeSchema, signal });
+
+export const createHome = (body: HomeCreate) =>
+  apiClient.request('/homes', { schema: homeSchema, method: 'POST', body });
 
 export const updateHome = (body: HomeUpdate) =>
   apiClient.request('/homes/current', { schema: homeSchema, method: 'PATCH', body });
