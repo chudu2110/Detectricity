@@ -52,12 +52,8 @@ async def list_devices(home_id: CurrentHome, db: DbSession) -> list[Device]:
     return [Device(**_device(r)) for r in rows]
 
 
-@router.get(
-    "/devices/{device_id}", summary="One device: this month by day, last 24 h, its runs"
-)
-async def get_device(
-    device_id: uuid.UUID, home_id: CurrentHome, db: DbSession
-) -> DeviceDetail:
+@router.get("/devices/{device_id}", summary="One device: this month by day, last 24 h, its runs")
+async def get_device(device_id: uuid.UUID, home_id: CurrentHome, db: DbSession) -> DeviceDetail:
     d = await services.device_detail(db, home_id, device_id, datetime.now(UTC))
     if d is None:
         raise DeviceNotFoundError
@@ -90,7 +86,12 @@ async def rename_device(
             RETURNING id, name, room
         """
             ),
-            {"id": device_id, "home": home_id, "name": name, "room": body.room.strip() if body.room and body.room.strip() else None},
+            {
+                "id": device_id,
+                "home": home_id,
+                "name": name,
+                "room": body.room.strip() if body.room and body.room.strip() else None,
+            },
         )
     ).one_or_none()
     if row is None:
@@ -99,13 +100,9 @@ async def rename_device(
     return {"id": row.id, "name": row.name, "room": row.room}
 
 
-@router.get(
-    "/activity", summary="Runs started in the last 24 h by devices on the timeline"
-)
+@router.get("/activity", summary="Runs started in the last 24 h by devices on the timeline")
 async def activity(home_id: CurrentHome, db: DbSession) -> list[Activity]:
     return [
-        Activity(
-            **_cycle(c), device=row.id, name=row.name, room=row.room, type=row.type
-        )
+        Activity(**_cycle(c), device=row.id, name=row.name, room=row.room, type=row.type)
         for row, c in await services.activity(db, home_id, datetime.now(UTC))
     ]

@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+import httpx
 import pytest
 
 from app.config import settings
@@ -62,8 +65,60 @@ async def test_weather_needs_a_province(client, make_member, openweather):
     assert r.status_code == 404 and r.json()["code"] == "home_location_unset"
 
 
-async def test_weather_without_a_key_is_503(client, make_member, monkeypatch):
+OPEN_METEO = {
+    "current": {
+        "time": "2026-11-24T05:00",
+        "temperature_2m": 31.2,
+        "apparent_temperature": 35.0,
+        "relative_humidity_2m": 66,
+        "wind_speed_10m": 7.2,
+        "weather_code": 2,
+        "is_day": 1,
+    },
+    "hourly": {
+        "time": [
+            (datetime(2026, 11, 24, 5) + timedelta(hours=h)).isoformat(timespec="minutes")
+            for h in range(22)
+        ],
+        "temperature_2m": [30.0] * 22,
+        "precipitation_probability": [40] * 22,
+        "weather_code": [61] * 22,
+        "is_day": [1] * 22,
+    },
+}
+
+
+@pytest.fixture
+def no_key(monkeypatch):
+    """No OpenWeather key: the weather comes from Open-Meteo, answered here, never the network."""
+    answers = []
+    real_client = httpx.AsyncClient
+
+    def respond(request):
+        return answers.pop(0) if answers else httpx.Response(500)
+
     monkeypatch.setattr(settings, "openweather_api_key", "")
+    monkeypatch.setattr(
+        svc.httpx,
+        "AsyncClient",
+        lambda **kw: real_client(**kw, transport=httpx.MockTransport(respond)),
+    )
+    svc._cache.clear()
+    return answers
+
+
+async def test_weather_without_a_key_comes_from_open_meteo(client, make_member, no_key):
+    no_key.append(httpx.Response(200, json=OPEN_METEO))
+    owner = await make_member("owner", province_code="01")
+    r = await client.get("/api/v1/energy/weather?lang=vi", headers=owner.headers)
+    assert r.status_code == 200, r.text
+    now = r.json()["now"]
+    assert (now["temp"], now["feels_like"], now["humidity"]) == (31.2, 35.0, 66)
+    assert now["wind_speed"] == 2.0  # 7.2 km/h in m/s
+    assert now["sky"]["description"] == "Ít mây"
+
+
+async def test_weather_without_a_key_and_no_open_meteo_is_503(client, make_member, no_key):
     owner = await make_member("owner", province_code="01")
     r = await client.get("/api/v1/energy/weather", headers=owner.headers)
     assert r.status_code == 503 and r.json()["code"] == "weather_unavailable"

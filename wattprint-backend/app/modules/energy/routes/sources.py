@@ -50,19 +50,15 @@ def _timestamp(value: str) -> datetime:
         if re.fullmatch(r"\d{13}", value):
             return datetime.fromtimestamp(int(value) / 1000, tz=UTC)
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-        return (
-            parsed.replace(tzinfo=UTC)
-            if parsed.tzinfo is None
-            else parsed.astimezone(UTC)
-        )
-    except (ValueError, OverflowError):
+        return parsed.replace(tzinfo=UTC) if parsed.tzinfo is None else parsed.astimezone(UTC)
+    except ValueError, OverflowError:
         raise _bad(f"Ngày/giờ không hợp lệ: {value[:40]}") from None
 
 
 def _kwh(value: str) -> Decimal:
     try:
         number = Decimal(value.strip())
-    except (InvalidOperation, AttributeError):
+    except InvalidOperation, AttributeError:
         raise _bad("Cột điện năng phải chứa số kWh") from None
     if not number.is_finite() or number < 0:
         raise _bad("Điện năng kWh phải là số không âm và hữu hạn")
@@ -83,9 +79,7 @@ def parse_csv(
         if not time_key:
             raise _bad("CSV phải có cột timestamp hoặc date")
         device_key = (
-            normalized.get("device")
-            or normalized.get("device_name")
-            or normalized.get("appliance")
+            normalized.get("device") or normalized.get("device_name") or normalized.get("appliance")
         )
         generic = next(
             (
@@ -119,13 +113,11 @@ def parse_csv(
                 for column in wide:
                     value = (row.get(column) or "").strip()
                     if value:
-                        result[column[:-4].replace("_", " ").strip()].append(
-                            (ts, _kwh(value))
-                        )
+                        result[column[:-4].replace("_", " ").strip()].append((ts, _kwh(value)))
         if not count or not result:
             raise _bad("CSV không có dòng dữ liệu")
         return dict(result)
-    except (csv.Error, UnicodeError):
+    except csv.Error, UnicodeError:
         raise _bad("Không đọc được CSV") from None
 
 
@@ -244,7 +236,9 @@ async def add_plug(body: PlugSelection, home_id: CurrentHome, db: DbSession) -> 
         text(
             """
         INSERT INTO public.tb_data_source(home_id,kind,name,room,device_id)
-        VALUES (:home,'plug',:name,(SELECT room FROM public.tb_device WHERE id=:device),:device) RETURNING id
+        VALUES (:home,'plug',:name,
+                (SELECT room FROM public.tb_device WHERE id=:device),:device)
+        RETURNING id
     """
         ),
         {"home": home_id, "name": name, "device": body.device_id},
@@ -269,7 +263,12 @@ async def rename_source(
             RETURNING id, name, room
         """
             ),
-            {"id": source_id, "home": home_id, "name": name, "room": body.room.strip() if body.room and body.room.strip() else None},
+            {
+                "id": source_id,
+                "home": home_id,
+                "name": name,
+                "room": body.room.strip() if body.room and body.room.strip() else None,
+            },
         )
     ).one_or_none()
     if row is None:
@@ -380,13 +379,9 @@ async def record_meter(body: MeterEntry, home_id: CurrentHome, db: DbSession) ->
 
 
 @router.delete("/sources/{source_id}", status_code=204)
-async def delete_source(
-    source_id: uuid.UUID, home_id: CurrentHome, db: DbSession
-) -> None:
+async def delete_source(source_id: uuid.UUID, home_id: CurrentHome, db: DbSession) -> None:
     deleted = await db.scalar(
-        text(
-            "DELETE FROM public.tb_data_source WHERE id=:id AND home_id=:home RETURNING id"
-        ),
+        text("DELETE FROM public.tb_data_source WHERE id=:id AND home_id=:home RETURNING id"),
         {"id": source_id, "home": home_id},
     )
     if deleted is None:

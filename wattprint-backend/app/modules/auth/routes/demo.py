@@ -22,7 +22,8 @@ class DemoSession(BaseModel):
 async def demo_token() -> str:
     async with httpx.AsyncClient(timeout=10) as client:
         response = await client.post(
-            f"{settings.jwks_url.rsplit('/protocol/openid-connect/certs', 1)[0]}/protocol/openid-connect/token",
+            settings.jwks_url.rsplit("/protocol/openid-connect/certs", 1)[0]
+            + "/protocol/openid-connect/token",
             data={
                 "grant_type": "password",
                 "client_id": settings.local_demo_client_id,

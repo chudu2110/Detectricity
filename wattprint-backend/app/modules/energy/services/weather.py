@@ -100,14 +100,29 @@ def _meteo_sky(code: int, day: bool, lang: str) -> Sky:
         kind, icon = "snow", "13"
     else:
         kind, icon = "thunderstorm", "11"
-    vi = {"clear": "Trời quang", "partly cloudy": "Ít mây", "cloudy": "Nhiều mây", "fog": "Sương mù", "drizzle": "Mưa phùn", "rain": "Mưa", "snow": "Tuyết", "thunderstorm": "Dông"}
-    return Sky(description=vi[kind] if lang == "vi" else kind.capitalize(), icon=icon + ("d" if day else "n"))
+    vi = {
+        "clear": "Trời quang",
+        "partly cloudy": "Ít mây",
+        "cloudy": "Nhiều mây",
+        "fog": "Sương mù",
+        "drizzle": "Mưa phùn",
+        "rain": "Mưa",
+        "snow": "Tuyết",
+        "thunderstorm": "Dông",
+    }
+    return Sky(
+        description=vi[kind] if lang == "vi" else kind.capitalize(),
+        icon=icon + ("d" if day else "n"),
+    )
 
 
 async def _fetch_open_meteo(lat: Decimal, lon: Decimal, lang: str) -> Weather:
     params = {
-        "latitude": str(lat), "longitude": str(lon), "timezone": "UTC",
-        "current": "temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,is_day",
+        "latitude": str(lat),
+        "longitude": str(lon),
+        "timezone": "UTC",
+        "current": "temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,"
+        "weather_code,is_day",
         "hourly": "temperature_2m,precipitation_probability,weather_code,is_day",
         "forecast_hours": 27,
     }
