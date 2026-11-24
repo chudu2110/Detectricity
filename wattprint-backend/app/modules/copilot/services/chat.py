@@ -63,6 +63,13 @@ NEXT = {
         "chat": ["What is this cycle's bill?", "Which device uses the most?"],
     },
 }
+MARKDOWN = re.compile(r"\*\*|__")  # bold the app would show as asterisks
+
+
+def plain(text: str) -> str:
+    return MARKDOWN.sub("", text)
+
+
 CITE = re.compile(r"\s*\[(\d+(?:\s*,\s*\d+)*)\]")
 
 SOURCES = {
@@ -123,9 +130,9 @@ PROMPT = """You are Detectricity, the energy assistant for one household in Viet
   meter, not separate meters: say "ước tính" / "estimated" when you use them, and call the method
   "hệ thống" / "the system" (never "NILM" or other jargon). "Other" is load no device explains.
 - Cite with [n] right after a figure, n being a number from the tool result's `cite` list.
-- Answer in {language}, in at most 120 words, plain sentences (no tables, no headings), VND as
-  "123.000 đ" in Vietnamese. Charts and links are added under your answer by the app: do not
-  describe them or paste URLs.
+- Answer in {language}, in at most 120 words, plain sentences (no markdown, tables or
+  headings), VND as "123.000 đ" in Vietnamese. Charts and links are added under your answer
+  by the app: do not describe them or paste URLs.
 - Call tools first, without writing anything before them.
 - Only for a savings plan the user asks for, call propose_plan with tasks grounded in the data.
   Never state a saving yourself: quote the kWh and VND the tools computed, or say it is not
@@ -182,8 +189,16 @@ class FollowUps:
 
     def close(self) -> tuple[str, list[str]]:
         self.answer += self.buf  # a held-back start that never became the marker
-        lines = [q.strip(" -•*0123456789.") for q in self.tail.splitlines()]
-        return self.answer.strip(), [q for q in lines if q][:3]
+        answer, tail = self.answer.strip(), self.tail
+        if not self.split:  # no marker: questions closing the answer are its follow-ups
+            lines = answer.splitlines()
+            n = len(lines)
+            while n and lines[n - 1].strip().endswith("?"):
+                n -= 1
+            if len(lines) - n >= 2 and n and not lines[n - 1].strip():
+                answer, tail = "\n".join(lines[:n]).strip(), "\n".join(lines[n:])
+        questions = [q.strip(" -•*0123456789.") for q in tail.splitlines()]
+        return answer, [q for q in questions if q][:3]
 
 
 def _system(lang: str) -> dict[str, str]:
@@ -317,7 +332,7 @@ class Answer:
             "tier": max(tiers, key=TIERS.index) if tiers else "inferred",
             "steps": self.steps,
             "sql": next((o.sql for o in reversed(outcomes) if o.sql), None),
-            "text": self.cited(text),
+            "text": plain(self.cited(text)),
             "sources": [{"title": self.title(k), "url": SOURCES[k][1]} for k in self.sources],
             "widgets": list(widgets.values()),
             "followUps": follow_ups,
@@ -420,7 +435,7 @@ async def answer(
                         if why := await declined():
                             raise DeclinedError(why)
                         if (out := follow.feed(delta)) and (out := gate.feed(out)):
-                            yield event("token", {"text": out})
+                            yield event("token", {"text": plain(out)})
                 state.count(turn.usage)
                 if not turn.calls:
                     break
@@ -429,7 +444,7 @@ async def answer(
                 if turn.text and not follow.answer.endswith("\n"):
                     # words before a tool call stay; the answer goes on below
                     if out := gate.feed(follow.feed("\n\n")):
-                        yield event("token", {"text": out})
+                        yield event("token", {"text": plain(out)})
                 messages.append(
                     {
                         "role": "assistant",
@@ -482,7 +497,7 @@ async def answer(
         text, follow_ups = follow.close()
         if text != DECLINE[lang]:
             if tail := gate.close():
-                yield event("token", {"text": tail})
+                yield event("token", {"text": plain(tail)})
             text = await grounded(text, messages, state)
         reply = state.reply(text, follow_ups)
         reply["followUps"] = tidy_follow_ups(follow_ups, question, reply["intent"], lang)

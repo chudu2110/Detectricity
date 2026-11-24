@@ -582,3 +582,25 @@ def test_sources_and_the_clock_say_how_fresh_the_meter_is():
     now = datetime(2026, 11, 22, 14, 5, tzinfo=UTC)
     assert "(120 minutes ago)" in chat._clock(now, state.newest)["content"]
     assert "no reading yet" in chat._clock(now, None)["content"]
+
+
+def test_questions_closing_an_answer_without_the_marker_are_follow_ups():
+    f = chat.FollowUps()
+    f.feed("Máy giặt tăng 6 kWh [1].\n\nBạn muốn xem thiết bị nào?\nCòn tuần trước?")
+    assert f.close() == (
+        "Máy giặt tăng 6 kWh [1].",
+        ["Bạn muốn xem thiết bị nào?", "Còn tuần trước?"],
+    )
+    g = chat.FollowUps()
+    g.feed("Bạn muốn so theo tuần hay theo kỳ?")  # one question to the user stays the answer
+    assert g.close() == ("Bạn muốn so theo tuần hay theo kỳ?", [])
+
+
+async def test_markdown_bold_is_not_shown(client, make_member, script):
+    turns, _ = script
+    me = await make_member("owner")
+    turns += [("compare_periods", {"period": "week"}), ["Tuần này **chưa có số liệu** [1]."]]
+    _, events = await ask(client, me)
+    shown = "".join(d["text"] for n, d in events if n == "token")
+    assert "**" not in shown
+    assert events[-1][1]["reply"]["text"] == "Tuần này chưa có số liệu [1]."
